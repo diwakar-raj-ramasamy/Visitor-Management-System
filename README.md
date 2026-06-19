@@ -110,7 +110,7 @@ This project provides a digital solution that improves security, efficiency, and
 
 ### Steps
 
-* Clone or Download the project ZIP file from the GitHub Repository (git clone https://github.com/user-name/<repository-name>).
+* Clone or Download the project ZIP file from the GitHub Repository (git clone https://github.com/user-name/repository-name).
 * Create a Virtual Environment (python -m venv venv).
 * Activate the Virtual Environment (venv\Scripts\activate <windows>, source venv/bin/activate <Linux/Mac>).
 
