@@ -134,7 +134,126 @@
 </head>
 <body class="bg-background text-on-background flex overflow-hidden min-h-screen">
     
+<<<<<<< HEAD
     {% include 'partials/sidebar.html' %}
+=======
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden transition-opacity duration-300" onclick="toggleSidebar()"></div>
+
+    
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col h-screen w-[280px] bg-surface-container-low border-r border-outline-variant transform -translate-x-full lg:transform-none lg:translate-x-0 lg:sticky lg:inset-auto lg:z-auto transition-transform lg:transition-none duration-300 ease-in-out">
+        <div class="p-lg flex flex-col h-full">
+            {% if current_user and current_user.role == 'visitor' %}
+            <div class="mb-xl flex items-center gap-sm">
+                <span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">shield_person</span>
+                <h1 class="font-headline-lg text-headline-lg text-primary font-bold">VMS Secure</h1>
+            </div>
+            
+            <a href="/profile" class="flex flex-col gap-base mb-xl hover:opacity-85 transition-opacity">
+                <div class="flex items-center gap-md p-md rounded-xl bg-surface-container-high/40 border border-outline-variant/10 hover:bg-surface-container-high/60 transition-colors">
+                    <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold shrink-0">
+                        {{ current_user.full_name[:2].upper() if current_user and current_user.full_name else 'VI' }}
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="font-title-md text-title-md text-on-surface truncate w-32">{{ current_user.full_name if current_user else 'Visitor' }}</p>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant opacity-80 capitalize">Visitor Account</p>
+                    </div>
+                </div>
+            </a>
+            <nav class="flex-grow flex flex-col gap-xs">
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/dashboard">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="font-body-md text-body-md">Home</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/employees">
+                    <span class="material-symbols-outlined">badge</span>
+                    <span class="font-body-md text-body-md">Employee Directory</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-full shadow-sm transition-all" href="/visitor/register">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person_add</span>
+                    <span class="font-body-md text-body-md font-bold">Register Meeting</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/profile">
+                    <span class="material-symbols-outlined">person</span>
+                    <span class="font-body-md text-body-md">Profile</span>
+                </a>
+            </nav>
+            <div class="p-md text-center border-t border-outline-variant">
+                <a href="/logout" class="flex items-center gap-md w-full px-md py-sm text-error hover:bg-error-container rounded-full transition-all">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="font-body-md">Sign Out</span>
+                </a>
+            </div>
+            {% else %}
+            <div>
+                <h1 class="font-headline-lg text-headline-lg text-primary mb-xl font-bold">VMS Secure</h1>
+                {% if current_user %}
+                <a href="/profile" class="mb-xl flex items-center gap-md px-md py-sm bg-surface-container-high rounded-xl hover:bg-surface-container-high/80 transition-colors border border-outline-variant/10">
+                    <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+                        <span class="material-symbols-outlined">person</span>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="font-title-md text-title-md truncate w-32">{{ current_user.full_name }}</p>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant truncate capitalize">{{ current_user.role }}</p>
+                    </div>
+                </a>
+                {% endif %}
+            </div>
+            <nav class="flex-grow flex flex-col gap-xs">
+                {% if current_user %}
+                    {% if current_user.role in ['receptionist', 'admin'] %}
+                        {% if current_user.role == 'admin' %}
+                        <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/admin">
+                            <span class="material-symbols-outlined">dashboard</span>
+                            <span class="font-body-md">Dashboard</span>
+                        </a>
+                        {% endif %}
+                        <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/reception">
+                            <span class="material-symbols-outlined">group</span>
+                            <span class="font-body-md">Reception</span>
+                        </a>
+                        <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/approvals">
+                            <span class="material-symbols-outlined">verified_user</span>
+                            <span class="font-body-md">Approvals</span>
+                        </a>
+                        <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/reports">
+                            <span class="material-symbols-outlined">analytics</span>
+                            <span class="font-body-md">Reports</span>
+                        </a>
+                    {% elif current_user.role == 'employee' %}
+                        <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/approvals">
+                            <span class="material-symbols-outlined">verified_user</span>
+                            <span class="font-body-md">Approvals</span>
+                        </a>
+                    {% endif %}
+                    <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/profile">
+                        <span class="material-symbols-outlined">person</span>
+                        <span class="font-body-md text-body-md">Profile</span>
+                    </a>
+                {% else %}
+                    <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/">
+                        <span class="material-symbols-outlined">home</span>
+                        <span class="font-body-md text-body-md">Home / Login</span>
+                    </a>
+                {% endif %}
+            </nav>
+            
+            {% if current_user %}
+            <div class="mt-auto p-md text-center border-t border-outline-variant">
+                <a href="/logout" class="flex items-center gap-md w-full px-md py-sm text-error hover:bg-error-container rounded-full transition-all">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="font-body-md">Sign Out</span>
+                </a>
+            </div>
+            {% else %}
+            <div class="mt-auto p-lg border-t border-outline-variant">
+                <p class="font-title-md text-body-md truncate">Visitor Registration</p>
+                <p class="text-on-surface-variant text-body-sm">Self-Registration Kiosk</p>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </aside>
+>>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
 
     <div class="flex-1 flex flex-col h-screen overflow-y-auto relative">
         
@@ -396,8 +515,11 @@
                 {% include 'partials/admin_footer.html' %}
                 {% elif current_user.role == 'receptionist' %}
                 {% include 'partials/receptionist_footer.html' %}
+<<<<<<< HEAD
                 {% elif current_user.role == 'employee' %}
                 {% include 'partials/employee_footer.html' %}
+=======
+>>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
                 {% elif current_user.role == 'visitor' %}
                 {% include 'partials/visitor_footer.html' %}
                 {% endif %}

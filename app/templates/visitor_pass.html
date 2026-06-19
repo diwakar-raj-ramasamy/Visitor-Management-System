@@ -120,8 +120,86 @@
         }
     </script>
 </head>
+<<<<<<< HEAD
 <body class="bg-surface-container-low font-body-md text-on-surface flex h-screen overflow-hidden">
     {% include 'partials/sidebar.html' %}
+=======
+<body class="bg-surface-container-low font-body-md text-on-surface min-h-screen">
+    {% if current_user and current_user.role == 'visitor' %}
+    
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden transition-opacity duration-300 no-print" onclick="toggleSidebar()"></div>
+    {% endif %}
+    <div class="flex h-screen overflow-hidden">
+        
+        {% if current_user and current_user.role == 'visitor' %}
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col h-screen w-[280px] bg-surface-container-low border-r border-outline-variant transform -translate-x-full lg:transform-none lg:translate-x-0 lg:sticky lg:inset-auto lg:z-auto transition-transform lg:transition-none duration-300 ease-in-out no-print">
+            <div class="p-lg flex flex-col h-full">
+                <div class="mb-xl flex items-center gap-sm">
+                    <span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">shield_person</span>
+                    <h1 class="font-headline-lg text-headline-lg text-primary font-bold">VMS Secure</h1>
+                </div>
+                
+                <a href="/profile" class="flex flex-col gap-base mb-xl hover:opacity-85 transition-opacity">
+                    <div class="flex items-center gap-md p-md rounded-xl bg-surface-container-high/40 border border-outline-variant/10 hover:bg-surface-container-high/60 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold shrink-0">
+                            {{ current_user.full_name[:2].upper() if current_user and current_user.full_name else 'VI' }}
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="font-title-md text-title-md text-on-surface truncate w-32">{{ current_user.full_name }}</p>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant opacity-80 capitalize">Visitor Account</p>
+                        </div>
+                    </div>
+                </a>
+                <nav class="flex-grow flex flex-col gap-xs">
+                    <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/dashboard">
+                        <span class="material-symbols-outlined">home</span>
+                        <span class="font-body-md text-body-md">Home</span>
+                    </a>
+                    <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/employees">
+                        <span class="material-symbols-outlined">badge</span>
+                        <span class="font-body-md text-body-md">Employee Directory</span>
+                    </a>
+                    <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/register">
+                        <span class="material-symbols-outlined">person_add</span>
+                        <span class="font-body-md text-body-md">Register Meeting</span>
+                    </a>
+                    <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/profile">
+                        <span class="material-symbols-outlined">person</span>
+                        <span class="font-body-md text-body-md">Profile</span>
+                    </a>
+                </nav>
+                <div class="p-md text-center border-t border-outline-variant">
+                    <a href="/logout" class="flex items-center gap-md w-full px-md py-sm text-error hover:bg-error-container rounded-full transition-all">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span class="font-body-md">Sign Out</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+        {% else %}
+        <aside class="hidden lg:flex flex-col h-full border-r border-outline-variant bg-surface-container-low w-[280px] sticky left-0 top-0 no-print">
+            <div class="p-lg">
+                <div class="font-headline-lg text-headline-lg text-primary font-bold mb-xl">VMS Secure</div>
+                <nav class="space-y-sm">
+                    <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/">
+                        <span class="material-symbols-outlined" data-icon="home">home</span>
+                        <span>Home</span>
+                    </a>
+                    {% if current_user and current_user.role in ['receptionist', 'admin'] %}
+                    <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/reception">
+                        <span class="material-symbols-outlined" data-icon="group">group</span>
+                        <span>Reception</span>
+                    </a>
+                    {% endif %}
+                </nav>
+            </div>
+            <div class="mt-auto p-lg border-t border-outline-variant">
+                <div class="text-label-md font-label-md text-outline uppercase tracking-wider mb-xs">Location</div>
+                <div class="text-body-sm font-body-md text-on-surface">HQ West Wing</div>
+            </div>
+        </aside>
+        {% endif %}
+>>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
 
         
         <main class="flex-1 overflow-y-auto bg-surface-bright relative">
@@ -246,6 +324,10 @@
                 {% include 'partials/visitor_footer.html' %}
             {% endif %}
         </main>
+<<<<<<< HEAD
+=======
+    </div>
+>>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
 
     {% if current_user and current_user.role == 'visitor' %}
     <script>
