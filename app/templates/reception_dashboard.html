@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>VMS Secure - Reception Dashboard</title>
+    <meta name="description" content="VMS Secure Reception Dashboard - Manage visitor check-ins, register walk-ins, and view currently checked-in guests."/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-fixed": "#d8f3dc",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary-fixed": "#081c15",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#74c69d",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-surface": "#2e3132",
+                        "surface-variant": "#e1e3e4",
+                        "on-primary-fixed-variant": "#1b4332",
+                        "on-secondary-container": "#081c15",
+                        "surface-container-high": "#e7e8e9",
+                        "on-surface": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#000416",
+                        "surface-tint": "#0f6d38",
+                        "primary-fixed-dim": "#b7e4c7",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#ffffff",
+                        "secondary-fixed": "#d8f3dc",
+                        "on-tertiary-fixed-variant": "#1b4332",
+                        "secondary": "#2d6a4f",
+                        "outline": "#727785",
+                        "tertiary-fixed-dim": "#b7e4c7",
+                        "primary": "#0f6d38",
+                        "inverse-primary": "#b7e4c7",
+                        "tertiary": "#1b4332",
+                        "on-background": "#191c1d",
+                        "secondary-fixed-dim": "#b7e4c7",
+                        "tertiary-container": "#52b788",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d8f3dc",
+                        "background": "#f8f9fa",
+                        "on-primary-fixed": "#081c15",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#081c15",
+                        "surface-container": "#edeeef",
+                        "surface": "#f8f9fa",
+                        "outline-variant": "#c1c6d6",
+                        "primary-container": "#2e7d32",
+                        "on-surface-variant": "#414754",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#1b4332",
+                        "inverse-on-surface": "#f0f1f2"
+                    },
+                    "borderRadius": {
+                        "sm": "0.125rem",
+                        "DEFAULT": "0.25rem",
+                        "md": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "grid_columns": "12",
+                        "gutter": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "margin_mobile": "16px",
+                        "margin_desktop": "40px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["44px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            user-select: none;
+        }
+        body {
+            background-color: #f8f9fa;
+            color: #191c1d;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c6d6; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+    <div class="flex h-screen w-full">
+    
+    {% include 'partials/sidebar.html' %}
+
+        
+        <main class="flex-grow flex flex-col h-screen overflow-hidden">
+            
+            <header class="w-full top-0 sticky bg-surface border-b border-outline-variant/30 z-30 h-16 flex items-center">
+                
+                <div class="hidden lg:flex justify-between items-center px-lg w-full max-w-[1440px] mx-auto">
+                    <div class="flex items-center gap-lg flex-1">
+                        
+                        <div class="relative max-w-md w-full">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+                            <input id="search-input" class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-2 focus:ring-primary-container transition-all outline-none" placeholder="Search visitors or hosts..." type="text"/>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-md">
+                        <a href="/visitor/register" class="flex items-center gap-sm bg-primary text-on-primary px-lg py-2 rounded-full font-title-md hover:brightness-110 active:scale-95 transition-all shadow-sm">
+                            <span class="material-symbols-outlined">add</span>
+                            <span>Register Walk-In</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="flex lg:hidden justify-between items-center px-lg w-full">
+                    <div class="flex items-center gap-md">
+                        <button onclick="toggleSidebar()" class="text-on-surface p-sm hover:bg-surface-container-high rounded-full">
+                            <span class="material-symbols-outlined text-[24px]">menu</span>
+                        </button>
+                        <span class="font-bold text-lg text-primary tracking-tight">VMS Secure</span>
+                    </div>
+                    <div class="flex items-center gap-md">
+                        <span class="material-symbols-outlined text-on-surface-variant text-[24px] cursor-pointer">notifications</span>
+                        <a href="/profile" class="w-9 h-9 rounded-full overflow-hidden border border-outline-variant bg-surface-container flex items-center justify-center hover:opacity-85 transition-opacity">
+                            <img src="https://ui-avatars.com/api/?name={{ current_user.full_name|urlencode }}&background=0f6d38&color=fff" alt="Profile" class="w-full h-full object-cover"/>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            
+            <div class="lg:hidden px-margin_mobile pt-md flex justify-between items-center bg-surface pb-sm">
+                <div>
+                    <h3 class="text-headline-lg-mobile text-on-surface font-bold">Reception Dashboard</h3>
+                    <p class="text-xs text-on-surface-variant font-medium mt-0.5" id="mobile-date-time"></p>
+                </div>
+                <button onclick="alert('Initializing QR Scanner...')" class="bg-primary hover:bg-secondary text-white px-md py-sm rounded-xl font-bold hover:brightness-105 active:scale-[0.97] transition-all shadow-sm flex items-center gap-xs text-[12px]">
+                    <span class="material-symbols-outlined text-[18px]">qr_code_scanner</span>
+                    <span>SCAN QR</span>
+                </button>
+            </div>
+
+            <div class="flex-grow overflow-y-auto p-margin_mobile pb-24 lg:p-margin_desktop lg:pb-lg custom-scrollbar space-y-lg">
+                
+                <div class="lg:hidden relative w-full px-xs">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+                    <input id="search-input-mobile" class="w-full bg-white border border-outline-variant rounded-xl py-3 pl-10 pr-4 text-sm font-medium focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Search by name, host, or company..." type="text"/>
+                </div>
+
+                
+                <section class="grid grid-cols-2 lg:grid-cols-4 gap-md lg:gap-lg">
+                    
+                    <div class="bg-surface-container-lowest p-md lg:p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                        <div class="flex justify-between items-center">
+                            <span class="lg:block p-sm bg-primary-fixed rounded-lg text-primary hidden">
+                                <span class="material-symbols-outlined text-[20px]">group</span>
+                            </span>
+                            <span class="text-primary lg:hidden text-[20px]">
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+                            </span>
+                            <span class="text-[10px] font-bold text-primary tracking-wider">+12%</span>
+                        </div>
+                        <div class="mt-sm lg:mt-md">
+                            <h3 class="text-3xl lg:text-headline-lg font-bold" id="kpi-today-visitors">-</h3>
+                            <p class="text-on-surface-variant text-[11px] lg:text-body-sm font-semibold mt-xs uppercase tracking-wider">Today's Visitors</p>
+                        </div>
+                    </div>
+                    <!-- Checked-In -->
+                    <div class="bg-surface-container-lowest p-md lg:p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                        <div class="flex justify-between items-center">
+                            <span class="lg:block p-sm bg-secondary-fixed rounded-lg text-secondary hidden">
+                                <span class="material-symbols-outlined text-[20px]">login</span>
+                            </span>
+                            <span class="text-emerald-600 lg:hidden text-[20px]">
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            </span>
+                            <span class="text-[10px] font-bold text-emerald-600 tracking-wider">Active</span>
+                        </div>
+                        <div class="mt-sm lg:mt-md">
+                            <h3 class="text-3xl lg:text-headline-lg font-bold" id="kpi-checked-in">-</h3>
+                            <p class="text-on-surface-variant text-[11px] lg:text-body-sm font-semibold mt-xs uppercase tracking-wider">Checked-In</p>
+                        </div>
+                    </div>
+                    <!-- Pending Approval -->
+                    <div class="bg-surface-container-lowest p-md lg:p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                        <div class="flex justify-between items-center">
+                            <span class="lg:block p-sm bg-error-container rounded-lg text-error hidden">
+                                <span class="material-symbols-outlined text-[20px]">pending_actions</span>
+                            </span>
+                            <span class="text-red-500 lg:hidden text-[20px]">
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment_late</span>
+                            </span>
+                            <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse lg:hidden"></span>
+                            <span class="text-[10px] font-bold text-red-600 tracking-wider hidden lg:inline">Pending</span>
+                        </div>
+                        <div class="mt-sm lg:mt-md">
+                            <h3 class="text-3xl lg:text-headline-lg font-bold" id="kpi-pending">-</h3>
+                            <p class="text-on-surface-variant text-[11px] lg:text-body-sm font-semibold mt-xs uppercase tracking-wider">Pending Approval</p>
+                        </div>
+                    </div>
+                    <!-- Checked-Out -->
+                    <div class="bg-surface-container-lowest p-md lg:p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                        <div class="flex justify-between items-center">
+                            <span class="lg:block p-sm bg-tertiary-fixed rounded-lg text-tertiary hidden">
+                                <span class="material-symbols-outlined text-[20px]">logout</span>
+                            </span>
+                            <span class="text-on-surface-variant lg:hidden text-[20px]">
+                                <span class="material-symbols-outlined">logout</span>
+                            </span>
+                            <span class="text-[10px] font-bold text-on-surface-variant tracking-wider">Done</span>
+                        </div>
+                        <div class="mt-sm lg:mt-md">
+                            <h3 class="text-3xl lg:text-headline-lg font-bold" id="kpi-checked-out">-</h3>
+                            <p class="text-on-surface-variant text-[11px] lg:text-body-sm font-semibold mt-xs uppercase tracking-wider">Checked-Out</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Desktop Tables (hidden on mobile) -->
+                <div class="hidden lg:block space-y-lg">
+                    <!-- Active Checked-In Log Table -->
+                    <section class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                        <div class="p-lg border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+                            <h2 class="font-headline-lg text-title-md flex items-center gap-sm font-semibold">
+                                <span class="w-3 h-3 bg-primary rounded-full animate-pulse"></span>
+                                Currently Checked-In Visitors
+                            </h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-surface-container-low text-on-surface-variant font-label-md">
+                                        <th class="px-lg py-md font-semibold hidden sm:table-cell">Photo</th>
+                                        <th class="px-lg py-md font-semibold">Name</th>
+                                        <th class="px-lg py-md font-semibold hidden sm:table-cell">Host</th>
+                                        <th class="px-lg py-md font-semibold">Badge</th>
+                                        <th class="px-lg py-md font-semibold">Check-In Time</th>
+                                        <th class="px-lg py-md font-semibold text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-outline-variant" id="checked-in-tbody">
+                                    <tr>
+                                        <td colspan="6" class="px-lg py-8 text-center text-on-surface-variant">No visitors currently checked in.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Approved Visitor Requests Log Table -->
+                    <section class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                        <div class="p-lg border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+                            <h2 class="font-headline-lg text-title-md flex items-center gap-sm font-semibold">
+                                <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
+                                Approved Visits Awaiting Check-In
+                            </h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-surface-container-low text-on-surface-variant font-label-md">
+                                        <th class="px-lg py-md font-semibold hidden sm:table-cell">Photo</th>
+                                        <th class="px-lg py-md font-semibold">Name</th>
+                                        <th class="px-lg py-md font-semibold hidden sm:table-cell">Host</th>
+                                        <th class="px-lg py-md font-semibold hidden md:table-cell">Company</th>
+                                        <th class="px-lg py-md font-semibold">Visit Schedule</th>
+                                        <th class="px-lg py-md font-semibold text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-outline-variant" id="approved-requests-tbody">
+                                    <tr>
+                                        <td colspan="6" class="px-lg py-8 text-center text-on-surface-variant">No approved requests awaiting check-in.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Mobile Live Visitor Log Section (visible on mobile only) -->
+                <section class="lg:hidden space-y-md">
+                    <div class="flex justify-between items-center px-xs">
+                        <h4 class="font-title-md text-on-surface font-bold">Live Visitor Log</h4>
+                        <a href="#" class="text-xs text-primary font-bold hover:underline">View All</a>
+                    </div>
+                    <div id="mobile-visitor-list" class="space-y-md pb-24">
+                        <div class="text-center py-8 text-on-surface-variant">No visitor activities loaded.</div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Floating Action Button for Mobile -->
+            <a href="/visitor/register" class="fixed bottom-20 right-6 z-30 lg:hidden w-14 h-14 bg-primary hover:bg-secondary text-white rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform">
+                <span class="material-symbols-outlined text-[24px]">person_add</span>
+            </a>
+
+            <!-- Bottom Navigation Bar for Mobile -->
+            {% if current_user.role == 'admin' %}
+                {% include 'partials/admin_footer.html' %}
+            {% elif current_user.role == 'receptionist' %}
+                {% include 'partials/receptionist_footer.html' %}
+            {% endif %}
+        </main>
+    </div>
+
+    <script>
+        function loadDashboard() {
+            // Format current date and time for mobile subheader
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true };
+            const formatted = new Date().toLocaleDateString('en-US', options).replace(' at ', ' • ');
+            const dateEl = document.getElementById('mobile-date-time');
+            if (dateEl) dateEl.textContent = formatted;
+
+            // Load stats KPIs
+            fetch('/api/dashboard/stats')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('kpi-today-visitors').textContent = String(data.daily_checkins).padStart(2, '0');
+                    document.getElementById('kpi-checked-in').textContent = String(data.recent_visits.filter(v => v.status === 'checked_in').length || 0).padStart(2, '0');
+                    document.getElementById('kpi-pending').textContent = String(data.alerts_count || 0).padStart(2, '0');
+                    document.getElementById('kpi-checked-out').textContent = String(data.recent_visits.filter(v => v.status === 'checked_out').length || 0).padStart(2, '0');
+                });
+
+            // Load logs lists
+            fetch('/api/reception/active')
+                .then(res => res.json())
+                .then(data => {
+                    renderCheckedIn(data.active_visits);
+                    renderApprovedRequests(data.approved_requests);
+                    renderMobileList(data.active_visits, data.approved_requests);
+                });
+        }
+
+        function renderCheckedIn(visits) {
+            const tbody = document.getElementById('checked-in-tbody');
+            if (!visits || visits.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-lg py-8 text-center text-on-surface-variant">No visitors currently checked in.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = visits.map(v => {
+                const photoSrc = v.visitor.photo_path ? `/static/uploads/photos/${v.visitor.photo_path}` : 'https://via.placeholder.com/150';
+                const formatTime = new Date(v.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                return `
+                <tr class="hover:bg-surface-container-low transition-colors">
+                    <td class="px-lg py-md hidden sm:table-cell">
+                        <img src="${photoSrc}" alt="${v.visitor.full_name}" class="w-10 h-10 rounded-full object-cover border"/>
+                    </td>
+                    <td class="px-lg py-md">
+                        <p class="font-bold text-on-surface">${v.visitor.full_name}</p>
+                        <p class="text-body-sm text-on-surface-variant sm:hidden">${v.visitor.company_name || 'Individual'}</p>
+                    </td>
+                    <td class="px-lg py-md hidden sm:table-cell">
+                        <p class="font-body-md">${v.host.full_name}</p>
+                        <p class="text-body-sm text-on-surface-variant">${v.host.department}</p>
+                    </td>
+                    <td class="px-lg py-md font-mono text-xs font-bold text-primary">${v.badge_number}</td>
+                    <td class="px-lg py-md text-on-surface-variant">${formatTime}</td>
+                    <td class="px-lg py-md text-right space-y-1 sm:space-y-0 sm:space-x-2">
+                        <a href="/pass/${v.id}" target="_blank" class="inline-block px-lg py-1.5 rounded-full border border-outline text-primary font-label-md hover:bg-primary-container hover:text-on-primary-container hover:border-primary transition-all">Details</a>
+                        <button onclick="handleCheckOut(${v.id})" class="px-lg py-1.5 rounded-full bg-red-600 text-white font-label-md hover:bg-red-700 transition-all">Out</button>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function renderApprovedRequests(requests) {
+            const tbody = document.getElementById('approved-requests-tbody');
+            if (!requests || requests.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-lg py-8 text-center text-on-surface-variant">No approved requests awaiting check-in.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = requests.map(req => {
+                const photoSrc = req.visitor.photo_path ? `/static/uploads/photos/${req.visitor.photo_path}` : 'https://via.placeholder.com/150';
+                return `
+                <tr class="hover:bg-surface-container-low transition-colors">
+                    <td class="px-lg py-md hidden sm:table-cell">
+                        <img src="${photoSrc}" alt="${req.visitor.full_name}" class="w-10 h-10 rounded-full object-cover border"/>
+                    </td>
+                    <td class="px-lg py-md">
+                        <p class="font-bold text-on-surface">${req.visitor.full_name}</p>
+                        <p class="text-body-sm text-on-surface-variant sm:hidden">${req.visitor.email}</p>
+                    </td>
+                    <td class="px-lg py-md hidden sm:table-cell">
+                        <p class="font-body-md">${req.host.full_name}</p>
+                        <p class="text-body-sm text-on-surface-variant">${req.host.department}</p>
+                    </td>
+                    <td class="px-lg py-md text-on-surface-variant hidden md:table-cell">${req.visitor.company_name || 'Individual'}</td>
+                    <td class="px-lg py-md text-on-surface-variant">
+                        <p class="font-body-md">${req.visit_date}</p>
+                        <p class="text-body-sm text-primary">${req.visit_time}</p>
+                    </td>
+                    <td class="px-lg py-md text-right">
+                        <button onclick="handleCheckIn(${req.id})" class="px-lg py-1.5 rounded-full bg-primary text-on-primary font-label-md hover:bg-secondary active:scale-95 transition-all">Check-In</button>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function handleCheckIn(requestId) {
+            fetch('/api/reception/check-in', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ request_id: requestId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.visit) {
+                    
+                    window.open(`/pass/${data.visit.id}`, '_blank');
+                    loadDashboard();
+                } else {
+                    alert(data.error || 'Failed to check-in.');
+                }
+            })
+            .catch(err => {
+                alert('Network error.');
+            });
+        }
+
+        function handleCheckOut(visitId) {
+            fetch('/api/reception/check-out', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ visit_id: visitId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.message) {
+                    loadDashboard();
+                } else {
+                    alert(data.error || 'Failed to check-out.');
+                }
+            })
+            .catch(err => {
+                alert('Network error.');
+            });
+        }        
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(query) || text.includes('no visitor') || text.includes('no approved')) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        });
+
+        
+        const searchMobile = document.getElementById('search-input-mobile');
+        if (searchMobile) {
+            searchMobile.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                document.querySelectorAll('.mobile-visitor-card').forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        }
+
+        function renderMobileList(activeVisits, approvedRequests) {
+            const listContainer = document.getElementById('mobile-visitor-list');
+            if (!listContainer) return;
+
+            let items = [];
+            
+            
+            if (activeVisits) {
+                activeVisits.forEach(v => {
+                    items.push({
+                        id: v.id,
+                        name: v.visitor.full_name,
+                        photo: v.visitor.photo_path ? `/static/uploads/photos/${v.visitor.photo_path}` : 'https://via.placeholder.com/150',
+                        host: v.host.full_name,
+                        company: v.visitor.company_name || 'Individual',
+                        time: new Date(v.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        status: 'checked_in',
+                        actionHtml: `
+                            <div class="flex gap-sm w-full mt-md pt-sm border-t border-outline-variant/30">
+                                <a href="/pass/${v.id}" target="_blank" class="flex-grow flex-1 text-center py-2 rounded-xl border border-outline-variant text-primary font-bold text-xs bg-white hover:bg-surface-container transition-all">Details</a>
+                                <button onclick="handleCheckOut(${v.id})" class="flex-grow flex-1 py-2 rounded-xl bg-red-700 text-white font-bold text-xs hover:bg-red-800 transition-all">Check-Out</button>
+                            </div>
+                        `
+                    });
+                });
+            }
+
+            
+            if (approvedRequests) {
+                approvedRequests.forEach(req => {
+                    items.push({
+                        id: req.id,
+                        name: req.visitor.full_name,
+                        photo: req.visitor.photo_path ? `/static/uploads/photos/${req.visitor.photo_path}` : 'https://via.placeholder.com/150',
+                        host: req.host.full_name,
+                        company: req.visitor.company_name || 'Individual',
+                        time: req.visit_time,
+                        status: 'expected',
+                        actionHtml: `
+                            <div class="flex gap-sm w-full mt-md pt-sm border-t border-outline-variant/30">
+                                <button onclick="alert('Expected: ' + '${req.visitor.full_name}')" class="flex-grow flex-1 text-center py-2 rounded-xl border border-outline-variant text-primary font-bold text-xs bg-white hover:bg-surface-container transition-all">Details</button>
+                                <button onclick="handleCheckIn(${req.id})" class="flex-grow flex-1 py-2 rounded-xl bg-primary text-white font-bold text-xs hover:bg-secondary transition-all">Check-In</button>
+                            </div>
+                        `
+                    });
+                });
+            }
+
+            if (items.length === 0) {
+                listContainer.innerHTML = `<div class="text-center py-8 text-on-surface-variant font-semibold">No visitor activities loaded.</div>`;
+                return;
+            }
+
+            listContainer.innerHTML = items.map(item => {
+                let badgeColor = '';
+                let badgeText = '';
+                if (item.status === 'checked_in') {
+                    badgeColor = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                    badgeText = 'CHECKED-IN';
+                } else if (item.status === 'expected') {
+                    badgeColor = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                    badgeText = 'EXPECTED';
+                } else {
+                    badgeColor = 'bg-red-100 text-red-800 border-red-200';
+                    badgeText = 'WAITING APPROVAL';
+                }
+
+                return `
+                <div class="mobile-visitor-card bg-white p-md rounded-xl border border-outline-variant/60 shadow-sm flex flex-col justify-between">
+                    <div class="flex gap-md items-start">
+                        <img src="${item.photo}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover border border-outline-variant/40"/>
+                        <div class="flex-grow min-w-0">
+                            <div class="flex items-center justify-between gap-sm">
+                                <p class="font-bold text-on-surface text-sm truncate">${item.name}</p>
+                                <span class="px-2 py-0.5 ${badgeColor} text-[9px] font-bold rounded-full border">${badgeText}</span>
+                            </div>
+                            <p class="text-[11px] text-on-surface-variant font-medium mt-xs truncate">
+                                Host: <span class="font-bold">${item.host}</span> • ${item.company}
+                            </p>
+                            <div class="flex items-center gap-xs text-[10px] text-on-surface-variant mt-sm">
+                                <span class="material-symbols-outlined text-[14px]">schedule</span>
+                                <span>${item.time}</span>
+                            </div>
+                        </div>
+                    </div>
+                    ${item.actionHtml}
+                </div>
+                `;
+            }).join('');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        
+        window.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>

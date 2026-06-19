@@ -1,0 +1,23 @@
+<div class="fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-outline-variant/30 lg:hidden flex justify-around items-center h-16 shadow-lg no-print">
+    
+    <a href="/approvals" class="flex flex-col items-center justify-center w-20 h-full">
+        <div class="{% if request.path == '/approvals' %}bg-secondary-container text-on-secondary-container{% else %}text-on-surface-variant hover:text-primary{% endif %} rounded-full px-5 py-1 flex items-center justify-center mb-1 transition-all duration-200">
+            <span class="material-symbols-outlined text-[22px]" {% if request.path == '/approvals' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>verified_user</span>
+        </div>
+        <span class="text-[11px] {% if request.path == '/approvals' %}font-bold text-primary{% else %}font-semibold text-on-surface-variant{% endif %} tracking-wide">Approvals</span>
+    </a>
+
+    <a href="/profile" class="flex flex-col items-center justify-center w-20 h-full">
+        <div class="{% if request.path == '/profile' %}bg-secondary-container text-on-secondary-container{% else %}text-on-surface-variant hover:text-primary{% endif %} rounded-full px-5 py-1 flex items-center justify-center mb-1 transition-all duration-200">
+            <span class="material-symbols-outlined text-[22px]" {% if request.path == '/profile' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>person</span>
+        </div>
+        <span class="text-[11px] {% if request.path == '/profile' %}font-bold text-primary{% else %}font-semibold text-on-surface-variant{% endif %} tracking-wide">Profile</span>
+    </a>
+
+    <a href="/logout" class="flex flex-col items-center justify-center w-20 h-full text-red-600 hover:text-red-700">
+        <div class="rounded-full px-5 py-1 flex items-center justify-center mb-1 transition-all duration-200 hover:bg-red-50">
+            <span class="material-symbols-outlined text-[22px]">logout</span>
+        </div>
+        <span class="text-[11px] font-semibold text-red-600 tracking-wide">Out</span>
+    </a>
+</div>

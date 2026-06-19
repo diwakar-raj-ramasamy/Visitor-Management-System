@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Digital Entry Pass - VMS Secure</title>
+    <meta name="description" content="VMS Secure Digital Entry Pass - Temporary QR code pass valid for 12 hours."/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-area { 
+                box-shadow: none !important; 
+                margin: 0 auto !important; 
+                border: 1px solid #e1e3e4 !important;
+                border-radius: 12px !important;
+                max-width: 450px !important;
+            }
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#e1e3e4",
+                      "surface-bright": "#f8f9fa",
+                      "tertiary-fixed": "#d8f3dc",
+                      "surface-dim": "#d9dadb",
+                      "on-secondary-fixed": "#081c15",
+                      "on-secondary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "secondary-container": "#74c69d",
+                      "surface-container-low": "#f3f4f5",
+                      "inverse-surface": "#2e3132",
+                      "surface-variant": "#e1e3e4",
+                      "on-primary-fixed-variant": "#1b4332",
+                      "on-secondary-container": "#081c15",
+                      "surface-container-high": "#e7e8e9",
+                      "on-surface": "#191c1d",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-tertiary-container": "#000416",
+                      "surface-tint": "#0f6d38",
+                      "primary-fixed-dim": "#b7e4c7",
+                      "on-error-container": "#93000a",
+                      "on-primary-container": "#ffffff",
+                      "secondary-fixed": "#d8f3dc",
+                      "on-tertiary-fixed-variant": "#1b4332",
+                      "secondary": "#2d6a4f",
+                      "outline": "#727785",
+                      "tertiary-fixed-dim": "#b7e4c7",
+                      "primary": "#0f6d38",
+                      "inverse-primary": "#b7e4c7",
+                      "tertiary": "#1b4332",
+                      "on-background": "#191c1d",
+                      "secondary-fixed-dim": "#b7e4c7",
+                      "tertiary-container": "#52b788",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed": "#d8f3dc",
+                      "background": "#f8f9fa",
+                      "on-primary-fixed": "#081c15",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#081c15",
+                      "surface-container": "#edeeef",
+                      "surface": "#f8f9fa",
+                      "outline-variant": "#c1c6d6",
+                      "primary-container": "#2e7d32",
+                      "on-surface-variant": "#414754",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#1b4332",
+                      "inverse-on-surface": "#f0f1f2"
+              },
+              "borderRadius": {
+                      "sm": "0.125rem",
+                      "DEFAULT": "0.25rem",
+                      "md": "0.375rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "grid_columns": "12",
+                      "gutter": "24px",
+                      "md": "16px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "margin_mobile": "16px",
+                      "margin_desktop": "40px",
+                      "xs": "4px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "title-md": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "display-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg": ["44px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface-container-low font-body-md text-on-surface flex h-screen overflow-hidden">
+    {% include 'partials/sidebar.html' %}
+
+        
+        <main class="flex-1 overflow-y-auto bg-surface-bright relative">
+            
+            <header class="bg-surface shadow-sm sticky top-0 z-40 no-print">
+                <div class="flex justify-between items-center px-lg h-16 w-full max-w-[1440px] mx-auto">
+                    {% if current_user and current_user.role == 'visitor' %}
+                    <div class="flex items-center gap-md lg:hidden">
+                        <button onclick="toggleSidebar()" class="text-primary p-sm hover:bg-surface-container-high rounded-full flex items-center">
+                            <span class="material-symbols-outlined">menu</span>
+                        </button>
+                        <h2 class="font-title-md text-title-md text-primary font-bold">VMS Secure</h2>
+                    </div>
+                    <div class="hidden lg:block">
+                        <h1 class="font-headline-lg text-headline-lg font-bold text-primary">VMS Secure</h1>
+                    </div>
+                    {% else %}
+                    <div class="flex items-center gap-md">
+                        <h1 class="font-headline-lg text-headline-lg font-bold text-primary">VMS Secure</h1>
+                    </div>
+                    {% endif %}
+                </div>
+            </header>
+
+            
+            <div class="max-w-4xl mx-auto p-margin_mobile md:p-margin_desktop pb-32">
+                
+                <div class="flex justify-between items-center mb-xl no-print">
+                    <div class="flex items-center gap-sm text-on-surface-variant cursor-pointer" onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href = '/'; }">
+                        <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+                        <span class="font-title-md text-title-md">Back</span>
+                    </div>
+                    <div class="flex gap-md">
+                        <button class="flex items-center gap-sm px-lg py-sm border border-outline text-primary rounded-xl font-title-md hover:bg-surface-container-high transition-all active:scale-[0.98]" onclick="window.print()">
+                            <span class="material-symbols-outlined" data-icon="print">print</span>
+                            Print Pass
+                        </button>
+                    </div>
+                </div>
+
+                
+                <div class="print-area bg-surface-container-lowest shadow-2xl rounded-xl overflow-hidden border border-outline-variant w-full max-w-[480px] mx-auto">
+                    
+                    <div class="bg-primary p-lg flex justify-between items-center text-on-primary">
+                        <div>
+                            <div class="font-headline-lg text-headline-lg font-bold">VMS Secure</div>
+                            <div class="text-label-md font-label-md opacity-80 uppercase tracking-[0.2em] text-[10px]">Approved Entry Pass</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-label-md font-label-md opacity-80 text-[10px]">REQUEST ID</div>
+                            <div class="font-title-md text-title-md font-bold">REQ-{{ "%05d"|format(req.id) }}</div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="p-4 sm:p-8 space-y-6 text-center">
+                        
+                        <div class="relative inline-block">
+                            {% if req.visitor.photo_path %}
+                            <img src="/static/uploads/photos/{{ req.visitor.photo_path }}" alt="{{ req.visitor.full_name }}" class="w-44 h-44 rounded-2xl object-cover mx-auto border-4 border-surface shadow-lg"/>
+                            {% else %}
+                            <div class="w-44 h-44 rounded-2xl bg-surface-container flex items-center justify-center mx-auto border border-outline-variant shadow-lg">
+                                <span class="material-symbols-outlined text-[64px] text-outline">person</span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if req.pass_used %}
+                            <div class="absolute -bottom-2 -right-2 bg-red-600 text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-md">
+                                PASS USED
+                            </div>
+                            {% else %}
+                            <div id="status-badge" class="absolute -bottom-2 -right-2 bg-emerald-600 text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-md">
+                                APPROVED
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <h2 class="text-2xl font-bold text-on-surface tracking-tight">{{ req.visitor.full_name }}</h2>
+                            <p class="text-sm font-semibold text-primary mt-1">{{ req.visitor_type }} Entry Pass</p>
+                            <p class="text-sm text-on-surface-variant mt-0.5">{{ req.visitor.company_name or 'Individual' }}</p>
+                        </div>
+
+                        
+                        <div id="countdown-card" class="bg-secondary-container/10 border border-secondary/20 p-4 rounded-xl text-center space-y-1">
+                            <span class="text-[10px] font-bold text-secondary uppercase tracking-widest block">PASS VALIDITY COUNTDOWN</span>
+                            {% if req.pass_used %}
+                            <p class="text-xl font-bold text-red-600">VOIDED / ALREADY CHECKED IN</p>
+                            {% else %}
+                            <p id="countdown-timer" class="text-2xl font-bold text-emerald-600 tracking-tight">Calculating...</p>
+                            <p id="expiry-time" class="text-[11px] text-on-surface-variant"></p>
+                            {% endif %}
+                        </div>
+
+                        
+                        <div class="grid grid-cols-2 gap-y-4 text-left bg-surface-container-low p-4 rounded-xl border border-outline-variant text-sm">
+                            <div>
+                                <span class="text-[10px] font-bold text-outline uppercase tracking-wider block">Host Employee</span>
+                                <span class="font-semibold text-on-surface">{{ req.host_employee.user.full_name }}</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-outline uppercase tracking-wider block">Department</span>
+                                <span class="font-semibold text-on-surface">{{ req.host_employee.department.name }}</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-outline uppercase tracking-wider block">Visit Date</span>
+                                <span class="font-semibold text-on-surface">{{ req.visit_date.strftime('%b %d, %Y') }}</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-outline uppercase tracking-wider block">Schedule Time</span>
+                                <span class="font-semibold text-on-surface">{{ req.to_dict().visit_time }}</span>
+                            </div>
+                        </div>
+
+                        
+                        <div class="pt-6 border-t border-dashed border-outline-variant">
+                            {% if req.pass_used %}
+                            <div class="relative w-36 h-36 mx-auto opacity-30 select-none">
+                                <img src="/static/uploads/qrcodes/{{ req.qr_code_path }}" alt="Security QR Code" class="w-full h-full filter grayscale"/>
+                                <div class="absolute inset-0 flex items-center justify-center bg-black/10 rounded-xl">
+                                    <span class="material-symbols-outlined text-[48px] text-red-600" style="font-variation-settings: 'FILL' 1;">cancel</span>
+                                </div>
+                            </div>
+                            <p class="text-[10px] font-bold text-red-600 mt-3 uppercase tracking-wider">Pass consumed. Scan disabled.</p>
+                            {% else %}
+                            <div class="bg-white p-3 inline-block rounded-xl border border-surface-container-highest shadow-sm hover:scale-[1.02] transition-transform duration-200">
+                                {% if req.qr_code_path %}
+                                <img src="/static/uploads/qrcodes/{{ req.qr_code_path }}" alt="Security QR Code" class="w-36 h-36"/>
+                                {% else %}
+                                <div class="w-36 h-36 bg-slate-100 flex items-center justify-center rounded-lg border border-dashed text-xs text-outline">QR Code Unavailable</div>
+                                {% endif %}
+                            </div>
+                            <p class="text-[10px] font-bold text-outline mt-3 uppercase tracking-wider">Scan at gate scanner / reception desk</p>
+                            <p class="text-[11px] text-on-surface-variant max-w-[280px] mx-auto mt-1">
+                                Present this QR code to the receptionist or scan at the entrance terminal to complete your check-in.
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    
+                    <div class="bg-surface-container-low px-8 py-3 text-[9px] leading-tight text-outline text-center border-t">
+                        ONE-TIME USE ONLY. VALID FOR 12 HOURS FROM TIME OF HOST APPROVAL. PROPERTY OF HQ SECURITY SERVICES.
+                    </div>
+                </div>
+            </div>
+
+            
+            {% if current_user and current_user.role == 'visitor' %}
+                {% include 'partials/visitor_footer.html' %}
+            {% endif %}
+        </main>
+
+    {% if current_user and current_user.role == 'visitor' %}
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+    </script>
+    {% endif %}
+
+    
+    {% if not req.pass_used %}
+    <script>
+        const expiryDate = new Date("{{ req.pass_expiry.isoformat() }}Z");
+        
+        
+        const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+        const expiryFormatted = expiryDate.toLocaleTimeString('en-US', options);
+        document.getElementById('expiry-time').textContent = `Expires on: ${expiryFormatted}`;
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = expiryDate.getTime() - now.getTime();
+            
+            const timerEl = document.getElementById('countdown-timer');
+            const cardEl = document.getElementById('countdown-card');
+            const badgeEl = document.getElementById('status-badge');
+            
+            if (diff <= 0) {
+                timerEl.textContent = "EXPIRED / ACCESS DENIED";
+                timerEl.className = "text-xl font-bold text-red-600";
+                cardEl.className = "bg-red-50 border border-red-200 p-4 rounded-xl text-center space-y-1";
+                if (badgeEl) {
+                    badgeEl.textContent = "EXPIRED";
+                    badgeEl.className = "absolute -bottom-2 -right-2 bg-red-600 text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-md";
+                }
+                clearInterval(countdownInterval);
+                return;
+            }
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            const hrsStr = String(hours).padStart(2, '0');
+            const minsStr = String(minutes).padStart(2, '0');
+            const secsStr = String(seconds).padStart(2, '0');
+            
+            timerEl.textContent = `${hrsStr}h ${minsStr}m ${secsStr}s remaining`;
+            
+            
+            if (hours < 2) {
+                timerEl.className = "text-2xl font-bold text-amber-600 tracking-tight animate-pulse";
+                cardEl.className = "bg-amber-50 border border-amber-200 p-4 rounded-xl text-center space-y-1";
+            }
+        }
+
+        updateCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
+    {% endif %}
+</body>
+</html>

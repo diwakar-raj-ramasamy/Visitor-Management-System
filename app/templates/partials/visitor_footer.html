@@ -1,0 +1,30 @@
+<div class="fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-outline-variant/30 lg:hidden flex justify-around items-center h-16 shadow-lg no-print">
+    
+    <a href="/visitor/dashboard" class="flex flex-col items-center justify-center w-20 h-full">
+        <div class="{% if request.path == '/visitor/dashboard' %}bg-secondary-container text-on-secondary-container{% else %}text-on-surface-variant hover:text-primary{% endif %} rounded-full px-5 py-1 flex items-center justify-center mb-1 transition-all duration-200">
+            <span class="material-symbols-outlined text-[22px]" {% if request.path == '/visitor/dashboard' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>home</span>
+        </div>
+        <span class="text-[11px] {% if request.path == '/visitor/dashboard' %}font-bold text-primary{% else %}font-semibold text-on-surface-variant{% endif %} tracking-wide">Home</span>
+    </a>
+
+    <a href="/visitor/employees" class="flex flex-col items-center justify-center w-20 h-full">
+        <div class="{% if request.path == '/visitor/employees' %}bg-secondary-container text-on-secondary-container{% else %}text-on-surface-variant hover:text-primary{% endif %} rounded-full px-5 py-1 flex items-center justify-center mb-1 transition-all duration-200">
+            <span class="material-symbols-outlined text-[22px]" {% if request.path == '/visitor/employees' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>badge</span>
+        </div>
+        <span class="text-[11px] {% if request.path == '/visitor/employees' %}font-bold text-primary{% else %}font-semibold text-on-surface-variant{% endif %} tracking-wide">Employee</span>
+    </a>
+
+    <a href="/visitor/register" class="flex flex-col items-center justify-center w-20 h-full">
+        <div class="{% if request.path == '/visitor/register' %}bg-secondary-container text-on-secondary-container{% else %}text-on-surface-variant hover:text-primary{% endif %} rounded-full px-5 py-1 flex items-center justify-center mb-1 transition-all duration-200">
+            <span class="material-symbols-outlined text-[22px]" {% if request.path == '/visitor/register' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>person_add</span>
+        </div>
+        <span class="text-[11px] {% if request.path == '/visitor/register' %}font-bold text-primary{% else %}font-semibold text-on-surface-variant{% endif %} tracking-wide">Register</span>
+    </a>
+
+    <a href="/profile" class="flex flex-col items-center justify-center w-20 h-full">
+        <div class="{% if request.path == '/profile' %}bg-secondary-container text-on-secondary-container{% else %}text-on-surface-variant hover:text-primary{% endif %} rounded-full px-5 py-1 flex items-center justify-center mb-1 transition-all duration-200">
+            <span class="material-symbols-outlined text-[22px]" {% if request.path == '/profile' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>person</span>
+        </div>
+        <span class="text-[11px] {% if request.path == '/profile' %}font-bold text-primary{% else %}font-semibold text-on-surface-variant{% endif %} tracking-wide">Profile</span>
+    </a>
+</div>
