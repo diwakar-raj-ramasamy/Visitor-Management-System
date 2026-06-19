@@ -112,10 +112,10 @@ This project provides a digital solution that improves security, efficiency, and
 
 * Clone or Download the project ZIP file from the GitHub Repository (git clone https://github.com/user-name/repository-name).
 * Create a Virtual Environment (python -m venv venv).
-* Activate the Virtual Environment (venv\Scripts\activate <windows>, source venv/bin/activate <Linux/Mac>).
+* Activate the Virtual Environment (venv\Scripts\activate, source venv/bin/activate).
 
 ### Comment:
 
-* pip install -r requirements.txt     //The Modules are pre-defined in the text files
-* python run.py                       //It helps to run the VMS Project
+* pip install -r requirements.txt     (The Modules are pre-defined in the text files.)
+* python run.py                       (It helps to run the VMS Project.)
 
