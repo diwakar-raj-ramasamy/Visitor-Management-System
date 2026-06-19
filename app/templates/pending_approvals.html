@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>VMS Secure - Pending Approvals</title>
+    <meta name="description" content="Pending visitor approval queue. Approve or reject guest access requests to the facility."/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-fixed": "#d8f3dc",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary-fixed": "#081c15",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#74c69d",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-surface": "#2e3132",
+                        "surface-variant": "#e1e3e4",
+                        "on-primary-fixed-variant": "#1b4332",
+                        "on-secondary-container": "#081c15",
+                        "surface-container-high": "#e7e8e9",
+                        "on-surface": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#000416",
+                        "surface-tint": "#0f6d38",
+                        "primary-fixed-dim": "#b7e4c7",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#ffffff",
+                        "secondary-fixed": "#d8f3dc",
+                        "on-tertiary-fixed-variant": "#1b4332",
+                        "secondary": "#2d6a4f",
+                        "outline": "#727785",
+                        "tertiary-fixed-dim": "#b7e4c7",
+                        "primary": "#0f6d38",
+                        "inverse-primary": "#b7e4c7",
+                        "tertiary": "#1b4332",
+                        "on-background": "#191c1d",
+                        "secondary-fixed-dim": "#b7e4c7",
+                        "tertiary-container": "#52b788",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d8f3dc",
+                        "background": "#f8f9fa",
+                        "on-primary-fixed": "#081c15",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#081c15",
+                        "surface-container": "#edeeef",
+                        "surface": "#f8f9fa",
+                        "outline-variant": "#c1c6d6",
+                        "primary-container": "#2e7d32",
+                        "on-surface-variant": "#414754",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#1b4332",
+                        "inverse-on-surface": "#f0f1f2"
+                    },
+                    "borderRadius": {
+                        "sm": "0.125rem",
+                        "DEFAULT": "0.25rem",
+                        "md": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "grid_columns": "12",
+                        "gutter": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "margin_mobile": "16px",
+                        "margin_desktop": "40px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["44px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            user-select: none;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c1c6d6; border-radius: 10px; }
+        .visitor-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+            gap: 24px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden">
+    
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden transition-opacity duration-300" onclick="toggleSidebar()"></div>
+
+    <div class="flex h-screen w-full">
+        
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col h-screen w-[280px] bg-surface-container-low border-r border-outline-variant transform -translate-x-full lg:transform-none lg:translate-x-0 lg:sticky lg:inset-auto lg:z-auto transition-transform lg:transition-none duration-300 ease-in-out">
+            <div class="p-lg">
+                <h1 class="font-headline-lg text-headline-lg text-primary font-bold">VMS Secure</h1>
+            </div>
+            <div class="px-md mb-xl">
+                <a href="/profile" class="flex items-center gap-md p-md bg-surface-container-high rounded-xl hover:bg-surface-container-high/85 transition-colors border border-outline-variant/10">
+                    <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+                        <span class="material-symbols-outlined">person</span>
+                    </div>
+                    <div>
+                        <p class="font-title-md text-title-md text-on-surface truncate w-36">{{ current_user.full_name }}</p>
+                        <p class="text-body-sm text-on-surface-variant capitalize">{{ current_user.role }}</p>
+                    </div>
+                </a>
+            </div>
+            <nav class="flex-1 px-sm space-y-1">
+                {% if current_user.role == 'admin' %}
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/admin">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="font-body-md">Dashboard</span>
+                </a>
+                {% endif %}
+                {% if current_user.role in ['receptionist', 'admin'] %}
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/reception">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="font-body-md">Reception</span>
+                </a>
+                {% endif %}
+                <a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-full transition-all" href="/approvals">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                    <span class="font-body-md">Approvals</span>
+                </a>
+                {% if current_user.role in ['admin', 'receptionist'] %}
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/reports">
+                    <span class="material-symbols-outlined">analytics</span>
+                    <span class="font-body-md">Reports</span>
+                </a>
+                {% endif %}
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/profile">
+                    <span class="material-symbols-outlined">person</span>
+                    <span class="font-body-md">Profile</span>
+                </a>
+            </nav>
+            <div class="p-lg mt-auto border-t border-outline-variant">
+                <a href="/logout" class="flex items-center gap-md w-full px-md py-sm text-error hover:bg-error-container rounded-full transition-all">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="font-body-md">Sign Out</span>
+                </a>
+            </div>
+        </aside>
+
+        
+        <main class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative">
+            
+            <header class="w-full top-0 sticky bg-surface border-b border-outline-variant/30 z-30 h-16 flex items-center">
+                
+                <div class="hidden lg:flex justify-between items-center px-lg w-full max-w-[1440px] mx-auto">
+                    <div class="flex items-center gap-md">
+                        <h2 class="font-title-md text-title-md text-primary font-bold">Pending Approvals</h2>
+                    </div>
+                    <div class="flex items-center gap-md">
+                        <div class="relative">
+                            <input id="search-input" class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full text-body-sm w-64 focus:ring-2 focus:ring-primary" placeholder="Search requests..." type="text"/>
+                            <span class="material-symbols-outlined absolute left-3 top-2 text-on-surface-variant text-[20px]">search</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden flex items-center justify-center text-on-primary-container bg-primary-container">
+                            <span class="material-symbols-outlined">notifications</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex lg:hidden justify-between items-center px-lg w-full">
+                    <div class="flex items-center gap-md">
+                        <button onclick="toggleSidebar()" class="text-on-surface p-sm hover:bg-surface-container-high rounded-full">
+                            <span class="material-symbols-outlined text-[24px]">menu</span>
+                        </button>
+                        <span class="font-bold text-lg text-primary tracking-tight">Approvals Queue</span>
+                    </div>
+                    <a href="/profile" class="w-9 h-9 rounded-full overflow-hidden border border-outline-variant bg-surface-container flex items-center justify-center hover:opacity-85 transition-opacity">
+                        <img src="https://ui-avatars.com/api/?name={{ current_user.full_name|urlencode }}&background=0f6d38&color=fff" alt="Profile" class="w-full h-full object-cover"/>
+                    </a>
+                </div>
+            </header>
+
+            <div class="p-margin_mobile lg:p-margin_desktop pb-24 lg:pb-0 max-w-[1440px] mx-auto w-full space-y-lg">
+                
+                <div class="lg:hidden relative w-full px-xs">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+                    <input id="search-input-mobile" class="w-full bg-white border border-outline-variant rounded-xl py-3 pl-10 pr-4 text-sm font-medium focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Search approvals queue..." type="text"/>
+                </div>
+
+                
+                <section class="grid grid-cols-1 md:grid-cols-3 gap-md lg:gap-lg">
+                    
+                    <div class="bg-surface-container-lowest p-md lg:p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-sm">
+                            <span class="text-on-surface-variant font-label-md uppercase tracking-wider text-[10px]">PENDING NOW</span>
+                            <span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg text-[20px] hidden lg:block">hourglass_empty</span>
+                        </div>
+                        <div class="flex items-baseline gap-sm mt-xs">
+                            <p id="pending-count" class="text-3xl lg:text-[32px] font-bold text-on-surface">-</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-surface-container-lowest p-md lg:p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-sm">
+                            <span class="text-on-surface-variant font-label-md uppercase tracking-wider text-[10px]">EXPECTED TODAY</span>
+                            <span class="material-symbols-outlined text-secondary bg-secondary/10 p-2 rounded-lg text-[20px] hidden lg:block">shield</span>
+                        </div>
+                        <div class="flex items-baseline gap-sm mt-xs">
+                            <p class="text-3xl lg:text-[32px] font-bold text-on-surface">45</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-surface-container-lowest p-md lg:p-lg rounded-xl border border-l-4 border-l-primary border-r-outline-variant border-y-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-sm">
+                            <span class="text-on-surface-variant font-label-md uppercase tracking-wider text-[10px]">AVG RESPONSE TIME</span>
+                            <span class="material-symbols-outlined text-tertiary bg-tertiary/10 p-2 rounded-lg text-[20px] hidden lg:block">verified_user</span>
+                        </div>
+                        <div class="flex items-baseline gap-sm mt-xs">
+                            <p class="text-3xl lg:text-[32px] font-bold text-on-surface">2m 14s</p>
+                        </div>
+                    </div>
+                </section>
+
+                
+                <div class="space-y-sm">
+                    <div class="flex justify-between items-center px-xs">
+                        <h4 class="font-title-md text-on-surface font-bold">Visitor Requests</h4>
+                        <a href="#" class="text-xs text-primary font-semibold hover:underline">View all history &rarr;</a>
+                    </div>
+                    <section class="visitor-card-grid" id="requests-grid">
+                        <div class="col-span-full text-center py-12 text-on-surface-variant">
+                            <svg class="animate-spin h-8 w-8 text-primary mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Loading pending approvals...
+                        </div>
+                    </section>
+                </div>
+
+                
+                <div class="lg:hidden space-y-lg mt-xl pb-24">
+                    
+                    <div class="space-y-sm">
+                        <h4 class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider px-xs">Quick Filters</h4>
+                        <div class="flex flex-wrap gap-xs">
+                            <span class="px-md py-1.5 bg-primary text-white text-xs font-bold rounded-full cursor-pointer shadow-sm">All Pending</span>
+                            <span class="px-md py-1.5 bg-white border border-outline-variant/60 text-on-surface-variant text-xs font-semibold rounded-full cursor-pointer hover:bg-surface-container transition-all">VIP Only</span>
+                            <span class="px-md py-1.5 bg-white border border-outline-variant/60 text-on-surface-variant text-xs font-semibold rounded-full cursor-pointer hover:bg-surface-container transition-all">Contractors</span>
+                            <span class="px-md py-1.5 bg-white border border-outline-variant/60 text-on-surface-variant text-xs font-semibold rounded-full cursor-pointer hover:bg-surface-container transition-all">Emergency</span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="bg-primary text-white p-lg rounded-xl shadow-sm space-y-sm">
+                        <h4 class="font-bold text-xs tracking-wider uppercase opacity-85 border-b border-white/20 pb-xs">Policy Reminder</h4>
+                        <div class="space-y-sm">
+                            <div class="flex items-start gap-sm text-xs leading-relaxed">
+                                <span class="material-symbols-outlined text-[18px] mt-0.5">info</span>
+                                <p>All visitors must be escorted in Area 51 & Lab B.</p>
+                            </div>
+                            <div class="flex items-start gap-sm text-xs leading-relaxed">
+                                <span class="material-symbols-outlined text-[18px] mt-0.5">security</span>
+                                <p>Verify ID for all third-party maintenance staff.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="bg-white p-lg rounded-xl border border-outline-variant/60 shadow-sm flex flex-col items-center justify-center text-center space-y-md">
+                        <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">qr_code_2</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-on-surface text-sm">Self-Service Kiosk</h4>
+                            <p class="text-[11px] text-on-surface-variant mt-xs">Redirect walk-ins to the main reception kiosk for pre-registration.</p>
+                        </div>
+                        <a href="/visitor/register" class="w-full text-center py-2.5 rounded-xl border border-primary text-primary font-bold text-xs bg-white hover:bg-primary/5 active:scale-[0.97] transition-all">Open Kiosk Mode</a>
+                    </div>
+                </div>
+            </div>
+
+            
+            {% if current_user.role == 'admin' %}
+                {% include 'partials/admin_footer.html' %}
+            {% elif current_user.role == 'receptionist' %}
+                {% include 'partials/receptionist_footer.html' %}
+            {% elif current_user.role == 'employee' %}
+                <div class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-outline-variant/50 lg:hidden flex justify-around items-center h-16 shadow-lg">
+                    <a href="/approvals" class="flex flex-col items-center justify-center w-16 h-full text-primary">
+                        <div class="bg-primary text-white rounded-2xl px-5 py-1 flex items-center justify-center mb-0.5">
+                            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                        </div>
+                        <span class="text-[10px] font-bold tracking-wider uppercase">Approvals</span>
+                    </a>
+                    <a href="/logout" class="flex flex-col items-center justify-center w-16 h-full text-on-surface-variant hover:text-primary">
+                        <div class="px-5 py-1 flex items-center justify-center mb-0.5">
+                            <span class="material-symbols-outlined text-[20px]">logout</span>
+                        </div>
+                        <span class="text-[10px] font-semibold tracking-wider uppercase">Log Out</span>
+                    </a>
+                </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <script>
+        let allRequests = [];
+
+        function loadRequests() {
+            const grid = document.getElementById('requests-grid');
+            
+            fetch('/api/approvals/pending')
+                .then(res => res.json())
+                .then(data => {
+                    allRequests = data.requests;
+                    document.getElementById('pending-count').textContent = allRequests.length;
+                    renderGrid(allRequests);
+                })
+                .catch(err => {
+                    grid.innerHTML = `<div class="col-span-full text-center py-12 text-red-600 font-semibold">Failed to load pending requests.</div>`;
+                });
+        }
+
+        function renderGrid(requests) {
+            const grid = document.getElementById('requests-grid');
+            if (requests.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-on-surface-variant font-semibold">No pending requests found.</div>`;
+                return;
+            }
+
+            grid.innerHTML = requests.map(req => {
+                const photoSrc = req.visitor.photo_path ? `/static/uploads/photos/${req.visitor.photo_path}` : 'https://via.placeholder.com/150';
+                
+                
+                let badgeClass = 'bg-surface-container-highest text-on-surface-variant';
+                if (req.visitor_type === 'VIP') {
+                    badgeClass = 'bg-primary text-white border-primary';
+                } else if (req.visitor_type === 'Contractor') {
+                    badgeClass = 'bg-amber-100 text-amber-800 border-amber-200';
+                } else if (req.visitor_type === 'Delivery') {
+                    badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                }
+
+                return `
+                <div class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between" id="req-card-${req.id}">
+                    <div class="relative h-48 bg-slate-100 flex items-center justify-center overflow-hidden">
+                        <img src="${photoSrc}" alt="${req.visitor.full_name}" class="w-full h-full object-cover"/>
+                        ${req.visitor_type === 'VIP' ? '<div class="absolute top-3 right-3 px-2.5 py-0.5 bg-red-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wider">URGENT</div>' : `<div class="absolute top-3 right-3 px-2.5 py-0.5 ${badgeClass} text-[10px] font-bold rounded-full border uppercase tracking-wider">${req.visitor_type}</div>`}
+                    </div>
+                    <div class="p-md lg:p-lg space-y-md flex-grow flex flex-col justify-between">
+                        <div class="space-y-sm">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-on-surface text-base lg:text-title-md leading-snug">${req.visitor.full_name}</h3>
+                                    <p class="text-xs text-on-surface-variant font-medium mt-0.5">${req.visitor.company_name || 'Individual Visitor'}</p>
+                                </div>
+                                <span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] font-bold rounded-lg border border-outline-variant/30">${req.visit_time}</span>
+                            </div>
+                            
+                            <div class="pt-sm">
+                                <span class="text-[9px] font-bold tracking-wider text-outline uppercase">Purpose of Visit</span>
+                                <p class="text-xs text-on-surface font-semibold leading-relaxed mt-0.5">${req.purpose_of_visit}</p>
+                            </div>
+                            
+                            <div class="pt-xs flex items-center gap-xs text-[11px] text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[15px]">person_pin</span>
+                                <span>Host: <span class="font-semibold text-on-surface">${req.host.full_name} (${req.host.department})</span></span>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-md pt-md border-t border-outline-variant/30">
+                            <!-- Remarks Input -->
+                            <div class="relative flex items-center">
+                                <span class="material-symbols-outlined absolute left-3 text-outline text-[16px]">chat_bubble</span>
+                                <input id="remarks-${req.id}" class="w-full text-xs py-2 pl-9 pr-3 bg-surface-container-low border border-outline-variant/50 rounded-lg focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Add approval/rejection remarks..." type="text"/>
+                            </div>
+
+                            <div class="flex gap-sm">
+                                <button onclick="handleAction(${req.id}, 'approve')" class="flex-1 bg-primary text-on-primary py-2 rounded-xl font-bold text-xs hover:brightness-105 active:scale-[0.97] transition-all">Approve</button>
+                                <button onclick="handleAction(${req.id}, 'reject')" class="flex-1 border border-outline-variant text-red-600 py-2 rounded-xl font-bold text-xs hover:bg-red-50 active:scale-[0.97] transition-all">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function handleFilterInput(query) {
+            const filtered = allRequests.filter(req => 
+                req.visitor.full_name.toLowerCase().includes(query) ||
+                (req.visitor.company_name && req.visitor.company_name.toLowerCase().includes(query)) ||
+                req.purpose_of_visit.toLowerCase().includes(query)
+            );
+            renderGrid(filtered);
+        }
+
+        
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            handleFilterInput(e.target.value.toLowerCase());
+        });
+
+        const mobileSearch = document.getElementById('search-input-mobile');
+        if (mobileSearch) {
+            mobileSearch.addEventListener('input', function(e) {
+                handleFilterInput(e.target.value.toLowerCase());
+            });
+        }
+
+        function handleAction(requestId, action) {
+            const card = document.getElementById(`req-card-${requestId}`);
+            const remarks = document.getElementById(`remarks-${requestId}`).value || `${action.toUpperCase()}D via approvals portal.`;
+            
+            fetch('/api/approvals/action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ request_id: requestId, action, remarks })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.message) {
+                    card.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.9) translateY(-20px)';
+                    setTimeout(() => {
+                        card.remove();
+                        loadRequests();
+                    }, 400);
+                } else {
+                    alert(data.error || 'Failed to update approval action.');
+                }
+            })
+            .catch(err => {
+                alert('Network error occurred.');
+            });
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        
+        window.addEventListener('DOMContentLoaded', loadRequests);
+    </script>
+</body>
+</html>

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Reports &amp; Analytics | VMS Secure</title>
+    <meta name="description" content="VMS Secure Analytics and Reports - View complete historical visitor logs, filter by date, department, and visitor type."/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-fixed": "#d8f3dc",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary-fixed": "#081c15",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#74c69d",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-surface": "#2e3132",
+                        "surface-variant": "#e1e3e4",
+                        "on-primary-fixed-variant": "#1b4332",
+                        "on-secondary-container": "#081c15",
+                        "surface-container-high": "#e7e8e9",
+                        "on-surface": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#000416",
+                        "surface-tint": "#0f6d38",
+                        "primary-fixed-dim": "#b7e4c7",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#ffffff",
+                        "secondary-fixed": "#d8f3dc",
+                        "on-tertiary-fixed-variant": "#1b4332",
+                        "secondary": "#2d6a4f",
+                        "outline": "#727785",
+                        "tertiary-fixed-dim": "#b7e4c7",
+                        "primary": "#0f6d38",
+                        "inverse-primary": "#b7e4c7",
+                        "tertiary": "#1b4332",
+                        "on-background": "#191c1d",
+                        "secondary-fixed-dim": "#b7e4c7",
+                        "tertiary-container": "#52b788",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d8f3dc",
+                        "background": "#f8f9fa",
+                        "on-primary-fixed": "#081c15",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#081c15",
+                        "surface-container": "#edeeef",
+                        "surface": "#f8f9fa",
+                        "outline-variant": "#c1c6d6",
+                        "primary-container": "#2e7d32",
+                        "on-surface-variant": "#414754",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#1b4332",
+                        "inverse-on-surface": "#f0f1f2"
+                    },
+                    "borderRadius": {
+                        "sm": "0.125rem",
+                        "DEFAULT": "0.25rem",
+                        "md": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "grid_columns": "12",
+                        "gutter": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "margin_mobile": "16px",
+                        "margin_desktop": "40px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["44px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background h-screen flex overflow-hidden">
+    
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden transition-opacity duration-300" onclick="toggleSidebar()"></div>
+
+    
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col h-screen w-[280px] bg-surface-container-low border-r border-outline-variant transform -translate-x-full lg:transform-none lg:translate-x-0 lg:sticky lg:inset-auto lg:z-auto transition-transform lg:transition-none duration-300 ease-in-out">
+        <div class="p-lg flex flex-col h-full">
+            <div class="mb-xl">
+                <h1 class="font-headline-lg text-headline-lg text-primary font-bold">VMS Secure</h1>
+            </div>
+            
+            <a href="/profile" class="flex flex-col gap-base mb-xl hover:opacity-85 transition-opacity">
+                <div class="flex items-center gap-md p-md rounded-xl bg-surface-container-high/40 border border-outline-variant/10 hover:bg-surface-container-high/60 transition-colors">
+                    <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+                        <span class="material-symbols-outlined">person</span>
+                    </div>
+                    <div>
+                        <p class="font-title-md text-title-md text-on-surface truncate w-32">{{ current_user.full_name }}</p>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant opacity-85 capitalize">{{ current_user.role }}</p>
+                    </div>
+                </div>
+            </a>
+            <nav class="flex-grow flex flex-col gap-xs">
+                {% if current_user.role == 'admin' %}
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/admin">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="font-body-md text-body-md">Dashboard</span>
+                </a>
+                {% endif %}
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/reception">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="font-body-md text-body-md">Reception</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/approvals">
+                    <span class="material-symbols-outlined">verified_user</span>
+                    <span class="font-body-md text-body-md">Approvals</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-full shadow-sm transition-all" href="/reports">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+                    <span class="font-body-md text-body-md font-bold">Reports</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/profile">
+                    <span class="material-symbols-outlined">person</span>
+                    <span class="font-body-md text-body-md">Profile</span>
+                </a>
+            </nav>
+            <div class="p-md text-center border-t border-outline-variant">
+                <a href="/logout" class="flex items-center gap-md w-full px-md py-sm text-error hover:bg-error-container rounded-full transition-all">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="font-body-md">Sign Out</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-grow flex flex-col h-screen overflow-y-auto">
+        
+        <header class="bg-surface shadow-sm w-full top-0 sticky z-30 h-16 flex items-center">
+            
+            <div class="hidden lg:flex justify-between items-center px-lg w-full max-w-[1440px] mx-auto">
+                <h2 class="font-title-md text-title-md text-primary font-bold">Reports &amp; Analytics</h2>
+                <div class="flex items-center gap-md">
+                    <button onclick="exportData()" class="bg-primary hover:bg-secondary text-white px-md py-xs rounded-full font-bold text-xs flex items-center gap-xs shadow-sm transition-all">
+                        <span class="material-symbols-outlined text-[16px]">download</span>
+                        <span>Export All Data</span>
+                    </button>
+                    
+                    <div class="relative bg-surface-container-low items-center px-md py-xs rounded-full border border-outline-variant focus-within:border-primary transition-colors flex">
+                        <span class="material-symbols-outlined text-outline">search</span>
+                        <input id="search-input" class="bg-transparent border-none focus:ring-0 text-body-sm w-48 md:w-64 py-1" placeholder="Search visitors..." type="text"/>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex lg:hidden justify-between items-center px-lg w-full">
+                <div class="flex items-center gap-md">
+                    <button onclick="toggleSidebar()" class="text-on-surface p-sm hover:bg-surface-container-high rounded-full flex items-center">
+                        <span class="material-symbols-outlined text-[24px]">menu</span>
+                    </button>
+                    <span class="font-bold text-lg text-primary tracking-tight">VMS Secure</span>
+                </div>
+                <div class="flex items-center gap-md">
+                    <a href="/profile" class="w-9 h-9 rounded-full overflow-hidden border border-outline-variant bg-surface-container flex items-center justify-center hover:opacity-85 transition-opacity">
+                        <img src="https://ui-avatars.com/api/?name={{ current_user.full_name|urlencode }}&background=0f6d38&color=fff" alt="Profile" class="w-full h-full object-cover"/>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-margin_mobile lg:p-margin_desktop pb-24 lg:pb-0 max-w-[1440px] mx-auto w-full space-y-lg">
+            
+            <div class="lg:hidden flex flex-col gap-md">
+                <div>
+                    <h3 class="font-headline-lg text-headline-lg-mobile text-on-surface font-semibold">Reports & Analytics</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">View complete historical visitor logs and system performance stats</p>
+                </div>
+                <button onclick="exportData()" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded-xl font-bold flex items-center justify-center gap-sm shadow-md active:scale-[0.98] transition-all">
+                    <span class="material-symbols-outlined text-[20px]">download</span>
+                    <span>Export All Data</span>
+                </button>
+            </div>
+
+            
+            <div class="lg:hidden relative w-full px-xs">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+                <input id="search-input-mobile" class="w-full bg-white border border-outline-variant rounded-xl py-3 pl-10 pr-4 text-sm font-medium focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Search visitors..." type="text"/>
+            </div>
+
+            
+            <div class="bg-surface-container-low border border-outline-variant p-md rounded-xl flex flex-col lg:flex-row items-stretch lg:items-center gap-md shadow-sm w-full">
+                <div class="flex flex-col gap-xs w-full lg:min-w-[160px] lg:w-auto">
+                    <label class="text-[10px] font-bold uppercase text-outline px-1">Start Date</label>
+                    <input id="filter-start-date" class="bg-surface border border-outline-variant rounded-lg px-md py-sm font-body-sm text-body-sm cursor-pointer w-full" type="date"/>
+                </div>
+                <div class="flex flex-col gap-xs w-full lg:min-w-[160px] lg:w-auto">
+                    <label class="text-[10px] font-bold uppercase text-outline px-1">End Date</label>
+                    <input id="filter-end-date" class="bg-surface border border-outline-variant rounded-lg px-md py-sm font-body-sm text-body-sm cursor-pointer w-full" type="date"/>
+                </div>
+                <div class="flex flex-col gap-xs w-full lg:min-w-[180px] lg:w-auto">
+                    <label class="text-[10px] font-bold uppercase text-outline px-1">Department</label>
+                    <div class="relative w-full lg:w-auto">
+                        <select id="filter-department" class="w-full bg-surface border border-outline-variant rounded-lg px-md py-sm appearance-none font-body-sm text-body-sm cursor-pointer">
+                            <option>All Departments</option>
+                            <option>Engineering</option>
+                            <option>HR &amp; Legal</option>
+                            <option>Operations</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-outline">expand_more</span>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-xs w-full lg:min-w-[180px] lg:w-auto">
+                    <label class="text-[10px] font-bold uppercase text-outline px-1">Visitor Type</label>
+                    <div class="relative w-full lg:w-auto">
+                        <select id="filter-visitor-type" class="w-full bg-surface border border-outline-variant rounded-lg px-md py-sm appearance-none font-body-sm text-body-sm cursor-pointer">
+                            <option>All Visitors</option>
+                            <option>General</option>
+                            <option>Contractor</option>
+                            <option>Delivery</option>
+                            <option>VIP</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-outline">expand_more</span>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-sm mt-md lg:mt-0 lg:ml-auto pb-base">
+                    <button onclick="clearFilters()" class="px-md py-sm text-primary font-bold hover:bg-primary/5 rounded-lg transition-colors">Clear</button>
+                    <button onclick="applyFilters()" class="bg-secondary-container text-on-secondary-container px-lg py-sm rounded-lg font-bold shadow-sm hover:brightness-105 transition-all">Apply</button>
+                </div>
+            </div>
+
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+                
+                <div class="bg-surface border border-outline-variant p-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+                    <div class="flex justify-between items-start">
+                        <div class="p-sm bg-primary/10 rounded-lg text-primary">
+                            <span class="material-symbols-outlined">how_to_reg</span>
+                        </div>
+                    </div>
+                    <div class="mt-lg">
+                        <p class="font-label-md text-label-md text-on-surface-variant uppercase">Total Check-ins</p>
+                        <p id="stat-total-checkins" class="font-display-lg text-display-lg text-on-surface mt-xs">-</p>
+                    </div>
+                </div>
+                
+                <div class="bg-surface border border-outline-variant p-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+                    <div class="flex justify-between items-start">
+                        <div class="p-sm bg-secondary/10 rounded-lg text-secondary">
+                            <span class="material-symbols-outlined">schedule</span>
+                        </div>
+                    </div>
+                    <div class="mt-lg">
+                        <p class="font-label-md text-label-md text-on-surface-variant uppercase">Peak Times</p>
+                        <p class="font-title-md text-title-md text-on-surface mt-xs">09:00 - 11:30</p>
+                        <p class="text-xs text-outline mt-1 italic">Average high-traffic window</p>
+                    </div>
+                </div>
+                
+                <div class="bg-surface border border-outline-variant p-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+                    <div class="flex justify-between items-start">
+                        <div class="p-sm bg-tertiary/10 rounded-lg text-tertiary">
+                            <span class="material-symbols-outlined">timer</span>
+                        </div>
+                    </div>
+                    <div class="mt-lg">
+                        <p class="font-label-md text-label-md text-on-surface-variant uppercase">Avg Duration</p>
+                        <p id="stat-avg-stay" class="font-display-lg text-display-lg text-on-surface mt-xs">-</p>
+                    </div>
+                </div>
+                
+                <div class="bg-surface border border-outline-variant p-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group border-l-4 border-l-error">
+                    <div class="flex justify-between items-start">
+                        <div class="p-sm bg-error/10 rounded-lg text-error">
+                            <span class="material-symbols-outlined">block</span>
+                        </div>
+                    </div>
+                    <div class="mt-lg">
+                        <p class="font-label-md text-label-md text-on-surface-variant uppercase">Entry Denials</p>
+                        <p id="stat-denials" class="font-display-lg text-display-lg text-on-surface mt-xs">-</p>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+                
+                <div class="bg-primary text-white p-lg rounded-xl shadow-md flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-md">
+                            <span class="text-white bg-white/20 p-sm rounded-lg flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[24px]">trending_up</span>
+                            </span>
+                            <span class="text-[10px] font-bold bg-emerald-500/30 text-emerald-200 px-sm py-xs rounded-full">On Track</span>
+                        </div>
+                        <h4 class="font-title-md text-title-md font-semibold">Growth Target</h4>
+                        <p class="font-body-sm text-[12px] opacity-80 mt-xs">Monthly registration target progress</p>
+                    </div>
+                    <div class="mt-lg">
+                        <div class="flex justify-between items-end mb-sm">
+                            <span class="text-2xl font-bold">92%</span>
+                            <span class="text-[10px] opacity-80">3,680 / 4,000 visitors</span>
+                        </div>
+                        <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+                            <div class="bg-white h-full" style="width: 92%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="bg-surface border border-outline-variant p-lg rounded-xl shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-md">
+                            <span class="text-tertiary bg-tertiary/10 p-sm rounded-lg flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[24px]">lightbulb</span>
+                            </span>
+                            <span class="text-[10px] font-bold text-outline">WEEKLY INSIGHT</span>
+                        </div>
+                        <h4 class="font-title-md text-title-md font-semibold text-on-surface">Weekly Traffic Analysis</h4>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-sm">
+                            Visitor check-ins spiked by <strong>18%</strong> on Tuesday morning, primarily driven by contractors in the Engineering department. Consider opening Kiosk 2 to reduce wait times during peak hours (09:00 - 11:30).
+                        </p>
+                    </div>
+                    <div class="mt-lg border-t border-outline-variant/30 pt-sm">
+                        <a href="/approvals" class="text-primary font-bold text-xs hover:underline flex items-center gap-xs">
+                            <span>Manage Pending Queue</span>
+                            <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+
+                
+                <div class="bg-surface border border-outline-variant p-lg rounded-xl shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-md">
+                            <span class="text-secondary bg-secondary/10 p-sm rounded-lg flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[24px]">folder_zip</span>
+                            </span>
+                            <span class="text-[10px] font-bold text-outline">QUICK EXPORTS</span>
+                        </div>
+                        <h4 class="font-title-md text-title-md font-semibold text-on-surface">Standard Reports</h4>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs mb-md">Download pre-compiled report sheets</p>
+                        
+                        <div class="space-y-sm">
+                            <button onclick="downloadReport('weekly')" class="w-full flex items-center justify-between p-sm rounded-lg hover:bg-surface-container-high/60 border border-outline-variant/30 transition-all text-left">
+                                <div class="flex items-center gap-sm">
+                                    <span class="material-symbols-outlined text-on-surface-variant text-[20px]">description</span>
+                                    <div>
+                                        <p class="font-bold text-xs text-on-surface">Weekly Visitor Summary</p>
+                                        <p class="text-[10px] text-outline">CSV • 12 KB</p>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-primary text-[20px]">download</span>
+                            </button>
+                            <button onclick="downloadReport('monthly')" class="w-full flex items-center justify-between p-sm rounded-lg hover:bg-surface-container-high/60 border border-outline-variant/30 transition-all text-left">
+                                <div class="flex items-center gap-sm">
+                                    <span class="material-symbols-outlined text-on-surface-variant text-[20px]">description</span>
+                                    <div>
+                                        <p class="font-bold text-xs text-on-surface">Monthly Access & Security Log</p>
+                                        <p class="text-[10px] text-outline">PDF • 185 KB</p>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-primary text-[20px]">download</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="bg-surface border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+                <div class="px-lg py-md border-b border-outline-variant bg-surface-container-lowest flex justify-between items-center">
+                    <h3 class="font-title-md text-title-md text-on-surface font-semibold">Complete Visitor Database Log</h3>
+                    <div class="flex items-center gap-sm">
+                        <span class="text-xs text-on-surface-variant">Sort by:</span>
+                        <select id="sort-select" onchange="applySort()" class="bg-transparent border-none text-xs font-bold text-primary focus:ring-0 cursor-pointer">
+                            <option value="check_in_time">Check-In Time</option>
+                            <option value="visitor_name">Visitor Name</option>
+                            <option value="host_name">Host Employee</option>
+                            <option value="badge_number">Badge Number</option>
+                            <option value="status">Status</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto hidden lg:block">
+                    <table class="w-full text-left">
+                        <thead class="bg-surface-container-low text-outline text-[10px] font-bold uppercase tracking-widest border-b border-outline-variant">
+                            <tr>
+                                <th class="px-lg py-md hidden sm:table-cell">Badge No.</th>
+                                <th class="px-lg py-md">Visitor</th>
+                                <th class="px-lg py-md hidden md:table-cell">Company</th>
+                                <th class="px-lg py-md hidden sm:table-cell">Host Employee</th>
+                                <th class="px-lg py-md">Check-In</th>
+                                <th class="px-lg py-md hidden sm:table-cell">Check-Out</th>
+                                <th class="px-lg py-md">Status</th>
+                                <th class="px-lg py-md text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant/30" id="logs-tbody">
+                            <tr>
+                                <td colspan="8" class="px-lg py-8 text-center text-on-surface-variant">
+                                    Loading visitor logs...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                
+                <div id="mobile-logs-list" class="divide-y divide-outline-variant/30 lg:hidden">
+                    <div class="p-lg text-center text-on-surface-variant">Loading visitor logs...</div>
+                </div>
+
+                
+                <div class="px-lg py-md bg-surface-container-low flex justify-between items-center border-t border-outline-variant">
+                    <p id="pagination-status" class="text-body-sm text-on-surface-variant">Showing 0 of 0 entries</p>
+                    <div class="flex gap-sm" id="pagination-controls">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        {% if current_user.role == 'admin' %}
+            {% include 'partials/admin_footer.html' %}
+        {% elif current_user.role == 'receptionist' %}
+            {% include 'partials/receptionist_footer.html' %}
+        {% endif %}
+    </main>
+
+    <script>
+        let currentPage = 1;
+
+        function loadStats() {
+            fetch('/api/dashboard/stats')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('stat-total-checkins').textContent = data.total_visitors;
+                    document.getElementById('stat-avg-stay').textContent = data.avg_stay;
+                    document.getElementById('stat-denials').textContent = data.alerts_count;
+                });
+        }
+
+        function loadLogs(page = 1) {
+            currentPage = page;
+            const searchDesktop = document.getElementById('search-input').value;
+            const searchMobileInput = document.getElementById('search-input-mobile');
+            const search = searchMobileInput ? (searchMobileInput.value || searchDesktop) : searchDesktop;
+            
+            const startDate = document.getElementById('filter-start-date').value;
+            const endDate = document.getElementById('filter-end-date').value;
+            const department = document.getElementById('filter-department').value;
+            const visitorType = document.getElementById('filter-visitor-type').value;
+            const sortBy = document.getElementById('sort-select').value;
+            
+            let url = `/api/reports/data?page=${page}&search=${encodeURIComponent(search)}&start_date=${startDate}&end_date=${endDate}&department=${encodeURIComponent(department)}&visitor_type=${encodeURIComponent(visitorType)}&sort_by=${sortBy}`;
+            
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    renderLogs(data.visits);
+                    renderPagination(data);
+                })
+                .catch(err => {
+                    document.getElementById('logs-tbody').innerHTML = `<tr><td colspan="8" class="px-lg py-8 text-center text-red-600 font-semibold">Failed to load reports.</td></tr>`;
+                });
+        }
+
+        function renderLogs(visits) {
+            const tbody = document.getElementById('logs-tbody');
+            const mobileList = document.getElementById('mobile-logs-list');
+            
+            if (!visits || visits.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="px-lg py-8 text-center text-on-surface-variant">No reports found matching filters.</td></tr>`;
+                if (mobileList) {
+                    mobileList.innerHTML = `<div class="p-lg text-center text-on-surface-variant">No reports found matching filters.</div>`;
+                }
+                return;
+            }
+
+            tbody.innerHTML = visits.map(v => {
+                const checkIn = v.check_in_time ? new Date(v.check_in_time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : '-';
+                const checkOut = v.check_out_time ? new Date(v.check_out_time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : '-';
+                
+                let badgeClass = 'bg-surface-variant text-on-surface-variant';
+                if (v.status === 'checked_in') {
+                    badgeClass = 'bg-emerald-100 text-emerald-700';
+                }
+                
+                return `
+                <tr class="hover:bg-surface-container-low transition-colors text-sm">
+                    <td class="px-lg py-md font-mono text-xs text-primary font-bold hidden sm:table-cell">${v.badge_number || 'N/A'}</td>
+                    <td class="px-lg py-md">
+                        <p class="font-bold text-on-surface">${v.visitor.full_name}</p>
+                        <p class="text-xs text-outline">${v.visitor.email}</p>
+                        <p class="text-xs text-on-surface-variant md:hidden mt-0.5">${v.visitor.company_name || 'Individual'}</p>
+                    </td>
+                    <td class="px-lg py-md text-on-surface-variant hidden md:table-cell">${v.visitor.company_name || 'Individual'}</td>
+                    <td class="px-lg py-md hidden sm:table-cell">
+                        <p class="font-bold text-on-surface">${v.host.full_name}</p>
+                        <p class="text-xs text-outline">${v.host.department}</p>
+                    </td>
+                    <td class="px-lg py-md text-on-surface-variant">${checkIn}</td>
+                    <td class="px-lg py-md text-on-surface-variant hidden sm:table-cell">${checkOut}</td>
+                    <td class="px-lg py-md">
+                        <span class="px-sm py-0.5 rounded-full text-[10px] font-bold uppercase tracking-tight ${badgeClass}">${v.status.replace('_', ' ')}</span>
+                    </td>
+                    <td class="px-lg py-md text-right">
+                        <a href="/pass/${v.id}" target="_blank" class="text-primary hover:text-secondary p-1 rounded hover:bg-surface-container transition-colors inline-block">
+                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                        </a>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+
+            if (mobileList) {
+                mobileList.innerHTML = visits.map(v => {
+                    const checkIn = v.check_in_time ? new Date(v.check_in_time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : '-';
+                    const checkOut = v.check_out_time ? new Date(v.check_out_time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : '-';
+                    
+                    let badgeClass = 'bg-surface-variant text-on-surface-variant';
+                    if (v.status === 'checked_in') {
+                        badgeClass = 'bg-emerald-100 text-emerald-700';
+                    }
+                    
+                    return `
+                    <div class="p-md flex flex-col gap-sm hover:bg-surface-container-high/30 transition-colors">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-bold text-on-surface text-sm">${v.visitor.full_name}</p>
+                                <p class="text-xs text-outline">${v.visitor.email}</p>
+                                <p class="text-xs text-on-surface-variant font-medium mt-0.5">${v.visitor.company_name || 'Individual'}</p>
+                            </div>
+                            <span class="px-sm py-base rounded-full font-label-md text-[10px] capitalize ${badgeClass}">${v.status.replace('_', ' ')}</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-sm text-[12px] border-t border-outline-variant/20 pt-sm">
+                            <div>
+                                <p class="text-outline uppercase font-semibold text-[9px] tracking-wider">Host Employee</p>
+                                <p class="font-bold text-on-surface">${v.host.full_name}</p>
+                                <p class="text-xs text-on-surface-variant">${v.host.department}</p>
+                            </div>
+                            <div>
+                                <p class="text-outline uppercase font-semibold text-[9px] tracking-wider">Badge Number</p>
+                                <p class="font-mono text-primary font-bold">${v.badge_number || 'N/A'}</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-sm text-[12px]">
+                            <div>
+                                <p class="text-outline uppercase font-semibold text-[9px] tracking-wider">Check-In</p>
+                                <p class="text-on-surface-variant">${checkIn}</p>
+                            </div>
+                            <div>
+                                <p class="text-outline uppercase font-semibold text-[9px] tracking-wider">Check-Out</p>
+                                <p class="text-on-surface-variant">${checkOut}</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-end border-t border-outline-variant/10 pt-xs">
+                            <a href="/pass/${v.id}" target="_blank" class="text-primary hover:text-secondary font-bold text-xs flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[16px]">visibility</span>
+                                <span>View Visitor Pass</span>
+                            </a>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function renderPagination(data) {
+            const status = document.getElementById('pagination-status');
+            const start = (data.current_page - 1) * 10 + 1;
+            const end = Math.min(data.current_page * 10, data.total);
+            status.textContent = data.total > 0 ? `Showing ${start} to ${end} of ${data.total} entries` : 'Showing 0 of 0 entries';
+
+            const controls = document.getElementById('pagination-controls');
+            controls.innerHTML = '';
+
+            
+            const prevBtn = document.createElement('button');
+            prevBtn.className = `p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant ${!data.has_prev ? 'opacity-50 cursor-not-allowed' : ''}`;
+            prevBtn.disabled = !data.has_prev;
+            prevBtn.innerHTML = `<span class="material-symbols-outlined">chevron_left</span>`;
+            prevBtn.onclick = () => loadLogs(data.current_page - 1);
+            controls.appendChild(prevBtn);
+
+            
+            for (let i = 1; i <= data.pages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `w-8 h-8 rounded-full font-label-md text-label-md transition-all ${i === data.current_page ? 'bg-primary text-on-primary font-bold' : 'hover:bg-surface-container-high text-on-surface-variant'}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => loadLogs(i);
+                controls.appendChild(pageBtn);
+            }
+
+            
+            const nextBtn = document.createElement('button');
+            nextBtn.className = `p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant ${!data.has_next ? 'opacity-50 cursor-not-allowed' : ''}`;
+            nextBtn.disabled = !data.has_next;
+            nextBtn.innerHTML = `<span class="material-symbols-outlined">chevron_right</span>`;
+            nextBtn.onclick = () => loadLogs(data.current_page + 1);
+            controls.appendChild(nextBtn);
+        }
+
+        function applyFilters() {
+            loadLogs(1);
+        }
+
+        function clearFilters() {
+            document.getElementById('filter-start-date').value = '';
+            document.getElementById('filter-end-date').value = '';
+            document.getElementById('filter-department').value = 'All Departments';
+            document.getElementById('filter-visitor-type').value = 'All Visitors';
+            document.getElementById('search-input').value = '';
+            const searchMobile = document.getElementById('search-input-mobile');
+            if (searchMobile) searchMobile.value = '';
+            loadLogs(1);
+        }
+
+        function applySort() {
+            loadLogs(1);
+        }
+
+        function exportData() {
+            alert('Exporting complete database log to CSV...');
+            window.location.href = `/api/reports/data?export=true&search=${encodeURIComponent(document.getElementById('search-input').value || (document.getElementById('search-input-mobile') ? document.getElementById('search-input-mobile').value : ''))}`;
+        }
+
+        function downloadReport(type) {
+            alert('Downloading standard ' + type + ' report...');
+        }
+
+        
+        let searchTimeout;
+        function setupSearchListener(inputId) {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        loadLogs(1);
+                    }, 400);
+                });
+            }
+        }
+
+        setupSearchListener('search-input');
+        setupSearchListener('search-input-mobile');
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            loadLogs(1);
+        });
+    </script>
+</body>
+</html>

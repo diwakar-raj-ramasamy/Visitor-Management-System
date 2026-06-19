@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Visitor Registration | VMS Secure</title>
+    <meta name="description" content="Register visitor entry for secure facility access. Easy and secure registration kiosk."/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-fixed": "#d8f3dc",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary-fixed": "#081c15",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#74c69d",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-surface": "#2e3132",
+                        "surface-variant": "#e1e3e4",
+                        "on-primary-fixed-variant": "#1b4332",
+                        "on-secondary-container": "#081c15",
+                        "surface-container-high": "#e7e8e9",
+                        "on-surface": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#000416",
+                        "surface-tint": "#0f6d38",
+                        "primary-fixed-dim": "#b7e4c7",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#ffffff",
+                        "secondary-fixed": "#d8f3dc",
+                        "on-tertiary-fixed-variant": "#1b4332",
+                        "secondary": "#2d6a4f",
+                        "outline": "#727785",
+                        "outline-variant": "#c1c6d6",
+                        "primary": "#0f6d38",
+                        "inverse-primary": "#b7e4c7",
+                        "tertiary": "#1b4332",
+                        "on-background": "#191c1d",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d8f3dc",
+                        "background": "#f8f9fa",
+                        "on-primary-fixed": "#081c15",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#edeeef",
+                        "surface": "#f8f9fa",
+                        "on-surface-variant": "#414754",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2"
+                    },
+                    "borderRadius": {
+                        "sm": "0.125rem",
+                        "DEFAULT": "0.25rem",
+                        "md": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "grid_columns": "12",
+                        "gutter": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "margin_mobile": "16px",
+                        "margin_desktop": "40px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["44px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .form-input {
+            width: 100%;
+            padding: 8px 16px;
+            border: 1px solid #c1c6d6;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s;
+            background-color: white;
+        }
+        .form-input:focus {
+            border-color: #0f6d38;
+            ring: 2px;
+            ring-color: #0f6d38;
+        }
+        .form-label {
+            display: block;
+            color: #414754;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background flex overflow-hidden min-h-screen">
+    
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden transition-opacity duration-300" onclick="toggleSidebar()"></div>
+
+    
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col h-screen w-[280px] bg-surface-container-low border-r border-outline-variant transform -translate-x-full lg:transform-none lg:translate-x-0 lg:sticky lg:inset-auto lg:z-auto transition-transform lg:transition-none duration-300 ease-in-out">
+        <div class="p-lg flex flex-col h-full">
+            {% if current_user and current_user.role == 'visitor' %}
+            <div class="mb-xl flex items-center gap-sm">
+                <span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">shield_person</span>
+                <h1 class="font-headline-lg text-headline-lg text-primary font-bold">VMS Secure</h1>
+            </div>
+            
+            <a href="/profile" class="flex flex-col gap-base mb-xl hover:opacity-85 transition-opacity">
+                <div class="flex items-center gap-md p-md rounded-xl bg-surface-container-high/40 border border-outline-variant/10 hover:bg-surface-container-high/60 transition-colors">
+                    <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold shrink-0">
+                        {{ current_user.full_name[:2].upper() if current_user and current_user.full_name else 'VI' }}
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="font-title-md text-title-md text-on-surface truncate w-32">{{ current_user.full_name if current_user else 'Visitor' }}</p>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant opacity-80 capitalize">Visitor Account</p>
+                    </div>
+                </div>
+            </a>
+            <nav class="flex-grow flex flex-col gap-xs">
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/dashboard">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="font-body-md text-body-md">Home</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/employees">
+                    <span class="material-symbols-outlined">badge</span>
+                    <span class="font-body-md text-body-md">Employee Directory</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-full shadow-sm transition-all" href="/visitor/register">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person_add</span>
+                    <span class="font-body-md text-body-md font-bold">Register Meeting</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/profile">
+                    <span class="material-symbols-outlined">person</span>
+                    <span class="font-body-md text-body-md">Profile</span>
+                </a>
+            </nav>
+            <div class="p-md text-center border-t border-outline-variant">
+                <a href="/logout" class="flex items-center gap-md w-full px-md py-sm text-error hover:bg-error-container rounded-full transition-all">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="font-body-md">Sign Out</span>
+                </a>
+            </div>
+            {% else %}
+            <div>
+                <h1 class="font-headline-lg text-headline-lg text-primary mb-xl font-bold">VMS Secure</h1>
+                {% if current_user %}
+                <a href="/profile" class="mb-xl flex items-center gap-md px-md py-sm bg-surface-container-high rounded-xl hover:bg-surface-container-high/80 transition-colors border border-outline-variant/10">
+                    <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+                        <span class="material-symbols-outlined">person</span>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="font-title-md text-title-md truncate w-32">{{ current_user.full_name }}</p>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant truncate capitalize">{{ current_user.role }}</p>
+                    </div>
+                </a>
+                {% endif %}
+            </div>
+            <nav class="flex-grow flex flex-col gap-xs">
+                {% if current_user %}
+                    {% if current_user.role in ['receptionist', 'admin'] %}
+                        {% if current_user.role == 'admin' %}
+                        <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/admin">
+                            <span class="material-symbols-outlined">dashboard</span>
+                            <span class="font-body-md">Dashboard</span>
+                        </a>
+                        {% endif %}
+                        <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/reception">
+                            <span class="material-symbols-outlined">group</span>
+                            <span class="font-body-md">Reception</span>
+                        </a>
+                        <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/approvals">
+                            <span class="material-symbols-outlined">verified_user</span>
+                            <span class="font-body-md">Approvals</span>
+                        </a>
+                        <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/reports">
+                            <span class="material-symbols-outlined">analytics</span>
+                            <span class="font-body-md">Reports</span>
+                        </a>
+                    {% elif current_user.role == 'employee' %}
+                        <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/approvals">
+                            <span class="material-symbols-outlined">verified_user</span>
+                            <span class="font-body-md">Approvals</span>
+                        </a>
+                    {% endif %}
+                    <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/profile">
+                        <span class="material-symbols-outlined">person</span>
+                        <span class="font-body-md text-body-md">Profile</span>
+                    </a>
+                {% else %}
+                    <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/">
+                        <span class="material-symbols-outlined">home</span>
+                        <span class="font-body-md text-body-md">Home / Login</span>
+                    </a>
+                {% endif %}
+            </nav>
+            
+            {% if current_user %}
+            <div class="mt-auto p-md text-center border-t border-outline-variant">
+                <a href="/logout" class="flex items-center gap-md w-full px-md py-sm text-error hover:bg-error-container rounded-full transition-all">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="font-body-md">Sign Out</span>
+                </a>
+            </div>
+            {% else %}
+            <div class="mt-auto p-lg border-t border-outline-variant">
+                <p class="font-title-md text-body-md truncate">Visitor Registration</p>
+                <p class="text-on-surface-variant text-body-sm">Self-Registration Kiosk</p>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-screen overflow-y-auto relative">
+        
+        <header class="w-full top-0 sticky z-30 bg-surface border-b border-outline-variant/30 flex justify-between items-center px-lg h-16 max-w-[1440px] mx-auto">
+            
+            <div class="hidden lg:flex items-center justify-between w-full">
+                <div class="flex items-center gap-md">
+                    <h2 class="font-title-md text-title-md text-primary font-bold">Visitor Registration</h2>
+                </div>
+                <div class="flex items-center gap-sm px-md py-xs bg-surface-container rounded-full text-xs font-semibold">
+                    <span class="material-symbols-outlined text-on-surface-variant text-sm">location_on</span>
+                    <span>HQ West Wing Kiosk</span>
+                </div>
+            </div>
+            
+            <div class="flex lg:hidden items-center justify-between w-full">
+                <div class="flex items-center gap-md">
+                    <button onclick="toggleSidebar()" class="text-on-surface-variant p-sm hover:bg-surface-container-high rounded-full flex items-center">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <span class="font-bold text-lg text-primary tracking-tight">VMS Secure</span>
+                </div>
+                {% if current_user %}
+                <a href="/profile" class="w-9 h-9 rounded-full overflow-hidden border border-outline-variant bg-surface-container flex items-center justify-center hover:opacity-85 transition-opacity">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Profile" class="w-full h-full object-cover"/>
+                </a>
+                {% else %}
+                <div class="w-9 h-9 rounded-full overflow-hidden border border-outline-variant bg-surface-container flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Profile" class="w-full h-full object-cover"/>
+                </div>
+                {% endif %}
+            </div>
+        </header>
+
+        
+        <main class="flex-1 p-margin_mobile md:p-margin_desktop max-w-[1200px] mx-auto w-full pb-48 lg:pb-32">
+            <div class="mb-xl text-center lg:text-left">
+                <h3 class="font-display-lg text-headline-lg lg:text-display-lg text-on-surface mb-xs font-bold">
+                    <span class="lg:hidden">Visitor Registration</span>
+                    <span class="hidden lg:inline">New Visitor Entry</span>
+                </h3>
+                <p class="text-on-surface-variant font-body-md text-sm lg:text-base">
+                    <span class="lg:hidden">Please provide your details for security verification and entry pass generation.</span>
+                    <span class="hidden lg:inline">Please fill in the following information to register a guest in the secure facility system.</span>
+                </p>
+            </div>
+
+            
+            <div id="success-banner" class="hidden mb-6 bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[20px]" data-icon="check_circle">check_circle</span>
+                <span id="success-message">Visitor registered successfully. Pending host approval.</span>
+            </div>
+
+            
+            <form class="flex flex-col lg:grid lg:grid-cols-12 gap-lg lg:space-y-0 pb-16 lg:pb-0" id="visitor-form" enctype="multipart/form-data">
+                
+                <div class="order-1 lg:order-2 lg:col-span-8 bg-white p-lg rounded-xl shadow-sm border border-outline-variant flex flex-col justify-between">
+                    <h4 class="font-title-md text-title-md mb-md flex items-center gap-sm font-semibold text-primary">
+                        <span class="material-symbols-outlined">badge</span>
+                        PERSONAL INFORMATION
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+                        <div>
+                            <label class="form-label" for="full_name">Full Name</label>
+                            <input id="full_name" name="full_name" class="form-input" placeholder="e.g. Johnathan Doe" type="text" value="{{ current_user.full_name if current_user and current_user.role == 'visitor' else '' }}" required/>
+                        </div>
+                        <div>
+                            <label class="form-label" for="mobile_number">Mobile Number</label>
+                            <input id="mobile_number" name="mobile_number" class="form-input" placeholder="+1 (555) 000-0000" type="tel" required/>
+                        </div>
+                        <div>
+                            <label class="form-label" for="email">Email Address</label>
+                            <input id="email" name="email" class="form-input" placeholder="john.doe@example.com" type="email" value="{{ current_user.email if current_user and current_user.role == 'visitor' else '' }}" required/>
+                        </div>
+                        <div>
+                            <label class="form-label" for="company_name">Company Name</label>
+                            <input id="company_name" name="company_name" class="form-input" placeholder="Acme Corporation" type="text"/>
+                        </div>
+                        <div>
+                            <label class="form-label" for="gender">Gender</label>
+                            <select id="gender" name="gender" class="form-input">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label" for="vehicle_number">Vehicle Number (Optional)</label>
+                            <input id="vehicle_number" name="vehicle_number" class="form-input" placeholder="e.g. AB12CDE" type="text"/>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <section class="order-2 lg:order-3 lg:col-span-12 bg-white p-lg rounded-xl shadow-sm border border-outline-variant">
+                    <h4 class="font-title-md text-title-md mb-md flex items-center gap-sm font-semibold text-primary">
+                        <span class="material-symbols-outlined">event_note</span>
+                        VISIT DETAILS
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+                        <div>
+                            <label class="form-label" for="visitor_type">Visitor Type</label>
+                            <select id="visitor_type" name="visitor_type" class="form-input">
+                                <option value="Client">Client</option>
+                                <option value="General">General Visitor</option>
+                                <option value="Contractor">Contractor</option>
+                                <option value="Delivery">Delivery</option>
+                                <option value="VIP">VIP/Executive</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label" for="purpose_of_visit">Purpose of Visit</label>
+                            <input id="purpose_of_visit" name="purpose_of_visit" class="form-input" placeholder="Meeting, Interview, Maintenance" type="text" required/>
+                        </div>
+                        <div>
+                            <label class="form-label" for="host_employee">Host Employee</label>
+                            <input id="host_employee" name="host_employee" list="employees-list" class="form-input" placeholder="Search employee name..." type="text" required/>
+                            <datalist id="employees-list">
+                                {% for emp in employees %}
+                                <option value="{{ emp.user.full_name }}">
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="form-label" for="department">Department</label>
+                            <select id="department" name="department" class="form-input">
+                                <option value="Administration">Administration</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="HR & Legal">HR & Legal</option>
+                                <option value="Operations">Operations</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-sm md:col-span-2">
+                            <div>
+                                <label class="form-label" for="visit_date">Visit Date</label>
+                                <input id="visit_date" name="visit_date" class="form-input" type="date" required/>
+                            </div>
+                            <div>
+                                <label class="form-label" for="visit_time">Visit Time</label>
+                                <input id="visit_time" name="visit_time" class="form-input" type="time" required/>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                
+                <div class="order-3 lg:order-1 lg:col-span-4 flex flex-col gap-lg">
+                    
+                    <div class="bg-white p-lg rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                        <h4 class="font-title-md text-title-md mb-md flex items-center justify-center gap-sm font-semibold text-on-surface">
+                            Visitor Photo
+                        </h4>
+                        <div id="photo-preview-container" class="group relative w-full aspect-[4/3] bg-surface-container rounded-xl flex flex-col items-center justify-center border-2 border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer overflow-hidden">
+                            <img id="photo-preview" class="hidden w-full h-full object-cover"/>
+                            <div id="photo-placeholder" class="flex flex-col items-center justify-center p-md text-center">
+                                <span class="material-symbols-outlined text-on-surface-variant text-4xl group-hover:scale-110 transition-transform mb-sm">photo_camera</span>
+                                <span class="text-body-sm font-bold text-primary uppercase tracking-wide">Capture or Upload</span>
+                                <span class="text-[10px] text-on-surface-variant mt-xs">Supported: JPG, PNG (Max 2MB)</span>
+                            </div>
+                            <input id="photo" name="photo" class="absolute inset-0 opacity-0 cursor-pointer" type="file" accept="image/*"/>
+                        </div>
+                        <p class="text-xs text-on-surface-variant mt-md text-center italic">Ensure the face is clearly visible and well-lit.</p>
+                    </div>
+
+                    
+                    <div class="hidden lg:flex bg-primary text-white p-lg rounded-xl shadow-lg flex-col gap-md relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12"></div>
+                        <div class="flex justify-between items-start z-10">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] font-bold tracking-wider uppercase opacity-85">Security Status</span>
+                                <span class="text-title-md font-bold mt-1">PENDING APPROVAL</span>
+                            </div>
+                            <span class="material-symbols-outlined text-white text-[24px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        </div>
+                        <div class="z-10 flex gap-md items-center mt-2">
+                            <div class="w-12 h-12 bg-white/20 rounded flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-[24px]">qr_code_2</span>
+                            </div>
+                            <p class="text-xs italic opacity-90 leading-tight">Digital pass will be sent to your email after registration.</p>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <section class="order-4 lg:order-4 lg:col-span-12 bg-white p-lg rounded-xl shadow-sm border border-outline-variant">
+                    <h4 class="font-title-md text-title-md mb-md flex items-center justify-center gap-sm font-semibold text-on-surface">
+                        ID Proof Verification
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+                        <div class="flex flex-col gap-md">
+                            <select id="id_type" name="id_type" class="form-input">
+                                <option value="Government Issued ID">Government Issued ID</option>
+                                <option value="Driver License">Driver's License</option>
+                                <option value="Passport">Passport</option>
+                                <option value="Company ID">Company ID</option>
+                            </select>
+                        </div>
+                        <div id="id-preview-container" class="group relative h-28 bg-surface-container rounded-xl flex flex-col items-center justify-center border-2 border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer overflow-hidden">
+                            <div id="id-placeholder" class="flex flex-col items-center justify-center p-sm">
+                                <span class="material-symbols-outlined text-on-surface-variant text-2xl mb-xs">upload_file</span>
+                                <span id="id-text" class="text-[12px] text-on-surface-variant font-medium">Upload ID Document</span>
+                            </div>
+                            <input id="id_proof" name="id_proof" class="absolute inset-0 opacity-0 cursor-pointer" type="file" accept="image/*,application/pdf"/>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Terms & Security Policies -->
+                <section class="order-5 lg:order-5 lg:col-span-12 bg-white p-lg rounded-xl shadow-sm border border-outline-variant">
+                    <div class="flex items-start gap-md">
+                        <div class="flex items-center h-5">
+                            <input id="agree-policy" name="agree_policy" class="rounded border-outline-variant/60 text-primary focus:ring-primary h-5 w-5 cursor-pointer" type="checkbox" required/>
+                        </div>
+                        <div class="text-sm">
+                            <label for="agree-policy" class="font-semibold text-on-surface cursor-pointer select-none">Security Policy & Entry Agreement</label>
+                            <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">
+                                I hereby certify that the information provided is accurate. I agree to abide by all facility safety guidelines, wear my building access badge visibly at all times, and remain with my host escort during the visit.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Mobile Security Status Card (Visible on mobile only) -->
+                <div class="order-6 lg:col-span-12 bg-primary text-white p-lg rounded-xl shadow-sm flex items-start gap-md lg:hidden">
+                    <div class="flex-1">
+                        <p class="text-[10px] font-bold tracking-wider uppercase opacity-85">Security Status</p>
+                        <h4 class="text-title-md font-bold mt-xs flex items-center justify-between">
+                            <span>PENDING APPROVAL</span>
+                            <span class="material-symbols-outlined text-white text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        </h4>
+                        <p class="text-[11px] italic mt-md opacity-90 flex items-center gap-sm border-t border-white/20 pt-sm">
+                            <span class="material-symbols-outlined text-[18px]">qr_code_2</span>
+                            <span>Digital pass will be sent to your email after registration.</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sticky Action Bar -->
+                <div class="fixed bottom-16 lg:bottom-0 left-0 lg:left-[280px] right-0 bg-white lg:bg-surface border-t border-outline-variant/60 p-md lg:px-lg flex justify-between items-center z-20 shadow-lg">
+                    <div class="flex items-center">
+                        <a href="/" class="px-lg py-2 text-primary font-semibold hover:bg-surface-container rounded-lg transition-colors flex items-center justify-center">
+                            Cancel Registration
+                        </a>
+                    </div>
+                    
+                    <div class="flex gap-md">
+                        <button id="submit-btn" class="w-full lg:w-auto px-xl py-3 lg:py-2 bg-primary text-white font-bold lg:font-semibold rounded-xl lg:rounded-lg shadow-md hover:bg-secondary active:scale-[0.97] transition-all flex items-center justify-center gap-sm group" type="submit">
+                            <span class="lg:hidden">Complete Registration</span>
+                            <span class="hidden lg:inline">Register &amp; Check-In</span>
+                            <span class="material-symbols-outlined transition-transform duration-200 group-hover:translate-x-1 text-[18px] lg:text-[20px]">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Bottom Navigation Bar for Mobile -->
+            {% if current_user %}
+                {% if current_user.role == 'admin' %}
+                {% include 'partials/admin_footer.html' %}
+                {% elif current_user.role == 'receptionist' %}
+                {% include 'partials/receptionist_footer.html' %}
+                {% elif current_user.role == 'visitor' %}
+                {% include 'partials/visitor_footer.html' %}
+                {% endif %}
+            {% endif %}
+        </main>
+    </div>
+
+    <script>
+        // Set default date and time
+        const today = new Date();
+        document.getElementById('visit_date').value = today.toISOString().split('T')[0];
+        
+        const hours = String(today.getHours()).padStart(2, '0');
+        const minutes = String(today.getMinutes()).padStart(2, '0');
+        document.getElementById('visit_time').value = `${hours}:${minutes}`;
+
+        // Photo file input preview
+        const photoInput = document.getElementById('photo');
+        const photoPreview = document.getElementById('photo-preview');
+        const photoPlaceholder = document.getElementById('photo-placeholder');
+
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    photoPreview.src = event.target.result;
+                    photoPreview.classList.remove('hidden');
+                    photoPlaceholder.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // ID file input preview / name listing
+        const idInput = document.getElementById('id_proof');
+        const idText = document.getElementById('id-text');
+        idInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                idText.textContent = `Selected: ${file.name}`;
+            }
+        });
+
+        // Form submission
+        document.getElementById('visitor-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-btn');
+            const originalContent = submitBtn.innerHTML;
+            const successBanner = document.getElementById('success-banner');
+            
+            successBanner.classList.add('hidden');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <svg class="animate-spin h-5 w-5 text-white inline-block mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Processing registration...</span>
+            `;
+            
+            const formData = new FormData(this);
+            
+            fetch('/api/visitors/register', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json().then(data => ({ status: response.status, data })))
+            .then(res => {
+                if (res.status === 201) {
+                    successBanner.classList.remove('hidden');
+                    document.getElementById('success-message').textContent = res.data.message;
+                    
+                    submitBtn.className = "px-xl py-2 bg-emerald-600 text-white font-semibold rounded-lg shadow-md transition-all";
+                    submitBtn.innerHTML = `
+                        <span class="material-symbols-outlined">check_circle</span>
+                        <span>Registered Successfully!</span>
+                    `;
+                    
+                    // Reset form after a short delay
+                    setTimeout(() => {
+                        document.getElementById('visitor-form').reset();
+                        photoPreview.classList.add('hidden');
+                        photoPlaceholder.classList.remove('hidden');
+                        idText.textContent = "Upload ID Scan (Front)";
+                        
+                        submitBtn.className = "px-xl py-2 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-secondary active:scale-95 transition-all flex items-center gap-sm group";
+                        submitBtn.innerHTML = originalContent;
+                        submitBtn.disabled = false;
+                        
+                        // Scroll to top
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 3000);
+                } else {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalContent;
+                    alert(res.data.error || 'Registration failed.');
+                }
+            })
+            .catch(err => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalContent;
+                alert('Network error occurred. Please try again.');
+            });
+        });
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

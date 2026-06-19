@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>User Profile - VMS Secure</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#2d6a4f",
+                        "surface-container-high": "#e7e8e9",
+                        "error": "#ba1a1a",
+                        "primary": "#0f6d38",
+                        "background": "#f8f9fa",
+                        "on-surface-variant": "#414754",
+                        "outline-variant": "#c1c6d6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191c1d",
+                        "on-surface": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "surface-container-low": "#f3f4f5",
+                        "surface": "#f8f9fa",
+                        "outline": "#727785",
+                        "secondary-container": "#74c69d",
+                        "on-secondary-container": "#081c15"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        .shadow-level-1 { box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="bg-background text-on-background flex h-screen overflow-hidden">
+
+
+<div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2"></div>
+
+
+{% if user.role == 'visitor' %}
+<aside id="sidebar" class="hidden lg:flex flex-col h-full border-r border-outline-variant bg-surface-container-low w-[280px] sticky left-0 top-0 z-40">
+    <div class="p-lg flex flex-col h-full">
+        <div class="mb-xl flex items-center gap-sm">
+            <span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">shield_person</span>
+            <h1 class="font-headline-lg text-headline-lg text-primary font-bold">VMS Secure</h1>
+        </div>
+        
+        <a href="/profile" class="flex flex-col gap-base mb-xl hover:opacity-85 transition-opacity">
+            <div class="flex items-center gap-md p-md rounded-xl bg-surface-container-high/40 border border-outline-variant/10 hover:bg-surface-container-high/60 transition-colors">
+                <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold shrink-0">
+                    {{ user.full_name[:2].upper() if user and user.full_name else 'VI' }}
+                </div>
+                <div class="overflow-hidden">
+                    <p class="font-title-md text-title-md text-on-surface truncate w-32">{{ user.full_name }}</p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant opacity-80 capitalize">Visitor Account</p>
+                </div>
+            </div>
+        </a>
+        <nav class="flex-grow flex flex-col gap-xs">
+            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/dashboard">
+                <span class="material-symbols-outlined">home</span>
+                <span class="font-body-md text-body-md">Home</span>
+            </a>
+            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/employees">
+                <span class="material-symbols-outlined">badge</span>
+                <span class="font-body-md text-body-md">Employee Directory</span>
+            </a>
+            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/register">
+                <span class="material-symbols-outlined">person_add</span>
+                <span class="font-body-md text-body-md">Register Meeting</span>
+            </a>
+            <a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-full shadow-sm transition-all" href="/profile">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+                <span class="font-body-md text-body-md font-bold">Profile</span>
+            </a>
+        </nav>
+        <div class="p-md text-center border-t border-outline-variant">
+            <a href="/logout" class="flex items-center gap-md w-full px-md py-sm text-error hover:bg-error-container rounded-full transition-all">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-body-md">Sign Out</span>
+            </a>
+        </div>
+    </div>
+</aside>
+{% else %}
+<aside class="hidden lg:flex flex-col h-full border-r border-outline-variant w-[280px] bg-white sticky left-0 top-0 z-40">
+    <div class="px-6 py-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">security</span>
+        <span class="text-2xl text-primary tracking-tight font-bold">VMS Secure</span>
+    </div>
+    
+    <div class="px-6 pb-6 mb-6 border-b border-outline-variant">
+        <div class="flex items-center gap-4">
+            <img alt="User Avatar" class="w-12 h-12 rounded-full object-cover border border-outline-variant" 
+                 src="https://ui-avatars.com/api/?name={{ user.full_name|urlencode }}&background=0f6d38&color=fff"/>
+            <div class="min-w-0">
+                <div class="text-sm font-semibold text-on-surface truncate">{{ user.full_name }}</div>
+                <div class="text-xs text-on-surface-variant capitalize">{{ user.role }}</div>
+            </div>
+        </div>
+    </div>
+    
+    <nav class="flex-1 overflow-y-auto px-4 space-y-1 pb-6">
+        
+        {% if user.role == 'admin' %}
+            <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-150" href="{{ url_for('dashboard.admin_dashboard') }}">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span>Dashboard</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-150" href="{{ url_for('reports.reports_page') }}">
+                <span class="material-symbols-outlined">analytics</span>
+                <span>Reports</span>
+            </a>
+        {% elif user.role == 'receptionist' %}
+            <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-150" href="{{ url_for('reception.reception_dashboard') }}">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span>Dashboard</span>
+            </a>
+        {% elif user.role == 'employee' %}
+            <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-150" href="{{ url_for('employee.approvals_page') }}">
+                <span class="material-symbols-outlined">verified_user</span>
+                <span>Approvals</span>
+            </a>
+        {% endif %}
+        
+        <a class="flex items-center gap-4 px-4 py-3 bg-emerald-50 text-primary rounded-full transition-all duration-150" href="{{ url_for('auth.profile_page') }}">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+            <span class="font-semibold">My Profile</span>
+        </a>
+        
+        <a class="flex items-center gap-4 px-4 py-3 text-red-600 hover:bg-red-50 rounded-full transition-all duration-150" href="{{ url_for('auth.logout') }}">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Sign Out</span>
+        </a>
+    </nav>
+</aside>
+{% endif %}
+
+
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    
+    
+    <header class="w-full top-0 sticky bg-white border-b border-outline-variant shadow-sm z-30">
+        <div class="flex justify-between items-center px-6 h-16 w-full max-w-[1440px] mx-auto">
+            <div class="flex items-center gap-4 lg:hidden">
+                <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">security</span>
+                <span class="text-lg font-bold text-primary">VMS Secure</span>
+            </div>
+            
+            <div class="hidden lg:block text-outline font-semibold text-sm">
+                Logged in as: <span class="text-on-surface capitalize font-bold">{{ user.role }}</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-on-surface-variant font-medium mr-2">{{ user.full_name }}</span>
+                <img alt="User Avatar" class="w-8 h-8 rounded-full border border-outline-variant" 
+                     src="https://ui-avatars.com/api/?name={{ user.full_name|urlencode }}&background=0f6d38&color=fff"/>
+            </div>
+        </div>
+    </header>
+    
+    
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-background pb-32 lg:pb-8">
+        <div class="max-w-[1200px] mx-auto">
+            
+            
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-on-surface tracking-tight">Account Profile</h1>
+                <p class="text-sm text-on-surface-variant mt-1">Manage your identity, change security credentials, and review your audit activities.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant p-6 flex flex-col items-center text-center">
+                        <div class="relative mb-4">
+                            <img alt="Profile Photo" class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md" 
+                                 src="https://ui-avatars.com/api/?name={{ user.full_name|urlencode }}&background=0f6d38&color=fff&size=128"/>
+                            <div class="absolute bottom-0 right-0 p-2 bg-primary text-on-primary rounded-full shadow-md">
+                                <span class="material-symbols-outlined text-sm" style="font-size: 16px;">verified</span>
+                            </div>
+                        </div>
+                        
+                        <h2 class="text-lg font-bold text-on-surface">{{ user.full_name }}</h2>
+                        <div class="inline-flex items-center px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold mt-2 capitalize">
+                            {{ user.role }}
+                        </div>
+                        
+                        <div class="w-full mt-6 pt-6 border-t border-outline-variant text-left space-y-3">
+                            <div>
+                                <h3 class="text-xs font-semibold text-outline uppercase tracking-wider">Account Details</h3>
+                                <div class="text-sm text-on-surface-variant mt-1">
+                                    <span class="font-medium">Username:</span> {{ user.username }}
+                                </div>
+                            </div>
+                            
+                            {% if emp %}
+                                <div>
+                                    <h3 class="text-xs font-semibold text-outline uppercase tracking-wider">Employee Info</h3>
+                                    <div class="text-sm text-on-surface-variant mt-1">
+                                        <div><span class="font-medium">Code:</span> {{ emp.employee_code }}</div>
+                                        <div><span class="font-medium">Department:</span> {{ emp.department.name if emp.department else 'N/A' }}</div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-4 border-t border-outline-variant/30">
+                                    <h3 class="text-xs font-semibold text-outline uppercase tracking-wider mb-2">Clearance Level</h3>
+                                    <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+                                        <span class="material-symbols-outlined text-primary text-lg">vpn_key</span>
+                                        <span class="font-semibold">Level 4 - Executive</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column: Details & Security -->
+                <div class="lg:col-span-8 space-y-6">
+                    
+                    {% if user.role == 'employee' %}
+                    <!-- Upcoming Hosted Visitors Card -->
+                    <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant overflow-hidden">
+                        <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-gray-50">
+                            <h2 class="text-md font-semibold text-on-surface flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">group</span>
+                                Upcoming Hosted Visitors
+                            </h2>
+                            {% if upcoming_visitors %}
+                            <span class="bg-primary/10 text-primary px-2.5 py-0.5 rounded-full text-xs font-semibold">
+                                {{ upcoming_visitors|length }} Expected
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="space-y-4">
+                                {% for req in upcoming_visitors %}
+                                <div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-all">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-50 text-primary flex items-center justify-center">
+                                        <span class="material-symbols-outlined">person</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-start">
+                                            <h4 class="text-sm font-semibold text-on-surface truncate">{{ req.visitor.full_name }}</h4>
+                                            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full capitalize 
+                                                {% if req.status == 'approved' %}bg-green-50 text-green-700 border border-green-200
+                                                {% else %}bg-amber-50 text-amber-700 border border-amber-200{% endif %}">
+                                                {{ req.status }}
+                                            </span>
+                                        </div>
+                                        <p class="text-xs text-on-surface-variant mt-1">
+                                            {{ req.visit_date }} at {{ req.visit_time }} • {{ req.visitor.company_name or 'Independent' }}
+                                        </p>
+                                        <p class="text-xs text-outline mt-0.5">Purpose: {{ req.purpose_of_visit }}</p>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="text-center py-6 text-on-surface-variant text-sm flex flex-col items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined text-4xl text-outline-variant">group_off</span>
+                                    <p>No upcoming hosted visitors scheduled.</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guest Arrival Alerts Card -->
+                    <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant overflow-hidden">
+                        <div class="px-6 py-4 border-b border-outline-variant flex items-center bg-gray-50">
+                            <h2 class="text-md font-semibold text-on-surface flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">notifications_active</span>
+                                Guest Arrival Alerts
+                            </h2>
+                        </div>
+                        
+                        <div class="p-6 space-y-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-semibold text-on-surface">Push Notifications</p>
+                                    <p class="text-xs text-on-surface-variant">Immediate alert on mobile web browser</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="push-notifications" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
+                                <div>
+                                    <p class="text-sm font-semibold text-on-surface">Email Confirmation</p>
+                                    <p class="text-xs text-on-surface-variant">Receipt of guest check-in / arrival</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="email-confirmation" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Personal Details Form Card -->
+                    <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant overflow-hidden">
+                        <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-gray-50">
+                            <h2 class="text-md font-semibold text-on-surface flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">person</span>
+                                Personal Details
+                            </h2>
+                        </div>
+                        
+                        <form id="profile-details-form" class="p-6 space-y-4">
+                            {% set name_parts = user.full_name.split(' ', 1) %}
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="text-xs font-semibold text-outline" for="first_name">First Name</label>
+                                    <input id="first_name" name="first_name" type="text" required
+                                           class="w-full bg-white border border-outline-variant rounded px-3 py-2 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary"
+                                           value="{{ name_parts[0] }}"/>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-xs font-semibold text-outline" for="last_name">Last Name</label>
+                                    <input id="last_name" name="last_name" type="text"
+                                           class="w-full bg-white border border-outline-variant rounded px-3 py-2 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary"
+                                           value="{{ name_parts[1] if name_parts|length > 1 else '' }}"/>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="text-xs font-semibold text-outline" for="email">Email Address</label>
+                                    <input id="email" name="email" type="email" required
+                                           class="w-full bg-white border border-outline-variant rounded px-3 py-2 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary"
+                                           value="{{ user.email }}"/>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-xs font-semibold text-outline" for="phone_number">Phone Number</label>
+                                    <input id="phone_number" name="phone_number" type="text"
+                                           class="w-full bg-white border border-outline-variant rounded px-3 py-2 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary"
+                                           value="{{ emp.phone_number if emp else '' }}"
+                                           placeholder="Not set"/>
+                                </div>
+                            </div>
+                            
+                            <div class="pt-2 flex justify-end">
+                                <button type="submit" class="px-5 py-2 bg-primary text-white rounded font-semibold text-sm hover:bg-emerald-700 transition-colors active:scale-95">
+                                    Save Details
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Security Card -->
+                    <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant overflow-hidden">
+                        <div class="px-6 py-4 border-b border-outline-variant bg-gray-50">
+                            <h2 class="text-md font-semibold text-on-surface flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">lock</span>
+                                Security Credentials
+                            </h2>
+                        </div>
+                        
+                        <div class="p-6 space-y-6">
+                            <!-- Change Password Sub-section -->
+                            <form id="password-form" class="space-y-4">
+                                <h3 class="text-sm font-semibold text-on-surface">Change Account Password</h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-semibold text-outline" for="current_password">Current Password</label>
+                                        <input id="current_password" name="current_password" type="password" required
+                                               class="w-full bg-white border border-outline-variant rounded px-3 py-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary"
+                                               placeholder="••••••••"/>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-semibold text-outline" for="new_password">New Password</label>
+                                        <input id="new_password" name="new_password" type="password" required
+                                               class="w-full bg-white border border-outline-variant rounded px-3 py-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary"
+                                               placeholder="Minimum 6 characters"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-end pt-2">
+                                    <button type="submit" class="px-5 py-2 bg-primary text-white rounded font-semibold text-sm hover:bg-emerald-700 transition-colors active:scale-95">
+                                        Update Password
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity Card -->
+                    <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant overflow-hidden">
+                        <div class="px-6 py-4 border-b border-outline-variant bg-gray-50">
+                            <h2 class="text-md font-semibold text-on-surface flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">history</span>
+                                Recent Activity Log
+                            </h2>
+                        </div>
+                        <div class="p-0">
+                            <ul class="divide-y divide-outline-variant">
+                                {% for act in activities %}
+                                    <li class="p-4 flex items-start gap-4 hover:bg-gray-50 transition-colors">
+                                        <div class="p-2 bg-emerald-50 text-primary rounded-full">
+                                            <span class="material-symbols-outlined text-sm" style="font-size: 18px;">
+                                                {% if 'Login' in act.action %}login
+                                                {% elif 'Logout' in act.action %}logout
+                                                {% elif 'Password' in act.action %}security
+                                                {% else %}edit{% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-semibold text-on-surface truncate">{{ act.action }}</p>
+                                            <p class="text-xs text-on-surface-variant mt-0.5">{{ act.details }}</p>
+                                            <span class="text-[10px] text-outline block mt-1">IP: {{ act.ip_address or 'System' }}</span>
+                                        </div>
+                                        <span class="text-xs text-outline-variant whitespace-nowrap">{{ act.created_at[:16]|replace('T', ' ') }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="p-6 text-center text-on-surface-variant text-sm">
+                                        No recent operations recorded.
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- BottomNavBar for Mobile Viewports -->
+{% if user.role == 'admin' %}
+    {% include 'partials/admin_footer.html' %}
+{% elif user.role == 'visitor' %}
+    {% include 'partials/visitor_footer.html' %}
+{% else %}
+    {% if user.role == 'admin' %}
+        {% include 'partials/admin_footer.html' %}
+    {% elif user.role == 'receptionist' %}
+        {% include 'partials/receptionist_footer.html' %}
+    {% elif user.role == 'employee' %}
+        <div class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-outline-variant/50 lg:hidden flex justify-around items-center h-16 shadow-lg">
+            <a href="/approvals" class="flex flex-col items-center justify-center w-16 h-full text-on-surface-variant hover:text-primary">
+                <div class="px-5 py-1 flex items-center justify-center mb-0.5">
+                    <span class="material-symbols-outlined text-[20px]">verified_user</span>
+                </div>
+                <span class="text-[10px] font-semibold tracking-wider uppercase">Approvals</span>
+            </a>
+            <a href="/profile" class="flex flex-col items-center justify-center w-16 h-full text-primary">
+                <div class="bg-primary text-white rounded-2xl px-5 py-1 flex items-center justify-center mb-0.5">
+                    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">person</span>
+                </div>
+                <span class="text-[10px] font-bold tracking-wider uppercase">Profile</span>
+            </a>
+            <a href="/logout" class="flex flex-col items-center justify-center w-16 h-full text-on-surface-variant hover:text-primary">
+                <div class="px-5 py-1 flex items-center justify-center mb-0.5">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                </div>
+                <span class="text-[10px] font-semibold tracking-wider uppercase">Log Out</span>
+            </a>
+        </div>
+    {% endif %}
+{% endif %}
+
+<script>
+    // Toast Alert Helper
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `px-4 py-3 rounded-lg shadow-lg text-white font-medium text-sm flex items-center gap-2 transition-all duration-300 transform translate-y-2 opacity-0`;
+        
+        if (type === 'success') {
+            toast.className += ' bg-green-600';
+            toast.innerHTML = `<span class="material-symbols-outlined">check_circle</span> <span>${message}</span>`;
+        } else {
+            toast.className += ' bg-red-600';
+            toast.innerHTML = `<span class="material-symbols-outlined">error</span> <span>${message}</span>`;
+        }
+        
+        container.appendChild(toast);
+        
+        // Trigger transition
+        setTimeout(() => {
+            toast.classList.remove('translate-y-2', 'opacity-0');
+        }, 10);
+        
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-y-2');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }, 3000);
+    }
+
+    // Handle profile details form submission
+    document.getElementById('profile-details-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const firstName = document.getElementById('first_name').value.trim();
+        const lastName = document.getElementById('last_name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phoneNumber = document.getElementById('phone_number').value.trim();
+        
+        const fullName = `${firstName} ${lastName}`.trim();
+        
+        try {
+            const response = await fetch('/api/profile/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    full_name: fullName,
+                    email: email,
+                    phone_number: phoneNumber
+                })
+            });
+            
+            const result = await response.json();
+            if (response.ok) {
+                showToast(result.message || 'Details saved successfully!', 'success');
+                // Reload after 1.5s to display updated header info
+                setTimeout(() => window.location.reload(), 1500);
+            } else {
+                showToast(result.error || 'Failed to save details.', 'error');
+            }
+        } catch (error) {
+            showToast('Network error occurred.', 'error');
+        }
+    });
+
+    // Handle password form submission
+    document.getElementById('password-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const currentPassword = document.getElementById('current_password').value;
+        const newPassword = document.getElementById('new_password').value;
+        
+        if (newPassword.length < 6) {
+            showToast('New password must be at least 6 characters long.', 'error');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/profile/change-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    current_password: currentPassword,
+                    new_password: newPassword
+                })
+            });
+            
+            const result = await response.json();
+            if (response.ok) {
+                showToast(result.message || 'Password updated successfully!', 'success');
+                document.getElementById('password-form').reset();
+            } else {
+                showToast(result.error || 'Failed to update password.', 'error');
+            }
+        } catch (error) {
+            showToast('Network error occurred.', 'error');
+        }
+    });
+
+    // Guest Arrival Alerts Toggle Interaction
+    const pushAlert = document.getElementById('push-notifications');
+    const emailAlert = document.getElementById('email-confirmation');
+    if (pushAlert) {
+        pushAlert.addEventListener('change', function() {
+            console.log('Push notification alert preference changed to:', this.checked);
+            showToast(`Push alerts ${this.checked ? 'enabled' : 'disabled'}.`, 'success');
+        });
+    }
+    if (emailAlert) {
+        emailAlert.addEventListener('change', function() {
+            console.log('Email notification alert preference changed to:', this.checked);
+            showToast(`Email alerts ${this.checked ? 'enabled' : 'disabled'}.`, 'success');
+        });
+    }
+</script>
+</body>
+</html>
