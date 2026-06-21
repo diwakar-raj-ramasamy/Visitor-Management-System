@@ -171,6 +171,7 @@ class NoSQLUser:
         self.role = doc.get('role')
         self.email = doc.get('email')
         self.full_name = doc.get('full_name')
+        self.status = doc.get('status', 'active')
         
         
         created_at_val = doc.get('created_at')
@@ -205,6 +206,7 @@ class NoSQLUser:
             'role': self.role,
             'email': self.email,
             'full_name': self.full_name,
+            'status': self.status,
             'created_at': self.created_at.isoformat() if hasattr(self.created_at, 'isoformat') else self.created_at
         }
 
@@ -263,7 +265,8 @@ def sync_user_to_sql(user_doc_or_obj):
                 password=doc['password'],
                 role=doc['role'],
                 email=doc['email'],
-                full_name=doc['full_name']
+                full_name=doc['full_name'],
+                status=doc.get('status', 'active')
             )
             db.session.add(sql_user)
         else:
@@ -272,6 +275,7 @@ def sync_user_to_sql(user_doc_or_obj):
             sql_user.role = doc['role']
             sql_user.email = doc['email']
             sql_user.full_name = doc['full_name']
+            sql_user.status = doc.get('status', 'active')
             
         
         created_at_val = doc.get('created_at')

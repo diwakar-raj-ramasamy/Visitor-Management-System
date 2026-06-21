@@ -14,6 +14,7 @@ class User(db.Model):
     role = db.Column(db.String(50), nullable=False, index=True) 
     email = db.Column(db.String(150), unique=True, nullable=False)
     full_name = db.Column(db.String(150), nullable=False)
+    status = db.Column(db.String(50), default='active', nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
@@ -34,6 +35,7 @@ class User(db.Model):
             'role': self.role,
             'email': self.email,
             'full_name': self.full_name,
+            'status': self.status,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
 

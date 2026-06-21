@@ -46,8 +46,14 @@ def create_app(config_class='config.Config'):
                     conn.execute(sqlalchemy.text("ALTER TABLE visitor_requests ADD COLUMN pass_expiry DATETIME"))
                     conn.execute(sqlalchemy.text("ALTER TABLE visitor_requests ADD COLUMN pass_used BOOLEAN DEFAULT 0"))
                 app.logger.info("Successfully added columns for one-time code to visitor_requests table.")
+                
+            user_columns = [c['name'] for c in inspector.get_columns('users')]
+            if 'status' not in user_columns:
+                with db.engine.begin() as conn:
+                    conn.execute(sqlalchemy.text("ALTER TABLE users ADD COLUMN status VARCHAR(50) DEFAULT 'active' NOT NULL"))
+                app.logger.info("Successfully added status column to users table.")
         except Exception as e:
-            app.logger.error(f"Error updating visitor_requests schema: {e}")
+            app.logger.error(f"Error updating database schema: {e}")
         
     
     def generate_token(user_id, role, expiry_hours=24):
@@ -94,7 +100,15 @@ def create_app(config_class='config.Config'):
                 resp.delete_cookie('access_token')
                 return resp
                 
-            
+            from app.database.nosql_db import get_nosql_user_by_id
+            user = get_nosql_user_by_id(payload['sub'])
+            if not user or user.status != 'active':
+                if request.path.startswith('/api/'):
+                    return jsonify({'error': 'Your account has been deactivated. Please contact the Admin.'}), 403
+                resp = make_response(redirect(url_for('auth.login_page')))
+                resp.delete_cookie('access_token')
+                return resp
+                
             request.user_id = payload['sub']
             request.user_role = payload['role']
             return f(*args, **kwargs)

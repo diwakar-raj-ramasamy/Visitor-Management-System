@@ -56,6 +56,9 @@ def api_login():
     if role and user.role != role.lower():
         return jsonify({'error': f'Role mismatch. You are registered as {user.role.capitalize()}.'}), 403
         
+    if user.status != 'active':
+        return jsonify({'error': 'Your account has been deactivated. Please contact the Admin.'}), 403
+        
     
     generate_token = current_app.config['generate_token']
     token = generate_token(user.id, user.role)
@@ -120,6 +123,7 @@ def api_register():
         'role': 'visitor',
         'email': email,
         'full_name': full_name,
+        'status': 'active',
         'created_at': datetime.utcnow().isoformat(),
         'updated_at': datetime.utcnow().isoformat()
     }

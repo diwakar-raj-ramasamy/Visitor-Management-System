@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>User Management | Kinetic Enterprise VMS</title>
+    <meta name="description" content="Manage Receptionists and Employees accounts, roles, and status."/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c1c6d6; border-radius: 10px; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(114, 119, 133, 0.15);
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-fixed": "#d8f3dc",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary-fixed": "#081c15",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#74c69d",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-surface": "#2e3132",
+                        "surface-variant": "#e1e3e4",
+                        "on-primary-fixed-variant": "#1b4332",
+                        "on-secondary-container": "#081c15",
+                        "surface-container-high": "#e7e8e9",
+                        "on-surface": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#000416",
+                        "surface-tint": "#0f6d38",
+                        "primary-fixed-dim": "#b7e4c7",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#ffffff",
+                        "secondary-fixed": "#d8f3dc",
+                        "on-tertiary-fixed-variant": "#1b4332",
+                        "secondary": "#2d6a4f",
+                        "outline": "#727785",
+                        "tertiary-fixed-dim": "#b7e4c7",
+                        "primary": "#0f6d38",
+                        "inverse-primary": "#b7e4c7",
+                        "tertiary": "#1b4332",
+                        "on-background": "#191c1d",
+                        "secondary-fixed-dim": "#b7e4c7",
+                        "tertiary-container": "#52b788",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d8f3dc",
+                        "background": "#f8f9fa",
+                        "on-primary-fixed": "#081c15",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#081c15",
+                        "surface-container": "#edeeef",
+                        "surface": "#f8f9fa",
+                        "outline-variant": "#c1c6d6",
+                        "primary-container": "#2e7d32",
+                        "on-surface-variant": "#414754",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#1b4332",
+                        "inverse-on-surface": "#f0f1f2"
+                    },
+                    "borderRadius": {
+                        "sm": "0.125rem",
+                        "DEFAULT": "0.25rem",
+                        "md": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "grid_columns": "12",
+                        "gutter": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "margin_mobile": "16px",
+                        "margin_desktop": "40px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface flex h-screen overflow-hidden">
+    
+    {% include 'partials/sidebar.html' %}
+
+    <main class="flex-grow overflow-y-auto relative flex flex-col">
+        
+        <!-- Header -->
+        <header class="w-full top-0 sticky bg-surface border-b border-outline-variant/30 z-30 h-16 flex items-center">
+            <div class="hidden lg:flex justify-between items-center px-lg w-full max-w-[1440px] mx-auto">
+                <div class="flex items-center gap-md">
+                    <h2 class="font-title-md text-title-md text-primary font-bold">User Management</h2>
+                </div>
+                <div class="flex items-center gap-lg">
+                    <div class="bg-surface-container-low items-center px-md py-xs rounded-full border border-outline-variant focus-within:border-primary transition-colors flex group">
+                        <span class="material-symbols-outlined text-outline group-focus-within:text-primary">search</span>
+                        <input id="search-input" class="bg-transparent border-none focus:ring-0 text-body-sm w-64" placeholder="Search staff by name/username..." type="text"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex lg:hidden justify-between items-center px-lg w-full">
+                <div class="flex items-center gap-md">
+                    <button onclick="toggleSidebar()" class="text-on-surface p-sm hover:bg-surface-container-high rounded-full">
+                        <span class="material-symbols-outlined text-[24px]">menu</span>
+                    </button>
+                    <span class="font-bold text-lg text-primary tracking-tight">Users</span>
+                </div>
+                <div class="flex items-center gap-md">
+                    <a href="/profile" class="w-9 h-9 rounded-full overflow-hidden border border-outline-variant bg-surface-container flex items-center justify-center hover:opacity-85 transition-opacity">
+                        <img src="https://ui-avatars.com/api/?name={{ current_user.full_name|urlencode }}&background=0f6d38&color=fff" alt="Profile" class="w-full h-full object-cover"/>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="flex-grow p-margin_mobile lg:p-margin_desktop pb-24 lg:pb-md space-y-lg max-w-[1440px] mx-auto w-full">
+            
+            <!-- Mobile Search -->
+            <div class="lg:hidden relative w-full px-xs mb-md">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+                <input id="search-input-mobile" class="w-full bg-white border border-outline-variant rounded-xl py-3 pl-10 pr-4 text-sm font-medium focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Search staff..." type="text"/>
+            </div>
+
+            <!-- Page Title Card -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-md bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant/65 shadow-sm">
+                <div>
+                    <h1 class="text-2xl font-bold text-on-surface tracking-tight">Staff Accounts Directory</h1>
+                    <p class="text-sm text-on-surface-variant mt-1">Manage and provision Receptionist & Employee portal access</p>
+                </div>
+                <a href="/admin/users/create" class="inline-flex items-center justify-center gap-2 h-11 px-6 bg-primary hover:bg-secondary text-on-primary font-semibold text-sm rounded-xl shadow-md hover:shadow-lg active:scale-[0.98] transition-all duration-200">
+                    <span class="material-symbols-outlined text-[20px]">person_add</span>
+                    <span>Create User</span>
+                </a>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="error-banner" class="hidden bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
+                <span class="material-symbols-outlined text-red-600 text-[20px]">error</span>
+                <span id="error-message">An error occurred.</span>
+            </div>
+
+            <!-- Success Banner -->
+            <div id="success-banner" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[20px]">check_circle</span>
+                <span id="success-message">Success!</span>
+            </div>
+
+            <!-- Desktop Users Table -->
+            <div class="hidden md:block bg-surface-container-lowest rounded-2xl border border-outline-variant/65 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container-low border-b border-outline-variant/40">
+                                <th class="px-lg py-md text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Staff Member</th>
+                                <th class="px-lg py-md text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Username</th>
+                                <th class="px-lg py-md text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Email</th>
+                                <th class="px-lg py-md text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Role</th>
+                                <th class="px-lg py-md text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Status</th>
+                                <th class="px-lg py-md text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant/20" id="users-tbody">
+                            {% if users %}
+                                {% for u in users %}
+                                <tr class="hover:bg-surface-container-high/20 transition-colors user-row">
+                                    <td class="px-lg py-md font-medium text-on-surface">
+                                        <div class="flex items-center gap-md">
+                                            <div class="w-9 h-9 bg-primary-fixed-dim rounded-full flex items-center justify-center text-on-primary-fixed text-xs font-bold">
+                                                {{ u.full_name[:2].upper() }}
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-on-surface search-name">{{ u.full_name }}</p>
+                                                <p class="text-[11px] text-outline">Joined: {{ u.created_at[:10] if u.created_at else 'N/A' }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-lg py-md text-on-surface-variant text-sm search-username font-mono">{{ u.username }}</td>
+                                    <td class="px-lg py-md text-on-surface-variant text-sm">{{ u.email }}</td>
+                                    <td class="px-lg py-md text-sm">
+                                        {% if u.role == 'admin' %}
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700 capitalize">Administrator</span>
+                                        {% elif u.role == 'receptionist' %}
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 capitalize">Receptionist</span>
+                                        {% else %}
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 capitalize">Employee</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-lg py-md">
+                                        <span id="status-badge-{{ u.id }}" class="status-badge px-2.5 py-1 rounded-full text-xs font-semibold {% if u.status == 'active' %}bg-emerald-100 text-emerald-700{% else %}bg-surface-variant text-on-surface-variant{% endif %} capitalize">
+                                            {{ u.status }}
+                                        </span>
+                                    </td>
+                                    <td class="px-lg py-md text-right space-x-2">
+                                        <button onclick="toggleUserStatus({{ u.id }})" 
+                                                class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant transition-colors"
+                                                title="Toggle Active Status">
+                                            <span class="material-symbols-outlined text-[18px]">power_settings_new</span>
+                                        </button>
+                                        <a href="/admin/users/edit/{{ u.id }}" 
+                                           class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant transition-colors"
+                                           title="Edit User">
+                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                        </a>
+                                        <button onclick="confirmDeleteUser({{ u.id }}, '{{ u.username }}')" 
+                                                class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
+                                                title="Delete User">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="px-lg py-8 text-center text-on-surface-variant">No staff accounts registered.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mobile Users List -->
+            <div class="md:hidden space-y-sm" id="mobile-users-list">
+                {% if users %}
+                    {% for u in users %}
+                    <div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant/65 shadow-sm space-y-md user-card">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-md">
+                                <div class="w-10 h-10 bg-primary-fixed-dim rounded-full flex items-center justify-center text-on-primary-fixed text-sm font-bold">
+                                    {{ u.full_name[:2].upper() }}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-on-surface search-name">{{ u.full_name }}</p>
+                                    <p class="text-xs text-on-surface-variant font-mono search-username">@{{ u.username }}</p>
+                                </div>
+                            </div>
+                            <span id="mobile-status-badge-{{ u.id }}" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold capitalize {% if u.status == 'active' %}bg-emerald-100 text-emerald-700{% else %}bg-surface-variant text-on-surface-variant{% endif %}">
+                                {{ u.status }}
+                            </span>
+                        </div>
+                        <div class="text-xs text-on-surface-variant space-y-1">
+                            <p><span class="font-semibold text-on-surface">Email:</span> {{ u.email }}</p>
+                            <p>
+                                <span class="font-semibold text-on-surface">Role:</span> 
+                                <span class="capitalize">{{ u.role }}</span>
+                            </p>
+                        </div>
+                        <div class="flex justify-end gap-sm pt-sm border-t border-outline-variant/30">
+                            <button onclick="toggleUserStatus({{ u.id }})" 
+                                    class="inline-flex items-center justify-center h-9 px-3 bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant font-semibold text-xs rounded-lg transition-colors gap-1">
+                                <span class="material-symbols-outlined text-[16px]">power_settings_new</span>
+                                <span>Toggle Status</span>
+                            </button>
+                            <a href="/admin/users/edit/{{ u.id }}" 
+                               class="inline-flex items-center justify-center h-9 px-3 bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant font-semibold text-xs rounded-lg transition-colors gap-1">
+                                <span class="material-symbols-outlined text-[16px]">edit</span>
+                                <span>Edit</span>
+                            </a>
+                            <button onclick="confirmDeleteUser({{ u.id }}, '{{ u.username }}')" 
+                                    class="inline-flex items-center justify-center h-9 px-3 bg-red-50 hover:bg-red-100 text-red-600 font-semibold text-xs rounded-lg transition-colors gap-1">
+                                <span class="material-symbols-outlined text-[16px]">delete</span>
+                                <span>Delete</span>
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="bg-surface-container-lowest p-lg text-center text-on-surface-variant rounded-xl border border-outline-variant">
+                        No staff accounts registered.
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+        {% include 'partials/admin_footer.html' %}
+    </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 hidden transition-opacity duration-300">
+        <div class="bg-surface-container-lowest max-w-sm w-full rounded-2xl border border-outline-variant shadow-xl p-lg space-y-lg scale-95 transition-transform duration-300">
+            <div class="flex items-center gap-md text-error">
+                <span class="material-symbols-outlined text-3xl">warning</span>
+                <h3 class="font-bold text-title-md text-on-surface">Delete Account?</h3>
+            </div>
+            <p class="text-sm text-on-surface-variant leading-relaxed">
+                Are you sure you want to permanently delete user <span id="delete-username-placeholder" class="font-bold font-mono"></span>? This action cannot be undone and will revoke their portal access immediately.
+            </p>
+            <div class="flex justify-end gap-sm">
+                <button onclick="closeDeleteModal()" class="h-10 px-4 hover:bg-surface-container-high text-on-surface-variant font-semibold text-xs rounded-xl transition-colors">
+                    Cancel
+                </button>
+                <button id="modal-delete-btn" class="h-10 px-5 bg-error hover:bg-red-700 text-on-error font-semibold text-xs rounded-xl shadow-md transition-colors">
+                    Delete Permanently
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backdrop for mobile sidebars -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden transition-opacity duration-300" onclick="toggleSidebar()"></div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        function filterUsers(query) {
+            query = query.toLowerCase().trim();
+            
+            // Filter Desktop Table
+            document.querySelectorAll('#users-tbody tr.user-row').forEach(row => {
+                const name = row.querySelector('.search-name').textContent.toLowerCase();
+                const username = row.querySelector('.search-username').textContent.toLowerCase();
+                if (name.includes(query) || username.includes(query)) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+
+            // Filter Mobile Cards
+            document.querySelectorAll('#mobile-users-list .user-card').forEach(card => {
+                const name = card.querySelector('.search-name').textContent.toLowerCase();
+                const username = card.querySelector('.search-username').textContent.toLowerCase();
+                if (name.includes(query) || username.includes(query)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            filterUsers(e.target.value);
+        });
+
+        const searchMobile = document.getElementById('search-input-mobile');
+        if (searchMobile) {
+            searchMobile.addEventListener('input', function(e) {
+                filterUsers(e.target.value);
+            });
+        }
+
+        function toggleUserStatus(userId) {
+            const errorBanner = document.getElementById('error-banner');
+            const successBanner = document.getElementById('success-banner');
+            errorBanner.classList.add('hidden');
+            successBanner.classList.add('hidden');
+
+            fetch(`/api/admin/users/${userId}/toggle-status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json().then(data => ({ status: res.status, data })))
+            .then(res => {
+                if (res.status === 200) {
+                    const newStatus = res.data.status;
+                    
+                    // Update Desktop Badge
+                    const badge = document.getElementById(`status-badge-${userId}`);
+                    if (badge) {
+                        badge.textContent = newStatus;
+                        if (newStatus === 'active') {
+                            badge.className = "status-badge px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 capitalize";
+                        } else {
+                            badge.className = "status-badge px-2.5 py-1 rounded-full text-xs font-semibold bg-surface-variant text-on-surface-variant capitalize";
+                        }
+                    }
+
+                    // Update Mobile Badge
+                    const mobBadge = document.getElementById(`mobile-status-badge-${userId}`);
+                    if (mobBadge) {
+                        mobBadge.textContent = newStatus;
+                        if (newStatus === 'active') {
+                            mobBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold capitalize bg-emerald-100 text-emerald-700";
+                        } else {
+                            mobBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold capitalize bg-surface-variant text-on-surface-variant";
+                        }
+                    }
+
+                    document.getElementById('success-message').textContent = res.data.message;
+                    successBanner.classList.remove('hidden');
+                    setTimeout(() => successBanner.classList.add('hidden'), 3000);
+                } else {
+                    document.getElementById('error-message').textContent = res.data.error || 'Failed to toggle status.';
+                    errorBanner.classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            })
+            .catch(err => {
+                document.getElementById('error-message').textContent = 'Network error occurred. Please try again.';
+                errorBanner.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        let userIdToDelete = null;
+
+        function confirmDeleteUser(userId, username) {
+            userIdToDelete = userId;
+            document.getElementById('delete-username-placeholder').textContent = username;
+            
+            const modal = document.getElementById('delete-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('delete-modal');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                userIdToDelete = null;
+            }, 200);
+        }
+
+        document.getElementById('modal-delete-btn').addEventListener('click', function() {
+            if (!userIdToDelete) return;
+            
+            const errorBanner = document.getElementById('error-banner');
+            const successBanner = document.getElementById('success-banner');
+            errorBanner.classList.add('hidden');
+            successBanner.classList.add('hidden');
+            
+            closeDeleteModal();
+
+            fetch(`/api/admin/users/${userIdToDelete}`, {
+                method: 'DELETE'
+            })
+            .then(res => res.json().then(data => ({ status: res.status, data })))
+            .then(res => {
+                if (res.status === 200) {
+                    document.getElementById('success-message').textContent = res.data.message;
+                    successBanner.classList.remove('hidden');
+                    
+                    // Reload page or remove elements after brief delay
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    document.getElementById('error-message').textContent = res.data.error || 'Failed to delete user.';
+                    errorBanner.classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            })
+            .catch(err => {
+                document.getElementById('error-message').textContent = 'Network error occurred. Please try again.';
+                errorBanner.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

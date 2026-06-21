@@ -116,62 +116,7 @@
 </head>
 <body class="bg-surface text-on-surface flex h-screen overflow-hidden">
     
-<<<<<<< HEAD
     {% include 'partials/sidebar.html' %}
-=======
-    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden transition-opacity duration-300" onclick="toggleSidebar()"></div>
-
-    
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col h-screen w-[280px] bg-surface-container-low border-r border-outline-variant transform -translate-x-full lg:transform-none lg:translate-x-0 lg:sticky lg:inset-auto lg:z-auto transition-transform lg:transition-none duration-300 ease-in-out">
-        
-        <div class="px-lg py-xl flex items-center gap-sm">
-            <span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">shield_person</span>
-            <h1 class="font-headline-lg text-headline-lg text-primary font-bold">VMS Secure</h1>
-        </div>
-        
-        <div class="px-md mb-xl">
-            <a href="/profile" class="flex items-center gap-md p-md rounded-xl bg-surface-container-high/40 border border-outline-variant/10 hover:bg-surface-container-high/60 transition-colors cursor-pointer">
-                <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
-                    <span class="material-symbols-outlined">person</span>
-                </div>
-                <div>
-                    <p class="font-title-md text-title-md text-on-surface truncate w-32">{{ current_user.full_name }}</p>
-                    <p class="font-body-sm text-body-sm text-on-surface-variant capitalize">{{ current_user.role }}</p>
-                </div>
-            </a>
-        </div>
-        
-        <nav class="flex-1 px-md space-y-xs overflow-y-auto">
-            <a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-full active:scale-[0.98] transition-all" href="/admin">
-                <span class="material-symbols-outlined" data-weight="fill">dashboard</span>
-                <span class="font-body-md text-body-md font-bold">Dashboard</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full active:scale-[0.98] transition-all" href="/reception">
-                <span class="material-symbols-outlined">group</span>
-                <span class="font-body-md text-body-md">Reception</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full active:scale-[0.98] transition-all" href="/approvals">
-                <span class="material-symbols-outlined">verified_user</span>
-                <span class="font-body-md text-body-md">Approvals</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full active:scale-[0.98] transition-all" href="/reports">
-                <span class="material-symbols-outlined">analytics</span>
-                <span class="font-body-md text-body-md">Reports</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full active:scale-[0.98] transition-all" href="/profile">
-                <span class="material-symbols-outlined">person</span>
-                <span class="font-body-md text-body-md">Profile</span>
-            </a>
-        </nav>
-        
-        <div class="p-md border-t border-outline-variant">
-            <a href="/logout" class="flex items-center gap-md w-full px-md py-sm text-error hover:bg-error-container rounded-full transition-all">
-                <span class="material-symbols-outlined">logout</span>
-                <span class="font-body-md text-body-md">Sign Out</span>
-            </a>
-        </div>
-    </aside>
->>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
 
 
     <main class="flex-grow overflow-y-auto relative flex flex-col">

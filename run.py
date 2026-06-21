@@ -23,6 +23,7 @@ def seed_database():
                         'role': u.role,
                         'email': u.email,
                         'full_name': u.full_name,
+                        'status': u.status if hasattr(u, 'status') else 'active',
                         'created_at': u.created_at.isoformat() if u.created_at else None,
                         'updated_at': u.updated_at.isoformat() if u.updated_at else None
                     })
@@ -48,6 +49,7 @@ def seed_database():
             'role': "admin",
             'email': "admin@kinetic-corp.com",
             'full_name': "Priya Dharshini",
+            'status': "active",
             'created_at': datetime.utcnow().isoformat(),
             'updated_at': datetime.utcnow().isoformat()
         }
@@ -60,6 +62,7 @@ def seed_database():
             'role': "receptionist",
             'email': "reception@kinetic-corp.com",
             'full_name': "Dark",
+            'status': "active",
             'created_at': datetime.utcnow().isoformat(),
             'updated_at': datetime.utcnow().isoformat()
         }
@@ -72,6 +75,7 @@ def seed_database():
             'role': "employee",
             'email': "employee@kinetic-corp.com",
             'full_name': "Warrior",
+            'status': "active",
             'created_at': datetime.utcnow().isoformat(),
             'updated_at': datetime.utcnow().isoformat()
         }

@@ -13,7 +13,6 @@
             theme: {
                 extend: {
                     "colors": {
-<<<<<<< HEAD
                         "surface-container-highest": "#e1e3e4",
                         "surface-bright": "#f8f9fa",
                         "tertiary-fixed": "#d8f3dc",
@@ -99,25 +98,6 @@
                         "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
                         "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
                         "display-lg": ["44px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
-=======
-                        "secondary": "#2d6a4f",
-                        "surface-container-high": "#e7e8e9",
-                        "error": "#ba1a1a",
-                        "primary": "#0f6d38",
-                        "background": "#f8f9fa",
-                        "on-surface-variant": "#414754",
-                        "outline-variant": "#c1c6d6",
-                        "surface-container-lowest": "#ffffff",
-                        "on-background": "#191c1d",
-                        "on-surface": "#191c1d",
-                        "on-primary": "#ffffff",
-                        "surface-bright": "#f8f9fa",
-                        "surface-container-low": "#f3f4f5",
-                        "surface": "#f8f9fa",
-                        "outline": "#727785",
-                        "secondary-container": "#74c69d",
-                        "on-secondary-container": "#081c15"
->>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
                     }
                 }
             }
@@ -134,108 +114,7 @@
 <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2"></div>
 
 
-<<<<<<< HEAD
 {% include 'partials/sidebar.html' %}
-=======
-{% if user.role == 'visitor' %}
-<aside id="sidebar" class="hidden lg:flex flex-col h-full border-r border-outline-variant bg-surface-container-low w-[280px] sticky left-0 top-0 z-40">
-    <div class="p-lg flex flex-col h-full">
-        <div class="mb-xl flex items-center gap-sm">
-            <span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">shield_person</span>
-            <h1 class="font-headline-lg text-headline-lg text-primary font-bold">VMS Secure</h1>
-        </div>
-        
-        <a href="/profile" class="flex flex-col gap-base mb-xl hover:opacity-85 transition-opacity">
-            <div class="flex items-center gap-md p-md rounded-xl bg-surface-container-high/40 border border-outline-variant/10 hover:bg-surface-container-high/60 transition-colors">
-                <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold shrink-0">
-                    {{ user.full_name[:2].upper() if user and user.full_name else 'VI' }}
-                </div>
-                <div class="overflow-hidden">
-                    <p class="font-title-md text-title-md text-on-surface truncate w-32">{{ user.full_name }}</p>
-                    <p class="font-body-sm text-body-sm text-on-surface-variant opacity-80 capitalize">Visitor Account</p>
-                </div>
-            </div>
-        </a>
-        <nav class="flex-grow flex flex-col gap-xs">
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/dashboard">
-                <span class="material-symbols-outlined">home</span>
-                <span class="font-body-md text-body-md">Home</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/employees">
-                <span class="material-symbols-outlined">badge</span>
-                <span class="font-body-md text-body-md">Employee Directory</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" href="/visitor/register">
-                <span class="material-symbols-outlined">person_add</span>
-                <span class="font-body-md text-body-md">Register Meeting</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-full shadow-sm transition-all" href="/profile">
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
-                <span class="font-body-md text-body-md font-bold">Profile</span>
-            </a>
-        </nav>
-        <div class="p-md text-center border-t border-outline-variant">
-            <a href="/logout" class="flex items-center gap-md w-full px-md py-sm text-error hover:bg-error-container rounded-full transition-all">
-                <span class="material-symbols-outlined">logout</span>
-                <span class="font-body-md">Sign Out</span>
-            </a>
-        </div>
-    </div>
-</aside>
-{% else %}
-<aside class="hidden lg:flex flex-col h-full border-r border-outline-variant w-[280px] bg-white sticky left-0 top-0 z-40">
-    <div class="px-6 py-6 flex items-center gap-2">
-        <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">security</span>
-        <span class="text-2xl text-primary tracking-tight font-bold">VMS Secure</span>
-    </div>
-    
-    <div class="px-6 pb-6 mb-6 border-b border-outline-variant">
-        <div class="flex items-center gap-4">
-            <img alt="User Avatar" class="w-12 h-12 rounded-full object-cover border border-outline-variant" 
-                 src="https://ui-avatars.com/api/?name={{ user.full_name|urlencode }}&background=0f6d38&color=fff"/>
-            <div class="min-w-0">
-                <div class="text-sm font-semibold text-on-surface truncate">{{ user.full_name }}</div>
-                <div class="text-xs text-on-surface-variant capitalize">{{ user.role }}</div>
-            </div>
-        </div>
-    </div>
-    
-    <nav class="flex-1 overflow-y-auto px-4 space-y-1 pb-6">
-        
-        {% if user.role == 'admin' %}
-            <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-150" href="{{ url_for('dashboard.admin_dashboard') }}">
-                <span class="material-symbols-outlined">dashboard</span>
-                <span>Dashboard</span>
-            </a>
-            <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-150" href="{{ url_for('reports.reports_page') }}">
-                <span class="material-symbols-outlined">analytics</span>
-                <span>Reports</span>
-            </a>
-        {% elif user.role == 'receptionist' %}
-            <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-150" href="{{ url_for('reception.reception_dashboard') }}">
-                <span class="material-symbols-outlined">dashboard</span>
-                <span>Dashboard</span>
-            </a>
-        {% elif user.role == 'employee' %}
-            <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-150" href="{{ url_for('employee.approvals_page') }}">
-                <span class="material-symbols-outlined">verified_user</span>
-                <span>Approvals</span>
-            </a>
-        {% endif %}
-        
-        <a class="flex items-center gap-4 px-4 py-3 bg-emerald-50 text-primary rounded-full transition-all duration-150" href="{{ url_for('auth.profile_page') }}">
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
-            <span class="font-semibold">My Profile</span>
-        </a>
-        
-        <a class="flex items-center gap-4 px-4 py-3 text-red-600 hover:bg-red-50 rounded-full transition-all duration-150" href="{{ url_for('auth.logout') }}">
-            <span class="material-symbols-outlined">logout</span>
-            <span>Sign Out</span>
-        </a>
-    </nav>
-</aside>
-{% endif %}
->>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
 
 
 <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -243,15 +122,10 @@
     
     <header class="w-full top-0 sticky bg-white border-b border-outline-variant shadow-sm z-30">
         <div class="flex justify-between items-center px-6 h-16 w-full max-w-[1440px] mx-auto">
-<<<<<<< HEAD
             <div class="flex items-center gap-2 lg:hidden">
                 <button onclick="toggleSidebar()" class="text-primary p-2 hover:bg-surface-container-high rounded-full flex items-center">
                     <span class="material-symbols-outlined text-[24px]">menu</span>
                 </button>
-=======
-            <div class="flex items-center gap-4 lg:hidden">
-                <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">security</span>
->>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
                 <span class="text-lg font-bold text-primary">VMS Secure</span>
             </div>
             
@@ -540,7 +414,6 @@
 <!-- BottomNavBar for Mobile Viewports -->
 {% if user.role == 'admin' %}
     {% include 'partials/admin_footer.html' %}
-<<<<<<< HEAD
 {% elif user.role == 'receptionist' %}
     {% include 'partials/receptionist_footer.html' %}
 {% elif user.role == 'employee' %}
@@ -550,39 +423,6 @@
 {% endif %}
 
 
-=======
-{% elif user.role == 'visitor' %}
-    {% include 'partials/visitor_footer.html' %}
-{% else %}
-    {% if user.role == 'admin' %}
-        {% include 'partials/admin_footer.html' %}
-    {% elif user.role == 'receptionist' %}
-        {% include 'partials/receptionist_footer.html' %}
-    {% elif user.role == 'employee' %}
-        <div class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-outline-variant/50 lg:hidden flex justify-around items-center h-16 shadow-lg">
-            <a href="/approvals" class="flex flex-col items-center justify-center w-16 h-full text-on-surface-variant hover:text-primary">
-                <div class="px-5 py-1 flex items-center justify-center mb-0.5">
-                    <span class="material-symbols-outlined text-[20px]">verified_user</span>
-                </div>
-                <span class="text-[10px] font-semibold tracking-wider uppercase">Approvals</span>
-            </a>
-            <a href="/profile" class="flex flex-col items-center justify-center w-16 h-full text-primary">
-                <div class="bg-primary text-white rounded-2xl px-5 py-1 flex items-center justify-center mb-0.5">
-                    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">person</span>
-                </div>
-                <span class="text-[10px] font-bold tracking-wider uppercase">Profile</span>
-            </a>
-            <a href="/logout" class="flex flex-col items-center justify-center w-16 h-full text-on-surface-variant hover:text-primary">
-                <div class="px-5 py-1 flex items-center justify-center mb-0.5">
-                    <span class="material-symbols-outlined text-[20px]">logout</span>
-                </div>
-                <span class="text-[10px] font-semibold tracking-wider uppercase">Log Out</span>
-            </a>
-        </div>
-    {% endif %}
-{% endif %}
-
->>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
 <script>
     // Toast Alert Helper
     function showToast(message, type = 'success') {
@@ -696,7 +536,6 @@
             showToast(`Email alerts ${this.checked ? 'enabled' : 'disabled'}.`, 'success');
         });
     }
-<<<<<<< HEAD
 
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -709,8 +548,6 @@
             backdrop.classList.add('hidden');
         }
     }
-=======
->>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
 </script>
 </body>
 </html>

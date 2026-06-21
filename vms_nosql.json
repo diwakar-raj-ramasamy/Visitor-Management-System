@@ -98,6 +98,30 @@
             "password": "scrypt:32768:8:1$FWr19DceCDYxoli4$42a14d05178ef2df548def667b260fcbf758eed33759cdaa5dd4a2f7c2428ab2c94fb7bd36ffd928e368c5ebe29cd53589dbc91ded3b53ef57c4a1c834d2d3d1",
             "id": 9,
             "_id": "2f76ed13-1701-4230-a8e5-9cb4e1ace574"
+        },
+        {
+            "username": "Diwa_0003",
+            "role": "admin",
+            "email": "diwakarraj385@gmail.com",
+            "full_name": "Diwakar Raj R",
+            "status": "active",
+            "created_at": "2026-06-21T16:16:28.711772",
+            "updated_at": "2026-06-21T16:16:45.934564",
+            "password": "scrypt:32768:8:1$I4Hw31Zre4e1eN4T$ea0dfc76147909eaa378ad12e29e628ff1df430865a82ff22f3eb970eb7ec8e8f1383233446c756389ba1a36ef8cf6919bbb71e604f9cd15bcf655b3174ef263",
+            "id": 10,
+            "_id": "793fb211-8f78-43aa-afef-2098d3924a44"
+        },
+        {
+            "username": "dEvil",
+            "role": "employee",
+            "email": "devilside622@gmail.com",
+            "full_name": "Devil",
+            "status": "active",
+            "created_at": "2026-06-21T16:22:56.958205",
+            "updated_at": "2026-06-21T16:22:56.958205",
+            "password": "scrypt:32768:8:1$Sz3HIA3lIOsbegJu$7d7afd44861902e08b4f20fe69ed103caca1745006a013ac29f0ae79c02523fdb8abbd3cec4b0df15eae959f1baba2b5829e804e5fecbc496847919374bad9ea",
+            "id": 11,
+            "_id": "ce097ac3-ad52-4b63-a8a9-63d001112bb9"
         }
     ],
     "audit_logs": [
@@ -523,7 +547,6 @@
             "created_at": "2026-06-18T09:30:05.714845",
             "id": 48,
             "_id": "f5d987ae-e8e8-4cf1-8c96-371d4c6fb4ac"
-<<<<<<< HEAD
         },
         {
             "user_id": 1,
@@ -560,8 +583,357 @@
             "created_at": "2026-06-19T15:37:29.125872",
             "id": 52,
             "_id": "64f4213d-637b-47ab-b764-e1db674d7e41"
-=======
->>>>>>> d44c141cc2f8681cbabe895350aae0cd3151ba0b
+        },
+        {
+            "user_id": 1,
+            "action": "Login",
+            "details": "User admin successfully logged in as admin.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:14:38.723629",
+            "id": 53,
+            "_id": "4843756e-5bd9-42ee-a7b8-5406e0dcc06e"
+        },
+        {
+            "user_id": 1,
+            "action": "User Created",
+            "details": "Created user Diwa_0003 with role admin.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:16:28.959793",
+            "id": 54,
+            "_id": "13f3d511-f4f9-45fe-96ac-a93e1f7731a4"
+        },
+        {
+            "user_id": 1,
+            "action": "User Status Toggled",
+            "details": "Toggled user status of Diwa_0003 to inactive.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:16:40.729939",
+            "id": 55,
+            "_id": "51e95b44-41e2-4b57-891c-d444539adee4"
+        },
+        {
+            "user_id": 1,
+            "action": "User Status Toggled",
+            "details": "Toggled user status of Diwa_0003 to active.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:16:45.966086",
+            "id": 56,
+            "_id": "a2f7669c-213d-4a72-9620-b90c8f0fbeef"
+        },
+        {
+            "user_id": 1,
+            "action": "Login",
+            "details": "User admin successfully logged in as admin.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:18:28.289174",
+            "id": 57,
+            "_id": "79214add-e1e0-4d87-a0df-5add82bad4b0"
+        },
+        {
+            "user_id": 1,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:20:02.956598",
+            "id": 58,
+            "_id": "74e21bc2-425a-4132-b3fe-9ba5d5263e88"
+        },
+        {
+            "user_id": 6,
+            "action": "Login",
+            "details": "User adminjohn successfully logged in as visitor.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:20:11.191379",
+            "id": 59,
+            "_id": "f007c75e-0047-4ffd-9876-41d10943ff33"
+        },
+        {
+            "user_id": 6,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:20:39.064486",
+            "id": 60,
+            "_id": "b9d4363e-710c-4532-b4dd-054f357ce67d"
+        },
+        {
+            "user_id": 1,
+            "action": "Login",
+            "details": "User admin successfully logged in as admin.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:20:44.918824",
+            "id": 61,
+            "_id": "90492ac1-db4c-4225-9203-146b558cedc3"
+        },
+        {
+            "user_id": 1,
+            "action": "User Created",
+            "details": "Created user dEvil with role employee.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:22:57.522000",
+            "id": 62,
+            "_id": "1983ed2c-141e-466e-96ea-6d96c238576c"
+        },
+        {
+            "user_id": 1,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:23:06.007295",
+            "id": 63,
+            "_id": "320e9e26-52d7-4ba4-a31c-9fa2d2061878"
+        },
+        {
+            "user_id": 11,
+            "action": "Login",
+            "details": "User dEvil successfully logged in as employee.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:23:33.192688",
+            "id": 64,
+            "_id": "f99aeb9d-90c9-431b-9ae6-f2a3e474db86"
+        },
+        {
+            "user_id": 11,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:24:05.393030",
+            "id": 65,
+            "_id": "e0a88fc5-bf4e-4156-9691-8724ac492048"
+        },
+        {
+            "user_id": 6,
+            "action": "Login",
+            "details": "User adminjohn successfully logged in as visitor.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:24:10.563627",
+            "id": 66,
+            "_id": "6c4500b5-5b30-4b6a-87a7-2472dc14866e"
+        },
+        {
+            "user_id": 6,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:25:21.261321",
+            "id": 67,
+            "_id": "d55c34be-8cbd-43f2-a49f-20a332e97b05"
+        },
+        {
+            "user_id": 1,
+            "action": "Login",
+            "details": "User admin successfully logged in as admin.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:25:32.349820",
+            "id": 68,
+            "_id": "b36d053a-4aa9-4c4f-b17c-67ca86063dea"
+        },
+        {
+            "user_id": 1,
+            "action": "User Created",
+            "details": "Created user test_receptionist with role receptionist.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:30:16.503173",
+            "id": 69,
+            "_id": "71ab588b-9f37-40d8-abaf-b3ff2978af2d"
+        },
+        {
+            "user_id": 1,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:31:33.307183",
+            "id": 70,
+            "_id": "42725be4-fceb-416b-a6aa-66f85b0f2cb2"
+        },
+        {
+            "user_id": 1,
+            "action": "Login",
+            "details": "User admin successfully logged in as admin.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:32:51.031013",
+            "id": 71,
+            "_id": "3c7f8bb6-f366-4099-9ae8-9a13c61693ef"
+        },
+        {
+            "user_id": 1,
+            "action": "User Status Toggled",
+            "details": "Toggled user status of test_receptionist to inactive.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:33:44.699107",
+            "id": 72,
+            "_id": "069dfe2b-d1c3-4b7a-9095-4aa4a211125a"
+        },
+        {
+            "user_id": 1,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:33:58.224222",
+            "id": 73,
+            "_id": "6981de2a-8076-4f45-96b9-bb0e81a5d982"
+        },
+        {
+            "user_id": 1,
+            "action": "Login",
+            "details": "User admin successfully logged in as admin.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:35:22.858042",
+            "id": 74,
+            "_id": "24a7841c-8c40-443b-b6a6-ee21b5e20853"
+        },
+        {
+            "user_id": 1,
+            "action": "User Updated",
+            "details": "Updated details for user test_receptionist.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:35:46.512188",
+            "id": 75,
+            "_id": "6c38592f-661d-468e-af3e-b198866ed64f"
+        },
+        {
+            "user_id": 1,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:35:54.595055",
+            "id": 76,
+            "_id": "4ae7652a-1e90-467f-aa5d-12a0b5005ac9"
+        },
+        {
+            "user_id": 1,
+            "action": "Login",
+            "details": "User admin successfully logged in as admin.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:36:41.021305",
+            "id": 77,
+            "_id": "aa15115e-33d2-49bc-b79d-a065204e7a64"
+        },
+        {
+            "user_id": 1,
+            "action": "User Deleted",
+            "details": "Deleted user account for test_receptionist.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-21T16:37:18.839182",
+            "id": 78,
+            "_id": "9e07bde2-5677-4962-96d7-2b877520b64e"
+        },
+        {
+            "user_id": 1,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:44:20.279133",
+            "id": 79,
+            "_id": "f4fec1b8-e939-4d14-99aa-933e48270e8d"
+        },
+        {
+            "user_id": 11,
+            "action": "Login",
+            "details": "User dEvil successfully logged in as employee.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:44:25.846702",
+            "id": 80,
+            "_id": "ff5fe870-aa47-4d04-8be1-ee2161839440"
+        },
+        {
+            "user_id": 11,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:45:08.117580",
+            "id": 81,
+            "_id": "f3266fe0-bb86-4295-9707-c312b7b66b72"
+        },
+        {
+            "user_id": 6,
+            "action": "Login",
+            "details": "User adminjohn successfully logged in as visitor.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:45:12.991594",
+            "id": 82,
+            "_id": "b1b3e63b-cb92-4552-b32e-03157196b125"
+        },
+        {
+            "user_id": 6,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:46:10.174118",
+            "id": 83,
+            "_id": "f976636f-8bce-4b9b-96d1-3121a0db0098"
+        },
+        {
+            "user_id": 11,
+            "action": "Login",
+            "details": "User dEvil successfully logged in as employee.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:46:17.209612",
+            "id": 84,
+            "_id": "98d8826c-de30-4cbb-8761-9a6df1a75452"
+        },
+        {
+            "user_id": 11,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:48:06.055744",
+            "id": 85,
+            "_id": "35da889c-6832-4c33-baac-4b4138df6e41"
+        },
+        {
+            "user_id": 6,
+            "action": "Login",
+            "details": "User adminjohn successfully logged in as visitor.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:48:12.602438",
+            "id": 86,
+            "_id": "ff5d6eb0-d737-4159-aead-6785894d6ca0"
+        },
+        {
+            "user_id": 6,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:52:00.725414",
+            "id": 87,
+            "_id": "582a763d-0e14-4eb1-8d76-b2e87704d8a7"
+        },
+        {
+            "user_id": 11,
+            "action": "Login",
+            "details": "User dEvil successfully logged in as employee.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:52:05.666253",
+            "id": 88,
+            "_id": "e298ced0-1d75-42fe-9015-cd4c6f5faf61"
+        },
+        {
+            "user_id": 11,
+            "action": "Request Approve",
+            "details": "Visitor request for Joy was approved by Devil. Remarks: APPROVED via approvals portal.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:52:40.780102",
+            "id": 89,
+            "_id": "c283f405-c49f-4957-bd36-0a2de60f3471"
+        },
+        {
+            "user_id": 11,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:53:16.449443",
+            "id": 90,
+            "_id": "667de1c8-ac5c-4523-bf43-9af9142873ee"
+        },
+        {
+            "user_id": 6,
+            "action": "Login",
+            "details": "User adminjohn successfully logged in as visitor.",
+            "ip_address": "10.251.82.159",
+            "created_at": "2026-06-21T16:53:22.650701",
+            "id": 91,
+            "_id": "b1f19fd2-81d0-411a-a9de-33b9296faffd"
         }
     ]
 }
