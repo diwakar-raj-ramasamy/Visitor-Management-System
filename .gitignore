@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.db
+
+app/static/uploads/photos/*
+app/static/uploads/ids/*
+app/static/uploads/qrcodes/*
