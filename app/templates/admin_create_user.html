@@ -111,7 +111,7 @@
 
     <main class="flex-grow overflow-y-auto relative flex flex-col">
         
-        <!-- Header -->
+        
         <header class="w-full top-0 sticky bg-surface border-b border-outline-variant/30 z-30 h-16 flex items-center">
             <div class="flex justify-between items-center px-lg w-full max-w-[1440px] mx-auto">
                 <div class="flex items-center gap-md">
@@ -128,7 +128,7 @@
             </div>
         </header>
 
-        <!-- Main Form Container -->
+        
         <div class="flex-grow p-margin_mobile lg:p-margin_desktop pb-24 lg:pb-md max-w-[720px] mx-auto w-full">
             
             <div class="bg-surface-container-lowest p-lg md:p-xl rounded-2xl border border-outline-variant/65 shadow-sm space-y-lg">
@@ -137,13 +137,13 @@
                     <p class="text-sm text-on-surface-variant mt-1">Fill in the user's details and credentials. Employees require additional tracking information.</p>
                 </div>
 
-                <!-- Error Banner -->
+                
                 <div id="error-banner" class="hidden bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
                     <span class="material-symbols-outlined text-red-600 text-[20px]">error</span>
                     <span id="error-message">Registration failed.</span>
                 </div>
 
-                <!-- Success Banner -->
+                
                 <div id="success-banner" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
                     <span class="material-symbols-outlined text-emerald-600 text-[20px]">check_circle</span>
                     <span>Account created successfully! Redirecting...</span>
@@ -151,14 +151,14 @@
 
                 <form id="create-user-form" class="space-y-md">
                     
-                    <!-- Full Name -->
+                    
                     <div class="flex flex-col gap-1.5">
                         <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="full_name">Full Name</label>
                         <input id="full_name" name="full_name" type="text" placeholder="e.g. Alexander Pierce" required
                                class="w-full h-12 bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"/>
                     </div>
 
-                    <!-- Email Address -->
+                    
                     <div class="flex flex-col gap-1.5">
                         <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="email">Email Address</label>
                         <input id="email" name="email" type="email" placeholder="e.g. alexander@kinetic-corp.com" required
@@ -166,14 +166,14 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-                        <!-- Username -->
+                        
                         <div class="flex flex-col gap-1.5">
                             <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="username">Username</label>
                             <input id="username" name="username" type="text" placeholder="e.g. apierce" required
                                    class="w-full h-12 bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"/>
                         </div>
 
-                        <!-- Password -->
+                        
                         <div class="flex flex-col gap-1.5">
                             <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="password">Temporary Password</label>
                             <input id="password" name="password" type="text" placeholder="Min 8 chars, 1 number, 1 symbol" required
@@ -181,7 +181,7 @@
                         </div>
                     </div>
 
-                    <!-- Role Dropdown -->
+                    
                     <div class="flex flex-col gap-1.5">
                         <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="role">System Role</label>
                         <select id="role" name="role" required onchange="handleRoleChange()"
@@ -193,14 +193,14 @@
                         </select>
                     </div>
 
-                    <!-- Employee Specific Fields Section -->
+                    
                     <div id="employee-fields" class="hidden border-t border-outline-variant/40 pt-md space-y-md">
                         <div class="p-md bg-surface-container rounded-xl">
                             <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-xs">Employee Registration Info</h3>
                             <p class="text-xs text-on-surface-variant">Host employees require a registered department and unique employee identification code.</p>
                         </div>
 
-                        <!-- Department Selection -->
+                        
                         <div class="flex flex-col gap-1.5">
                             <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="department_id">Department</label>
                             <select id="department_id" name="department_id"
@@ -213,14 +213,14 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-                            <!-- Employee Code -->
+                            
                             <div class="flex flex-col gap-1.5">
                                 <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="employee_code">Employee Code</label>
                                 <input id="employee_code" name="employee_code" type="text" placeholder="e.g. EMP-2026-0123"
                                        class="w-full h-12 bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"/>
                             </div>
 
-                            <!-- Phone Number -->
+                            
                             <div class="flex flex-col gap-1.5">
                                 <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="phone_number">Phone Number</label>
                                 <input id="phone_number" name="phone_number" type="tel" placeholder="e.g. +1 (555) 019-2834"
@@ -229,7 +229,7 @@
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
+                    
                     <div class="flex justify-end gap-md pt-lg border-t border-outline-variant/30">
                         <a href="/admin/users" class="h-12 px-6 flex items-center justify-center border border-outline hover:bg-surface-container-high text-on-surface font-semibold text-sm rounded-xl transition-all duration-200">
                             Cancel
@@ -248,7 +248,7 @@
         {% include 'partials/admin_footer.html' %}
     </main>
 
-    <!-- Backdrop for mobile sidebars -->
+    
     <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden transition-opacity duration-300" onclick="toggleSidebar()"></div>
 
     <script>
@@ -298,7 +298,7 @@
             const password = document.getElementById('password').value;
             const role = document.getElementById('role').value;
 
-            // Password Security Validations
+            
             const hasLength = password.length >= 8;
             const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
             const hasNumber = /\d/.test(password);

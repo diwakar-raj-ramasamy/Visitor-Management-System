@@ -358,7 +358,7 @@
 
                     const maxTraffic = Math.max(...data.traffic_data, 1);
                     data.traffic_data.forEach((val, idx) => {
-                        const barPercent = Math.round((val / maxTraffic) * 85) + 10; // offset for styling
+                        const barPercent = Math.round((val / maxTraffic) * 85) + 10; 
                         const label = data.traffic_labels[idx];
                         
                         const barEl = document.createElement('div');

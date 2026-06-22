@@ -342,7 +342,7 @@
                     </div>
                 </section>
 
-                <!-- Section: Terms & Security Policies -->
+                
                 <section class="order-5 lg:order-5 lg:col-span-12 bg-white p-lg rounded-xl shadow-sm border border-outline-variant">
                     <div class="flex items-start gap-md">
                         <div class="flex items-center h-5">
@@ -357,7 +357,7 @@
                     </div>
                 </section>
 
-                <!-- Mobile Security Status Card (Visible on mobile only) -->
+                
                 <div class="order-6 lg:col-span-12 bg-primary text-white p-lg rounded-xl shadow-sm flex items-start gap-md lg:hidden">
                     <div class="flex-1">
                         <p class="text-[10px] font-bold tracking-wider uppercase opacity-85">Security Status</p>
@@ -372,7 +372,7 @@
                     </div>
                 </div>
 
-                <!-- Sticky Action Bar -->
+                
                 <div class="fixed bottom-16 lg:bottom-0 left-0 lg:left-[280px] right-0 bg-white lg:bg-surface border-t border-outline-variant/60 p-md lg:px-lg flex justify-between items-center z-20 shadow-lg">
                     <div class="flex items-center">
                         <a href="/" class="px-lg py-2 text-primary font-semibold hover:bg-surface-container rounded-lg transition-colors flex items-center justify-center">
@@ -390,7 +390,7 @@
                 </div>
             </form>
 
-            <!-- Bottom Navigation Bar for Mobile -->
+            
             {% if current_user %}
                 {% if current_user.role == 'admin' %}
                 {% include 'partials/admin_footer.html' %}
@@ -406,7 +406,7 @@
     </div>
 
     <script>
-        // Set default date and time
+        
         const today = new Date();
         document.getElementById('visit_date').value = today.toISOString().split('T')[0];
         
@@ -414,7 +414,7 @@
         const minutes = String(today.getMinutes()).padStart(2, '0');
         document.getElementById('visit_time').value = `${hours}:${minutes}`;
 
-        // Photo file input preview
+        
         const photoInput = document.getElementById('photo');
         const photoPreview = document.getElementById('photo-preview');
         const photoPlaceholder = document.getElementById('photo-placeholder');
@@ -432,7 +432,7 @@
             }
         });
 
-        // ID file input preview / name listing
+        
         const idInput = document.getElementById('id_proof');
         const idText = document.getElementById('id-text');
         idInput.addEventListener('change', function(e) {
@@ -442,7 +442,7 @@
             }
         });
 
-        // Form submission
+        
         document.getElementById('visitor-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submit-btn');
@@ -477,7 +477,7 @@
                         <span>Registered Successfully!</span>
                     `;
                     
-                    // Reset form after a short delay
+                    
                     setTimeout(() => {
                         document.getElementById('visitor-form').reset();
                         photoPreview.classList.add('hidden');
@@ -488,7 +488,7 @@
                         submitBtn.innerHTML = originalContent;
                         submitBtn.disabled = false;
                         
-                        // Scroll to top
+                        
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                     }, 3000);
                 } else {

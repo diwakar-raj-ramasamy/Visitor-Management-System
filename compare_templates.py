@@ -2,7 +2,7 @@ import os
 from bs4 import BeautifulSoup
 
 local_dir = r"c:\Users\Dell\OneDrive\Documents\VMS\app\templates"
-stitch_dir = r"C:\Users\Dell\.gemini\antigravity-ide\brain\ea09bf43-8a2c-4ff0-b238-b6244f8558a5\scratch\stitch_screens"
+design_dir = r"C:\Users\Dell\.host\open-ide\brain\ea09bf43-8a2c-4ff0-b238-b6244f8558a5\scratch\design_screens"
 
 mappings = {
     "login.html": ["Login_Page.html", "Login_Page_-_Desktop.html"],
@@ -16,7 +16,7 @@ mappings = {
     "signup.html": ["Visitor_Account_Registration.html", "Staff_Registration_-_Admin_Only.html"],
 }
 
-for local_name, stitch_names in mappings.items():
+for local_name, design_names in mappings.items():
     local_path = os.path.join(local_dir, local_name)
     if not os.path.exists(local_path):
         print(f"Local file {local_name} not found!")
@@ -27,26 +27,26 @@ for local_name, stitch_names in mappings.items():
         local_soup = BeautifulSoup(f.read(), 'html.parser')
         
     local_inputs = [i.get('name') or i.get('id') for i in local_soup.find_all('input') if i.get('name') or i.get('id')]
-    local_selects = [s.get('name') or s.get('id') for s in local_soup.find_all('select') if s.get('name') or s.get('id')]
+    local_selects = [d.get('name') or d.get('id') for d in local_soup.find_all('select') if d.get('name') or d.get('id')]
     local_buttons = [b.text.strip() for b in local_soup.find_all('button')]
     
     print(f"Local inputs/selects: {local_inputs + local_selects}")
     
-    for s_name in stitch_names:
-        s_path = os.path.join(stitch_dir, s_name)
-        if not os.path.exists(s_path):
+    for d_name in  design_names:
+        d_path = os.path.join(design_dir, d_name)
+        if not os.path.exists(d_path):
             continue
             
-        print(f"  vs Stitch {s_name}:")
-        with open(s_path, 'r', encoding='utf-8') as f:
-            s_soup = BeautifulSoup(f.read(), 'html.parser')
+        print(f"  vs Design {d_name}:")
+        with open(d_path, 'r', encoding='utf-8') as f:
+            d_soup = BeautifulSoup(f.read(), 'html.parser')
             
-        s_inputs = [i.get('name') or i.get('id') for i in s_soup.find_all('input') if i.get('name') or i.get('id')]
-        s_selects = [sel.get('name') or sel.get('id') for sel in s_soup.find_all('select') if sel.get('name') or sel.get('id')]
-        s_buttons = [b.text.strip() for b in s_soup.find_all('button')]
+        d_inputs = [i.get('name') or i.get('id') for i in d_soup.find_all('input') if i.get('name') or i.get('id')]
+        d_selects = [d.get('name') or d.get('id') for d in d_soup.find_all('select') if d.get('name') or d.get('id')]
+        d_buttons = [b.text.strip() for b in d_soup.find_all('button')]
         
         
-        missing_in_local = set(s_inputs + s_selects) - set(local_inputs + local_selects)
+        missing_in_local = set(d_inputs + d_selects) - set(local_inputs + local_selects)
         if missing_in_local:
             print(f"    WARNING: Missing inputs in local template: {missing_in_local}")
         else:
@@ -54,6 +54,6 @@ for local_name, stitch_names in mappings.items():
             
         
         local_headers = [h.text.strip() for h in local_soup.find_all(['h1', 'h2', 'h3'])]
-        s_headers = [h.text.strip() for h in s_soup.find_all(['h1', 'h2', 'h3'])]
+        d_headers = [h.text.strip() for h in d_soup.find_all(['h1', 'h2', 'h3'])]
         print(f"    Local headers: {local_headers[:5]}")
-        print(f"    Stitch headers: {s_headers[:5]}")
+        print(f"    Design headers: {d_headers[:5]}")

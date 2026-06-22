@@ -2,7 +2,7 @@ import os
 from bs4 import BeautifulSoup
 
 local_dir = r"c:\Users\Dell\OneDrive\Documents\VMS\app\templates"
-stitch_dir = r"C:\Users\Dell\.gemini\antigravity-ide\brain\ea09bf43-8a2c-4ff0-b238-b6244f8558a5\scratch\stitch_screens"
+design_dir = r"C:\Users\Dell\.host\open-ide\brain\ea09bf43-8a2c-4ff0-b238-b6244f8558a5\scratch\design_screens"
 
 mappings = {
     "login.html": "Login_Page.html",
@@ -16,16 +16,16 @@ mappings = {
     "signup.html": "Visitor_Account_Registration.html",
 }
 
-for local_name, stitch_name in mappings.items():
+for local_name, design_name in mappings.items():
     local_path = os.path.join(local_dir, local_name)
-    stitch_path = os.path.join(stitch_dir, stitch_name)
-    if not os.path.exists(local_path) or not os.path.exists(stitch_path):
+    design_path = os.path.join(design_dir, design_name)
+    if not os.path.exists(local_path) or not os.path.exists(design_path):
         continue
         
-    print(f"\n=========================================\nComparing {local_name} vs {stitch_name}")
+    print(f"\n=========================================\nComparing {local_name} vs {design_name}")
     with open(local_path, 'r', encoding='utf-8') as f:
         l_soup = BeautifulSoup(f.read(), 'html.parser')
-    with open(stitch_path, 'r', encoding='utf-8') as f:
+    with open(design_path, 'r', encoding='utf-8') as f:
         s_soup = BeautifulSoup(f.read(), 'html.parser')
         
     
@@ -33,9 +33,9 @@ for local_name, stitch_name in mappings.items():
     s_texts = [t.strip() for t in s_soup.find_all(text=True) if t.strip()]
     
     
-    new_in_stitch = [t for t in s_texts if t not in l_texts]
-    print(f"Texts in Stitch but not in Local (count {len(new_in_stitch)}):")
-    for t in new_in_stitch[:15]:
+    new_in_design = [t for t in s_texts if t not in l_texts]
+    print(f"Texts in Design but not in Local (count {len(new_in_design)}):")
+    for t in new_in_design[:15]:
         print(f"  - {t}")
         
     
@@ -46,4 +46,4 @@ for local_name, stitch_name in mappings.items():
     
     missing_inputs = set(s_inputs) - set(l_inputs)
     if missing_inputs:
-        print(f"Inputs in Stitch but not in Local: {missing_inputs}")
+        print(f"Inputs in Design but not in Local: {missing_inputs}")

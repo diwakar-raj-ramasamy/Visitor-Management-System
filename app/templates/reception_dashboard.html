@@ -197,7 +197,7 @@
                             <p class="text-on-surface-variant text-[11px] lg:text-body-sm font-semibold mt-xs uppercase tracking-wider">Today's Visitors</p>
                         </div>
                     </div>
-                    <!-- Checked-In -->
+                    
                     <div class="bg-surface-container-lowest p-md lg:p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
                         <div class="flex justify-between items-center">
                             <span class="lg:block p-sm bg-secondary-fixed rounded-lg text-secondary hidden">
@@ -213,7 +213,7 @@
                             <p class="text-on-surface-variant text-[11px] lg:text-body-sm font-semibold mt-xs uppercase tracking-wider">Checked-In</p>
                         </div>
                     </div>
-                    <!-- Pending Approval -->
+                    
                     <div class="bg-surface-container-lowest p-md lg:p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
                         <div class="flex justify-between items-center">
                             <span class="lg:block p-sm bg-error-container rounded-lg text-error hidden">
@@ -230,7 +230,7 @@
                             <p class="text-on-surface-variant text-[11px] lg:text-body-sm font-semibold mt-xs uppercase tracking-wider">Pending Approval</p>
                         </div>
                     </div>
-                    <!-- Checked-Out -->
+                    
                     <div class="bg-surface-container-lowest p-md lg:p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
                         <div class="flex justify-between items-center">
                             <span class="lg:block p-sm bg-tertiary-fixed rounded-lg text-tertiary hidden">
@@ -248,9 +248,9 @@
                     </div>
                 </section>
 
-                <!-- Desktop Tables (hidden on mobile) -->
+                
                 <div class="hidden lg:block space-y-lg">
-                    <!-- Active Checked-In Log Table -->
+                    
                     <section class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
                         <div class="p-lg border-b border-outline-variant flex justify-between items-center bg-surface-bright">
                             <h2 class="font-headline-lg text-title-md flex items-center gap-sm font-semibold">
@@ -279,7 +279,7 @@
                         </div>
                     </section>
 
-                    <!-- Approved Visitor Requests Log Table -->
+                    
                     <section class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
                         <div class="p-lg border-b border-outline-variant flex justify-between items-center bg-surface-bright">
                             <h2 class="font-headline-lg text-title-md flex items-center gap-sm font-semibold">
@@ -309,7 +309,7 @@
                     </section>
                 </div>
 
-                <!-- Mobile Live Visitor Log Section (visible on mobile only) -->
+                
                 <section class="lg:hidden space-y-md">
                     <div class="flex justify-between items-center px-xs">
                         <h4 class="font-title-md text-on-surface font-bold">Live Visitor Log</h4>
@@ -321,12 +321,12 @@
                 </section>
             </div>
 
-            <!-- Floating Action Button for Mobile -->
+            
             <a href="/visitor/register" class="fixed bottom-20 right-6 z-30 lg:hidden w-14 h-14 bg-primary hover:bg-secondary text-white rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform">
                 <span class="material-symbols-outlined text-[24px]">person_add</span>
             </a>
 
-            <!-- Bottom Navigation Bar for Mobile -->
+            
             {% if current_user.role == 'admin' %}
                 {% include 'partials/admin_footer.html' %}
             {% elif current_user.role == 'receptionist' %}
@@ -337,13 +337,13 @@
 
     <script>
         function loadDashboard() {
-            // Format current date and time for mobile subheader
+            
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true };
             const formatted = new Date().toLocaleDateString('en-US', options).replace(' at ', ' • ');
             const dateEl = document.getElementById('mobile-date-time');
             if (dateEl) dateEl.textContent = formatted;
 
-            // Load stats KPIs
+            
             fetch('/api/dashboard/stats')
                 .then(res => res.json())
                 .then(data => {
@@ -353,7 +353,7 @@
                     document.getElementById('kpi-checked-out').textContent = String(data.recent_visits.filter(v => v.status === 'checked_out').length || 0).padStart(2, '0');
                 });
 
-            // Load logs lists
+            
             fetch('/api/reception/active')
                 .then(res => res.json())
                 .then(data => {

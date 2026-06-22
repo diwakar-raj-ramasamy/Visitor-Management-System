@@ -116,7 +116,7 @@
 
     <main class="flex-grow overflow-y-auto relative flex flex-col">
         
-        <!-- Header -->
+        
         <header class="w-full top-0 sticky bg-surface border-b border-outline-variant/30 z-30 h-16 flex items-center">
             <div class="hidden lg:flex justify-between items-center px-lg w-full max-w-[1440px] mx-auto">
                 <div class="flex items-center gap-md">
@@ -145,16 +145,16 @@
             </div>
         </header>
 
-        <!-- Main Content Area -->
+        
         <div class="flex-grow p-margin_mobile lg:p-margin_desktop pb-24 lg:pb-md space-y-lg max-w-[1440px] mx-auto w-full">
             
-            <!-- Mobile Search -->
+            
             <div class="lg:hidden relative w-full px-xs mb-md">
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
                 <input id="search-input-mobile" class="w-full bg-white border border-outline-variant rounded-xl py-3 pl-10 pr-4 text-sm font-medium focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Search staff..." type="text"/>
             </div>
 
-            <!-- Page Title Card -->
+            
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-md bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant/65 shadow-sm">
                 <div>
                     <h1 class="text-2xl font-bold text-on-surface tracking-tight">Staff Accounts Directory</h1>
@@ -166,19 +166,19 @@
                 </a>
             </div>
 
-            <!-- Error Banner -->
+            
             <div id="error-banner" class="hidden bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
                 <span class="material-symbols-outlined text-red-600 text-[20px]">error</span>
                 <span id="error-message">An error occurred.</span>
             </div>
 
-            <!-- Success Banner -->
+            
             <div id="success-banner" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
                 <span class="material-symbols-outlined text-emerald-600 text-[20px]">check_circle</span>
                 <span id="success-message">Success!</span>
             </div>
 
-            <!-- Desktop Users Table -->
+            
             <div class="hidden md:block bg-surface-container-lowest rounded-2xl border border-outline-variant/65 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -252,7 +252,7 @@
                 </div>
             </div>
 
-            <!-- Mobile Users List -->
+            
             <div class="md:hidden space-y-sm" id="mobile-users-list">
                 {% if users %}
                     {% for u in users %}
@@ -309,7 +309,7 @@
         {% include 'partials/admin_footer.html' %}
     </main>
 
-    <!-- Delete Confirmation Modal -->
+    
     <div id="delete-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 hidden transition-opacity duration-300">
         <div class="bg-surface-container-lowest max-w-sm w-full rounded-2xl border border-outline-variant shadow-xl p-lg space-y-lg scale-95 transition-transform duration-300">
             <div class="flex items-center gap-md text-error">
@@ -330,7 +330,7 @@
         </div>
     </div>
 
-    <!-- Backdrop for mobile sidebars -->
+    
     <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden transition-opacity duration-300" onclick="toggleSidebar()"></div>
 
     <script>
@@ -349,7 +349,7 @@
         function filterUsers(query) {
             query = query.toLowerCase().trim();
             
-            // Filter Desktop Table
+            
             document.querySelectorAll('#users-tbody tr.user-row').forEach(row => {
                 const name = row.querySelector('.search-name').textContent.toLowerCase();
                 const username = row.querySelector('.search-username').textContent.toLowerCase();
@@ -360,7 +360,7 @@
                 }
             });
 
-            // Filter Mobile Cards
+            
             document.querySelectorAll('#mobile-users-list .user-card').forEach(card => {
                 const name = card.querySelector('.search-name').textContent.toLowerCase();
                 const username = card.querySelector('.search-username').textContent.toLowerCase();
@@ -400,7 +400,7 @@
                 if (res.status === 200) {
                     const newStatus = res.data.status;
                     
-                    // Update Desktop Badge
+                    
                     const badge = document.getElementById(`status-badge-${userId}`);
                     if (badge) {
                         badge.textContent = newStatus;
@@ -411,7 +411,7 @@
                         }
                     }
 
-                    // Update Mobile Badge
+                    
                     const mobBadge = document.getElementById(`mobile-status-badge-${userId}`);
                     if (mobBadge) {
                         mobBadge.textContent = newStatus;
@@ -481,7 +481,7 @@
                     document.getElementById('success-message').textContent = res.data.message;
                     successBanner.classList.remove('hidden');
                     
-                    // Reload page or remove elements after brief delay
+                    
                     setTimeout(() => {
                         window.location.reload();
                     }, 1000);

@@ -116,7 +116,6 @@ def get_stats():
         
     return get_data()
 
-# User Management routes (Admin only)
 
 @dashboard_bp.route('/admin/users')
 def admin_users():

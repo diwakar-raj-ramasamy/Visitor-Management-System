@@ -197,11 +197,11 @@
                     </div>
                 </div>
                 
-                <!-- Right Column: Details & Security -->
+                
                 <div class="lg:col-span-8 space-y-6">
                     
                     {% if user.role == 'employee' %}
-                    <!-- Upcoming Hosted Visitors Card -->
+                    
                     <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant overflow-hidden">
                         <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-gray-50">
                             <h2 class="text-md font-semibold text-on-surface flex items-center gap-2">
@@ -247,7 +247,7 @@
                         </div>
                     </div>
 
-                    <!-- Guest Arrival Alerts Card -->
+                    
                     <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant overflow-hidden">
                         <div class="px-6 py-4 border-b border-outline-variant flex items-center bg-gray-50">
                             <h2 class="text-md font-semibold text-on-surface flex items-center gap-2">
@@ -282,7 +282,7 @@
                     </div>
                     {% endif %}
                     
-                    <!-- Personal Details Form Card -->
+                    
                     <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant overflow-hidden">
                         <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-gray-50">
                             <h2 class="text-md font-semibold text-on-surface flex items-center gap-2">
@@ -332,7 +332,7 @@
                         </form>
                     </div>
                     
-                    <!-- Security Card -->
+                    
                     <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant overflow-hidden">
                         <div class="px-6 py-4 border-b border-outline-variant bg-gray-50">
                             <h2 class="text-md font-semibold text-on-surface flex items-center gap-2">
@@ -342,7 +342,7 @@
                         </div>
                         
                         <div class="p-6 space-y-6">
-                            <!-- Change Password Sub-section -->
+                            
                             <form id="password-form" class="space-y-4">
                                 <h3 class="text-sm font-semibold text-on-surface">Change Account Password</h3>
                                 
@@ -370,7 +370,7 @@
                         </div>
                     </div>
                     
-                    <!-- Recent Activity Card -->
+                    
                     <div class="bg-white rounded-xl shadow-level-1 border border-outline-variant overflow-hidden">
                         <div class="px-6 py-4 border-b border-outline-variant bg-gray-50">
                             <h2 class="text-md font-semibold text-on-surface flex items-center gap-2">
@@ -411,7 +411,7 @@
     </main>
 </div>
 
-<!-- BottomNavBar for Mobile Viewports -->
+
 {% if user.role == 'admin' %}
     {% include 'partials/admin_footer.html' %}
 {% elif user.role == 'receptionist' %}
@@ -424,7 +424,7 @@
 
 
 <script>
-    // Toast Alert Helper
+    
     function showToast(message, type = 'success') {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
@@ -440,12 +440,12 @@
         
         container.appendChild(toast);
         
-        // Trigger transition
+        
         setTimeout(() => {
             toast.classList.remove('translate-y-2', 'opacity-0');
         }, 10);
         
-        // Remove toast after 3 seconds
+        
         setTimeout(() => {
             toast.classList.add('opacity-0', 'translate-y-2');
             setTimeout(() => {
@@ -454,7 +454,7 @@
         }, 3000);
     }
 
-    // Handle profile details form submission
+    
     document.getElementById('profile-details-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const firstName = document.getElementById('first_name').value.trim();
@@ -478,7 +478,7 @@
             const result = await response.json();
             if (response.ok) {
                 showToast(result.message || 'Details saved successfully!', 'success');
-                // Reload after 1.5s to display updated header info
+                
                 setTimeout(() => window.location.reload(), 1500);
             } else {
                 showToast(result.error || 'Failed to save details.', 'error');
@@ -488,7 +488,7 @@
         }
     });
 
-    // Handle password form submission
+    
     document.getElementById('password-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const currentPassword = document.getElementById('current_password').value;
@@ -521,7 +521,7 @@
         }
     });
 
-    // Guest Arrival Alerts Toggle Interaction
+    
     const pushAlert = document.getElementById('push-notifications');
     const emailAlert = document.getElementById('email-confirmation');
     if (pushAlert) {
