@@ -52,6 +52,10 @@ def create_app(config_class='config.Config'):
                 with db.engine.begin() as conn:
                     conn.execute(sqlalchemy.text("ALTER TABLE users ADD COLUMN status VARCHAR(50) DEFAULT 'active' NOT NULL"))
                 app.logger.info("Successfully added status column to users table.")
+            if 'company_name' not in user_columns:
+                with db.engine.begin() as conn:
+                    conn.execute(sqlalchemy.text("ALTER TABLE users ADD COLUMN company_name VARCHAR(150)"))
+                app.logger.info("Successfully added company_name column to users table.")
         except Exception as e:
             app.logger.error(f"Error updating database schema: {e}")
         
@@ -151,6 +155,7 @@ def create_app(config_class='config.Config'):
     from app.routes.reception import reception_bp
     from app.routes.dashboard import dashboard_bp
     from app.routes.reports import reports_bp
+    from app.routes.host import host_bp
     
     app.register_blueprint(auth_bp)
     app.register_blueprint(visitor_bp)
@@ -158,5 +163,6 @@ def create_app(config_class='config.Config'):
     app.register_blueprint(reception_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(reports_bp)
+    app.register_blueprint(host_bp)
     
     return app

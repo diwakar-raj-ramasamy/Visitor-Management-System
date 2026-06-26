@@ -107,6 +107,59 @@
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
         .shadow-level-1 { box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
     </style>
+    {% if current_user and current_user.role == 'host' %}
+    <style>
+        body {
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(at 0% 100%, rgba(37, 99, 235, 0.05) 0px, transparent 50%), 
+                radial-gradient(at 50% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+        .text-primary, .text-primary-container, .text-on-primary-container {
+            color: #2563eb !important;
+        }
+        .bg-primary, .bg-primary-container {
+            background-color: #2563eb !important;
+        }
+        .border-primary, .focus\:border-primary:focus {
+            border-color: #2563eb !important;
+        }
+        .focus\:ring-primary:focus {
+            --tw-ring-color: #3b82f6 !important;
+        }
+        button[type="submit"], .bg-primary {
+            background-color: #2563eb !important;
+        }
+        button[type="submit"]:hover, .bg-primary:hover, .hover\:bg-emerald-700:hover, .hover\:bg-emerald-800:hover {
+            background-color: #1d4ed8 !important;
+        }
+        .bg-emerald-50, .bg-green-50 {
+            background-color: #eff6ff !important;
+        }
+        .text-green-700, .text-emerald-700 {
+            color: #1d4ed8 !important;
+        }
+        .bg-secondary-container {
+            background-color: rgba(37, 99, 235, 0.1) !important;
+            color: #2563eb !important;
+        }
+        .text-on-secondary-container {
+            color: #2563eb !important;
+        }
+        .material-symbols-outlined.text-primary {
+            color: #2563eb !important;
+        }
+        .bg-primary-container {
+            background-color: #dbeafe !important;
+            color: #1d4ed8 !important;
+        }
+        .bg-gray-50 {
+            background-color: #f8fafc !important;
+        }
+    </style>
+    {% endif %}
 </head>
 <body class="bg-background text-on-background flex h-screen overflow-hidden">
 

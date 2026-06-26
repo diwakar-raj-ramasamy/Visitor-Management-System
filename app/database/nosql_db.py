@@ -266,7 +266,8 @@ def sync_user_to_sql(user_doc_or_obj):
                 role=doc['role'],
                 email=doc['email'],
                 full_name=doc['full_name'],
-                status=doc.get('status', 'active')
+                status=doc.get('status', 'active'),
+                company_name=doc.get('company_name')
             )
             db.session.add(sql_user)
         else:
@@ -276,6 +277,7 @@ def sync_user_to_sql(user_doc_or_obj):
             sql_user.email = doc['email']
             sql_user.full_name = doc['full_name']
             sql_user.status = doc.get('status', 'active')
+            sql_user.company_name = doc.get('company_name')
             
         
         created_at_val = doc.get('created_at')

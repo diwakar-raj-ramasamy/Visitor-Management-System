@@ -102,7 +102,7 @@
         {
             "username": "Diwa_0003",
             "role": "admin",
-            "email": "diwakarraj385@gmail.com",
+            "email": "diwakar@example.com",
             "full_name": "Diwakar Raj R",
             "status": "active",
             "created_at": "2026-06-21T16:16:28.711772",
@@ -114,7 +114,7 @@
         {
             "username": "dEvil",
             "role": "employee",
-            "email": "devilside622@gmail.com",
+            "email": "devilaccount@example.com",
             "full_name": "Devil",
             "status": "active",
             "created_at": "2026-06-21T16:22:56.958205",
@@ -122,6 +122,31 @@
             "password": "scrypt:32768:8:1$Sz3HIA3lIOsbegJu$7d7afd44861902e08b4f20fe69ed103caca1745006a013ac29f0ae79c02523fdb8abbd3cec4b0df15eae959f1baba2b5829e804e5fecbc496847919374bad9ea",
             "id": 11,
             "_id": "ce097ac3-ad52-4b63-a8a9-63d001112bb9"
+        },
+        {
+            "username": "host",
+            "role": "host",
+            "email": "host@example.com",
+            "full_name": "Executive Host",
+            "status": "active",
+            "created_at": "2026-06-26T07:04:17.118281",
+            "updated_at": "2026-06-26T07:04:17.118281",
+            "password": "scrypt:32768:8:1$gjwVun2BJMrDC9LH$29b37be5cae5eb4e9a442495e6bf4a9093236022f9cc074bea01110bd7a4c97a0111f43a73bb2e5e9755e06071b66d66593555cded4caf0fc2f3c637aa17a22e",
+            "id": 12,
+            "_id": "22554558-149a-4d71-8754-2000668204d5"
+        },
+        {
+            "username": "futureadmin",
+            "role": "receptionist",
+            "email": "futureadmin@futuretech.com",
+            "full_name": "FutureTech Receptionist",
+            "status": "active",
+            "company_name": "FutureTech",
+            "created_at": "2026-06-26T09:13:06.849901",
+            "updated_at": "2026-06-26T09:13:06.849901",
+            "password": "scrypt:32768:8:1$7KM7mwAtM2rhGOK7$ceb0d7a031a4915476e6bdba4ec2db02e4d53cd97ba23e288f7ec461cb1ffec946b0c27cd6d372871ba97338eb9eaf216a4ed0bd99156ac1305f793abb41cd2d",
+            "id": 13,
+            "_id": "587d5580-6e65-4298-80a2-d4f996ebc598"
         }
     ],
     "audit_logs": [
@@ -934,6 +959,244 @@
             "created_at": "2026-06-21T16:53:22.650701",
             "id": 91,
             "_id": "b1f19fd2-81d0-411a-a9de-33b9296faffd"
+        },
+        {
+            "user_id": 1,
+            "action": "Login",
+            "details": "User admin successfully logged in as admin.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T06:12:45.915806",
+            "id": 92,
+            "_id": "3b3042b5-c6b3-4a06-aec4-0dc9471f2972"
+        },
+        {
+            "user_id": 3,
+            "action": "Login",
+            "details": "User employee successfully logged in as employee.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T06:52:23.316461",
+            "id": 93,
+            "_id": "403949d3-fb58-42b7-915c-7f9d0c61e007"
+        },
+        {
+            "user_id": 3,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:05:42.679040",
+            "id": 94,
+            "_id": "32ccce30-221f-4235-8e57-4b77831eb05e"
+        },
+        {
+            "user_id": 12,
+            "action": "Login",
+            "details": "User host successfully logged in as host.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:06:49.365050",
+            "id": 95,
+            "_id": "e26049e0-9cff-413a-878f-dfee49ad4613"
+        },
+        {
+            "user_id": 12,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:07:14.857261",
+            "id": 96,
+            "_id": "7d68e762-c5d3-4920-be95-7d099c737d42"
+        },
+        {
+            "user_id": 2,
+            "action": "Login",
+            "details": "User receptionist successfully logged in as receptionist.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:11:20.670688",
+            "id": 97,
+            "_id": "068e4944-2eea-4e7b-9c80-37fe28c8e822"
+        },
+        {
+            "user_id": 2,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:11:49.076980",
+            "id": 98,
+            "_id": "c8717f41-ee40-4951-be84-009cd78955b2"
+        },
+        {
+            "user_id": 3,
+            "action": "Login",
+            "details": "User employee successfully logged in as employee.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:12:38.489670",
+            "id": 99,
+            "_id": "310c7916-3f1e-4ceb-83ba-b4c589f717b2"
+        },
+        {
+            "user_id": 3,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:15:29.143672",
+            "id": 100,
+            "_id": "037ac2be-9368-4aa8-96c3-c03686454626"
+        },
+        {
+            "user_id": 2,
+            "action": "Login",
+            "details": "User receptionist successfully logged in as receptionist.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:15:51.838429",
+            "id": 101,
+            "_id": "6b73f25c-96e6-405e-ac9f-41e396c73b15"
+        },
+        {
+            "user_id": 2,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:19:42.360751",
+            "id": 102,
+            "_id": "51442f2c-e957-4891-a8a5-d04bda39bdd7"
+        },
+        {
+            "user_id": 1,
+            "action": "Login",
+            "details": "User admin successfully logged in as admin.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:21:22.304457",
+            "id": 103,
+            "_id": "219a14fb-3cb0-4fc3-b177-3ac49bf8412c"
+        },
+        {
+            "user_id": 1,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:22:10.164621",
+            "id": 104,
+            "_id": "66677d5c-527d-48c6-b98b-bdc5030e8d65"
+        },
+        {
+            "user_id": 2,
+            "action": "Login",
+            "details": "User receptionist successfully logged in as receptionist.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:24:14.640529",
+            "id": 105,
+            "_id": "a8c92aec-4f60-4238-b9b3-17aba3ecb247"
+        },
+        {
+            "user_id": 2,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:25:11.976120",
+            "id": 106,
+            "_id": "cf1a1acc-9b58-4f24-8139-7232d4974458"
+        },
+        {
+            "user_id": 12,
+            "action": "Login",
+            "details": "User host successfully logged in as host.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:26:25.115957",
+            "id": 107,
+            "_id": "2e625c6f-8e09-438e-aa97-730c46672e41"
+        },
+        {
+            "user_id": 12,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:26:43.031108",
+            "id": 108,
+            "_id": "c261ff33-ca27-4360-9040-8f4f91b586ba"
+        },
+        {
+            "user_id": 12,
+            "action": "Login",
+            "details": "User host successfully logged in as host.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T07:27:17.918624",
+            "id": 109,
+            "_id": "cf68b088-5678-49b4-8d4f-4944f5cb9abc"
+        },
+        {
+            "user_id": 12,
+            "action": "Account Created",
+            "details": "Created receptionist user futureadmin for company FutureTech.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T09:13:07.169441",
+            "id": 110,
+            "_id": "7114cd03-de23-41f7-bd61-3dd5da1c0a05"
+        },
+        {
+            "user_id": 12,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T09:13:32.897227",
+            "id": 111,
+            "_id": "a6d8764d-c6aa-4f78-88a7-261921d5ffdd"
+        },
+        {
+            "user_id": 12,
+            "action": "Login",
+            "details": "User host successfully logged in as host.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T09:14:53.521235",
+            "id": 112,
+            "_id": "e66c469b-eeb1-4658-9c76-7b35c2ea663e"
+        },
+        {
+            "user_id": 12,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T09:15:44.547552",
+            "id": 113,
+            "_id": "07e5250e-0c4b-4184-a497-5b0407fc41e1"
+        },
+        {
+            "user_id": 12,
+            "action": "Login",
+            "details": "User host successfully logged in as host.",
+            "ip_address": "10.62.119.159",
+            "created_at": "2026-06-26T09:16:57.766092",
+            "id": 114,
+            "_id": "1005e2dc-93ea-4d28-a23a-0d5af5389b02"
+        },
+        {
+            "user_id": 12,
+            "action": "Login",
+            "details": "User host successfully logged in as host.",
+            "ip_address": "127.0.0.1",
+            "created_at": "2026-06-26T09:17:55.146727",
+            "id": 115,
+            "_id": "40ec4751-e19f-4d1d-abd9-7cb30622dacc"
+        }
+    ],
+    "registered_companies": [
+        {
+            "company": "TechCorp",
+            "employees": 50,
+            "receptionists": 2,
+            "visitors": 0,
+            "growth": "+0.0%+10.0%",
+            "status": "Active",
+            "id": 1,
+            "_id": "805573e9-ed49-4749-973b-0238100a0d1d"
+        },
+        {
+            "company": "FutureTech",
+            "employees": 10,
+            "receptionists": 1,
+            "visitors": 0,
+            "growth": "+0.0%+5.0%",
+            "status": "Active",
+            "id": 2,
+            "_id": "39ee84fa-9f87-44ff-9e43-7c7edda6f405"
         }
     ]
 }

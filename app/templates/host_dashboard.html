@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Host Login Portal | Enterprise VMS Analytics</title>
+    <meta name="description" content="Premium enterprise operations analytics dashboard for the Host Login Portal in the Visitor Management System."/>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        },
+                        emerald: {
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    },
+                    borderRadius: {
+                        '2xl': '16px',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+        }
+        
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+        }
+        
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+        }
+        
+        .ambient-bg {
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.06) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.04) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(59, 130, 246, 0.03) 0px, transparent 50%);
+        }
+        
+        .dark .ambient-bg {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        
+        .hover-lift {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.08);
+        }
+        .dark .hover-lift:hover {
+            box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .flow-node {
+            transition: all 0.3s ease;
+        }
+        .flow-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .glass-card {
+                border: 1px solid #e2e8f0 !important;
+                box-shadow: none !important;
+                background: white !important;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body class="ambient-bg text-slate-800 dark:text-slate-200 min-h-screen flex font-sans antialiased overflow-x-hidden">
+
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/40 z-40 hidden lg:hidden backdrop-blur-sm transition-opacity no-print" onclick="toggleSidebar()"></div>
+
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col h-screen w-64 glass-panel border-r border-slate-200/50 dark:border-slate-800/50 transform -translate-x-full lg:transform-none lg:translate-x-0 transition-transform duration-300 ease-in-out no-print">
+
+        <div class="px-6 py-6 flex items-center gap-3 border-b border-slate-200/40 dark:border-slate-800/40">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-primary-500/20">
+                <span class="material-symbols-outlined text-white font-bold text-[24px]">vpn_key</span>
+            </div>
+            <div>
+                <h1 class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-primary-600 to-emerald-500 bg-clip-text text-transparent">Host Login Portal</h1>
+                <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest">Enterprise VMS</p>
+            </div>
+        </div>
+
+        <nav class="flex-grow px-4 py-6 space-y-1.5 overflow-y-auto">
+            <a class="flex items-center gap-3.5 px-4 py-3 bg-primary-600/10 dark:bg-primary-600/20 text-primary-600 dark:text-primary-500 font-bold rounded-xl transition-all shadow-sm" href="/host/dashboard">
+                <span class="material-symbols-outlined text-[22px]">dashboard</span>
+                <span class="text-sm">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3.5 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-800 dark:hover:text-white rounded-xl transition-all" href="/reports">
+                <span class="material-symbols-outlined text-[22px]">assessment</span>
+                <span class="text-sm">Report</span>
+            </a>
+            <a class="flex items-center gap-3.5 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-800 dark:hover:text-white rounded-xl transition-all" href="#charts-section" onclick="scrollToSection('charts-section')">
+                <span class="material-symbols-outlined text-[22px]">monitoring</span>
+                <span class="text-sm">Analytics</span>
+            </a>
+            <a class="flex items-center gap-3.5 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-800 dark:hover:text-white rounded-xl transition-all" href="#" onclick="openRegisterModal(); return false;">
+                <span class="material-symbols-outlined text-[22px]">domain_add</span>
+                <span class="text-sm">Register Company</span>
+            </a>
+            <a class="flex items-center gap-3.5 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-800 dark:hover:text-white rounded-xl transition-all" href="/profile">
+                <span class="material-symbols-outlined text-[22px]">person</span>
+                <span class="text-sm">Profile</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-200/40 dark:border-slate-800/40">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold text-sm text-primary-600">
+                    {{ current_user.full_name[:2].upper() if current_user else 'HI' }}
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{{ current_user.full_name if current_user else 'Host Administrator' }}</p>
+                    <p class="text-[10px] text-slate-400 capitalize font-medium">{{ current_user.role if current_user else 'Admin' }}</p>
+                </div>
+            </div>
+            <a href="/logout" class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-semibold text-xs rounded-xl transition-all">
+                <span class="material-symbols-outlined text-sm">logout</span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-grow flex flex-col min-h-screen overflow-y-auto lg:pl-64">
+
+        <header class="sticky top-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200/40 dark:border-slate-800/40 z-30 h-16 flex items-center justify-between px-6 lg:px-8 no-print">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden text-slate-700 dark:text-slate-300 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl">
+                    <span class="material-symbols-outlined text-[24px]">menu</span>
+                </button>
+                <h2 class="font-extrabold text-lg text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary-500 hidden sm:inline">analytics</span>
+                    Executive Operations Dashboard
+                </h2>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="relative hidden md:flex items-center">
+                    <span class="material-symbols-outlined text-slate-400 absolute left-3.5 text-[18px]">search</span>
+                    <input id="global-search" class="w-64 pl-10 pr-4 py-1.5 text-xs rounded-full border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 focus:ring-2 focus:ring-primary-500 outline-none transition-all" placeholder="Search hosts, companies, visitors..." type="text" oninput="handleGlobalSearch(this.value)"/>
+                </div>
+                
+                <button onclick="toggleDarkMode()" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
+                    <span id="dark-mode-icon" class="material-symbols-outlined text-[20px]">dark_mode</span>
+                </button>
+                
+                <div class="relative cursor-pointer">
+                    <button class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">notifications</span>
+                        <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-red-500 ring-2 ring-white dark:ring-slate-900"></span>
+                    </button>
+                </div>
+                
+                <a href="/profile" class="w-9 h-9 rounded-full overflow-hidden border border-primary-500/20 bg-slate-100 flex items-center justify-center hover:scale-105 transition-all">
+                    <img src="https://ui-avatars.com/api/?name={{ current_user.full_name|urlencode if current_user else 'Host+Admin' }}&background=2563EB&color=fff" alt="User Profile" class="w-full h-full object-cover"/>
+                </a>
+            </div>
+        </header>
+
+        <div class="flex-grow p-6 lg:p-8 space-y-8 max-w-[1600px] mx-auto w-full">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 no-print">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 dark:text-white">Host Analytics Overview</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Real-time summaries and metric compliance for company check-ins.</p>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button onclick="exportData('csv')" class="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-xs border border-slate-200 dark:border-slate-800 rounded-xl transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-sm text-blue-500">csv</span>
+                        Export CSV
+                    </button>
+                    <button onclick="exportData('excel')" class="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-xs border border-slate-200 dark:border-slate-800 rounded-xl transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-sm text-emerald-500">table_chart</span>
+                        Export Excel
+                    </button>
+                    <button onclick="window.print()" class="flex items-center gap-1.5 px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-primary-500/10">
+                        <span class="material-symbols-outlined text-sm">print</span>
+                        Print PDF
+                    </button>
+                </div>
+            </div>
+
+            <section class="glass-card rounded-2xl p-5 shadow-sm space-y-4 no-print">
+                <div class="flex items-center justify-between border-b border-slate-200/40 dark:border-slate-800/40 pb-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">filter_alt</span>
+                        Interactive Operations Filters
+                    </h4>
+                    <button onclick="resetFilters()" class="text-[11px] font-bold text-primary-500 hover:underline">Reset Filters</button>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Company</label>
+                        <select id="filter-company" class="text-xs bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl py-1.5 px-2.5 focus:ring-1 focus:ring-primary-500 cursor-pointer" onchange="applyFilters()">
+                            <option value="All">All Companies</option>
+                            <option value="Kinetic Corp">Kinetic Corp</option>
+                            <option value="Apex Group">Apex Group</option>
+                            <option value="ByteCraft Solutions">ByteCraft Solutions</option>
+                            <option value="DeltaWare">DeltaWare</option>
+                            <option value="Enigma Tech">Enigma Tech</option>
+                            <option value="Vanguard Industries">Vanguard Industries</option>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Date Range</label>
+                        <select id="filter-date" class="text-xs bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl py-1.5 px-2.5 focus:ring-1 focus:ring-primary-500 cursor-pointer" onchange="applyFilters()">
+                            <option value="All">All Time</option>
+                            <option value="Today">Today</option>
+                            <option value="7days">Last 7 Days</option>
+                            <option value="30days">Last 30 Days</option>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Department</label>
+                        <select id="filter-dept" class="text-xs bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl py-1.5 px-2.5 focus:ring-1 focus:ring-primary-500 cursor-pointer" onchange="applyFilters()">
+                            <option value="All">All Departments</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="HR & Legal">HR & Legal</option>
+                            <option value="Operations">Operations</option>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Visitor Status</label>
+                        <select id="filter-status" class="text-xs bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl py-1.5 px-2.5 focus:ring-1 focus:ring-primary-500 cursor-pointer" onchange="applyFilters()">
+                            <option value="All">All Statuses</option>
+                            <option value="checked_in">Checked In</option>
+                            <option value="checked_out">Checked Out</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Receptionist</label>
+                        <select id="filter-receptionist" class="text-xs bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl py-1.5 px-2.5 focus:ring-1 focus:ring-primary-500 cursor-pointer" onchange="applyFilters()">
+                            <option value="All">All Receptionists</option>
+                            <option value="Dark">Dark Mode Staff</option>
+                            <option value="Priya">Priya Dharshini</option>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Employee Role</label>
+                        <select id="filter-role" class="text-xs bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl py-1.5 px-2.5 focus:ring-1 focus:ring-primary-500 cursor-pointer" onchange="applyFilters()">
+                            <option value="All">All Roles</option>
+                            <option value="admin">Administrator</option>
+                            <option value="employee">Employee Host</option>
+                            <option value="receptionist">Receptionist</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-2 lg:grid-cols-6 gap-4">
+                <div class="glass-card p-4 rounded-2xl shadow-sm hover-lift flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-blue-500">
+                        <span class="material-symbols-outlined text-[22px]">business</span>
+                        <span class="text-[10px] font-extrabold text-emerald-500 tracking-wider">+2 New</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Companies</p>
+                        <h3 id="kpi-companies" class="text-2xl font-extrabold text-slate-800 dark:text-white mt-1">-</h3>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-4 rounded-2xl shadow-sm hover-lift flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-indigo-500">
+                        <span class="material-symbols-outlined text-[22px]">badge</span>
+                        <span class="text-[10px] font-extrabold text-slate-400 tracking-wider">Staff</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Employees</p>
+                        <h3 id="kpi-employees" class="text-2xl font-extrabold text-slate-800 dark:text-white mt-1">-</h3>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-4 rounded-2xl shadow-sm hover-lift flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-teal-500">
+                        <span class="material-symbols-outlined text-[22px]">admin_panel_settings</span>
+                        <span class="text-[10px] font-extrabold text-slate-400 tracking-wider">Active</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Receptionists</p>
+                        <h3 id="kpi-receptionists" class="text-2xl font-extrabold text-slate-800 dark:text-white mt-1">-</h3>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-4 rounded-2xl shadow-sm hover-lift flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-purple-500">
+                        <span class="material-symbols-outlined text-[22px]">group</span>
+                        <span class="text-[10px] font-extrabold text-emerald-500 tracking-wider">+14% MoM</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Visitors</p>
+                        <h3 id="kpi-visitors" class="text-2xl font-extrabold text-slate-800 dark:text-white mt-1">-</h3>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-4 rounded-2xl shadow-sm hover-lift flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-emerald-500">
+                        <span class="material-symbols-outlined text-[22px]">how_to_reg</span>
+                        <span class="text-[10px] font-extrabold text-emerald-500 tracking-wider">Today</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Today's Visitors</p>
+                        <h3 id="kpi-todays-visitors" class="text-2xl font-extrabold text-slate-800 dark:text-white mt-1">-</h3>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-4 rounded-2xl shadow-sm hover-lift flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-amber-500">
+                        <span class="material-symbols-outlined text-[22px]">store</span>
+                        <span class="text-[10px] font-extrabold text-emerald-500 tracking-wider">Checked In</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Companies</p>
+                        <h3 id="kpi-active-companies" class="text-2xl font-extrabold text-slate-800 dark:text-white mt-1">-</h3>
+                    </div>
+                </div>
+            </section>
+
+            <section id="charts-section" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col h-[280px]">
+                    <div class="mb-3">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Company Distribution</h4>
+                        <p class="text-[10px] text-slate-400">Total visits segmented by visitor company</p>
+                    </div>
+                    <div class="flex-grow relative h-0">
+                        <canvas id="chart-company-dist"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col h-[280px]">
+                    <div class="mb-3">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Employees per Company</h4>
+                        <p class="text-[10px] text-slate-400">Registered staff counts across departments</p>
+                    </div>
+                    <div class="flex-grow relative h-0">
+                        <canvas id="chart-employees-comp"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col h-[280px]">
+                    <div class="mb-3">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Visitor Status</h4>
+                        <p class="text-[10px] text-slate-400">Current check-in and approval pipeline</p>
+                    </div>
+                    <div class="flex-grow relative h-0 flex justify-center">
+                        <canvas id="chart-visitor-status"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col h-[280px]">
+                    <div class="mb-3">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Daily Visitor Trend</h4>
+                        <p class="text-[10px] text-slate-400">Traffic logs registered for the past week</p>
+                    </div>
+                    <div class="flex-grow relative h-0">
+                        <canvas id="chart-daily-trend"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col h-[280px]">
+                    <div class="mb-3">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Monthly Visitor Trend</h4>
+                        <p class="text-[10px] text-slate-400">Visitor volume track record by month</p>
+                    </div>
+                    <div class="flex-grow relative h-0">
+                        <canvas id="chart-monthly-trend"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col h-[280px]">
+                    <div class="mb-3">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Receptionist Distribution</h4>
+                        <p class="text-[10px] text-slate-400">Visits checked-in per receptionist desk</p>
+                    </div>
+                    <div class="flex-grow relative h-0">
+                        <canvas id="chart-receptionist-dist"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col h-[280px]">
+                    <div class="mb-3">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Employee Category</h4>
+                        <p class="text-[10px] text-slate-400">Host employee distribution by department</p>
+                    </div>
+                    <div class="flex-grow relative h-0 flex justify-center">
+                        <canvas id="chart-employee-cat"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col h-[280px]">
+                    <div class="mb-3">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Company Role Analytics</h4>
+                        <p class="text-[10px] text-slate-400">Visitor types and operational compliance profile</p>
+                    </div>
+                    <div class="flex-grow relative h-0 flex justify-center">
+                        <canvas id="chart-role-analytics"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col justify-between h-[360px]">
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider mb-1">Operational Occupancy</h4>
+                        <p class="text-[10px] text-slate-400 mb-6">Real-time lobby capacity and employee metrics</p>
+                    </div>
+                    <div class="flex items-center justify-around flex-grow">
+
+                        <div class="relative w-36 h-36 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="72" cy="72" r="64" class="stroke-slate-200 dark:stroke-slate-800" stroke-width="12" fill="transparent"/>
+                                <circle cx="72" cy="72" r="64" class="stroke-primary-600 transition-all duration-1000" stroke-width="12" fill="transparent" stroke-dasharray="402" stroke-dashoffset="120" id="occupancy-circle"/>
+                            </svg>
+                            <div class="absolute text-center">
+                                <span class="text-3xl font-extrabold text-slate-800 dark:text-white" id="occupancy-val">70%</span>
+                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Capacity</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3.5">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-primary-600"></span>
+                                <div class="text-left">
+                                    <p class="text-[10px] text-slate-400 font-medium">Active Check-Ins</p>
+                                    <p class="text-xs font-bold text-slate-800 dark:text-white" id="widget-active-checkins">18 Visitors</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                <div class="text-left">
+                                    <p class="text-[10px] text-slate-400 font-medium">Pending Approvals</p>
+                                    <p class="text-xs font-bold text-slate-800 dark:text-white" id="widget-pending-approvals">5 Requests</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                <div class="text-left">
+                                    <p class="text-[10px] text-slate-400 font-medium">Monthly Growth</p>
+                                    <p class="text-xs font-bold text-slate-800 dark:text-white">+14.8% YoY</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col justify-between h-[360px]">
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider mb-1">Live Visitor Volume</h4>
+                        <p class="text-[10px] text-slate-400 mb-4">Real-time lobby check-in activity tracker</p>
+                    </div>
+
+                    <div class="bg-primary-600/10 dark:bg-primary-600/20 border border-primary-500/20 rounded-2xl p-4 flex items-center justify-between hover-lift">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-primary-600 flex items-center justify-center text-white">
+                                <span class="material-symbols-outlined text-[22px] animate-pulse">radar</span>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Lobby Counter</p>
+                                <p class="text-xs text-slate-600 dark:text-slate-300">Live counts within premise</p>
+                            </div>
+                        </div>
+                        <span class="text-3xl font-black text-primary-600 dark:text-primary-400 tabular-nums animate-bounce" id="realtime-counter">24</span>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Weekly Load Heatmap (Peak hours)</p>
+                        <div class="grid grid-cols-7 gap-1">
+                            <div class="h-8 rounded bg-emerald-500/10 flex items-center justify-center text-[8px] font-bold">Mon</div>
+                            <div class="h-8 rounded bg-emerald-500/30 flex items-center justify-center text-[8px] font-bold">Tue</div>
+                            <div class="h-8 rounded bg-emerald-500/60 flex items-center justify-center text-[8px] font-bold">Wed</div>
+                            <div class="h-8 rounded bg-emerald-500/90 text-white flex items-center justify-center text-[8px] font-bold">Thu</div>
+                            <div class="h-8 rounded bg-emerald-500/40 flex items-center justify-center text-[8px] font-bold">Fri</div>
+                            <div class="h-8 rounded bg-emerald-500/10 flex items-center justify-center text-[8px] font-bold">Sat</div>
+                            <div class="h-8 rounded bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-[8px] font-bold">Sun</div>
+                        </div>
+                        <div class="flex justify-between items-center mt-1.5 text-[8px] text-slate-400 uppercase tracking-widest font-semibold">
+                            <span>08:00 AM</span>
+                            <span>Mid Day (Peak)</span>
+                            <span>06:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl shadow-sm flex flex-col justify-between h-[360px] overflow-y-auto">
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider mb-1">Company Performance</h4>
+                        <p class="text-[10px] text-slate-400 mb-4">Traffic and employee densities</p>
+                    </div>
+                    <div class="space-y-3.5 flex-grow">
+                        <div class="flex justify-between items-center border-b border-slate-200/20 dark:border-slate-800/20 pb-2">
+                            <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Kinetic Corp</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-extrabold text-slate-800 dark:text-white">42 Emps</span>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-[9px]">98% Approved</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-slate-200/20 dark:border-slate-800/20 pb-2">
+                            <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Apex Group</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-extrabold text-slate-800 dark:text-white">28 Emps</span>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-[9px]">92% Approved</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-slate-200/20 dark:border-slate-800/20 pb-2">
+                            <span class="text-xs font-medium text-slate-500 dark:text-slate-400">ByteCraft Solutions</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-extrabold text-slate-800 dark:text-white">35 Emps</span>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-[9px]">95% Approved</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-slate-200/20 dark:border-slate-800/20 pb-2">
+                            <span class="text-xs font-medium text-slate-500 dark:text-slate-400">DeltaWare</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-extrabold text-slate-800 dark:text-white">18 Emps</span>
+                                <span class="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 font-bold text-[9px]">88% Approved</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass-card rounded-2xl p-6 shadow-sm no-print">
+                <div class="mb-6 text-center sm:text-left">
+                    <h4 class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider mb-1 flex items-center gap-1.5 justify-center sm:justify-start">
+                        <span class="material-symbols-outlined text-sm text-primary-500">route</span>
+                        Visitor Management Lifecycle Workflow
+                    </h4>
+                    <p class="text-[10px] text-slate-400">Lifecycle trace from host authentication to operations audit logs</p>
+                </div>
+                
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-4 p-4 bg-slate-50/50 dark:bg-slate-900/50 rounded-2xl border border-slate-200/30 dark:border-slate-800/30">
+                    <div class="flow-node bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-750 px-4 py-3 rounded-2xl flex items-center gap-2.5 shadow-sm text-xs font-bold cursor-pointer">
+                        <span class="w-7 h-7 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center material-symbols-outlined">login</span>
+                        <span>Host Login</span>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-300 dark:text-slate-700 rotate-90 lg:rotate-0">arrow_forward</span>
+
+                    <div class="flow-node bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-750 px-4 py-3 rounded-2xl flex items-center gap-2.5 shadow-sm text-xs font-bold cursor-pointer">
+                        <span class="w-7 h-7 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center material-symbols-outlined">dashboard</span>
+                        <span>Dashboard</span>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-300 dark:text-slate-700 rotate-90 lg:rotate-0">arrow_forward</span>
+
+                    <div class="flow-node bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-750 px-4 py-3 rounded-2xl flex items-center gap-2.5 shadow-sm text-xs font-bold cursor-pointer">
+                        <span class="w-7 h-7 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center material-symbols-outlined">business</span>
+                        <span>Company Details</span>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-300 dark:text-slate-700 rotate-90 lg:rotate-0">arrow_forward</span>
+
+                    <div class="flow-node bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-750 px-4 py-3 rounded-2xl flex items-center gap-2.5 shadow-sm text-xs font-bold cursor-pointer">
+                        <span class="w-7 h-7 rounded-xl bg-pink-500/10 text-pink-500 flex items-center justify-center material-symbols-outlined">badge</span>
+                        <span>Employee Management</span>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-300 dark:text-slate-700 rotate-90 lg:rotate-0">arrow_forward</span>
+
+                    <div class="flow-node bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-750 px-4 py-3 rounded-2xl flex items-center gap-2.5 shadow-sm text-xs font-bold cursor-pointer">
+                        <span class="w-7 h-7 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center material-symbols-outlined">room</span>
+                        <span>Reception Management</span>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-300 dark:text-slate-700 rotate-90 lg:rotate-0">arrow_forward</span>
+
+                    <div class="flow-node bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-750 px-4 py-3 rounded-2xl flex items-center gap-2.5 shadow-sm text-xs font-bold cursor-pointer">
+                        <span class="w-7 h-7 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center material-symbols-outlined">assignment_ind</span>
+                        <span>Visitor Tracking</span>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-300 dark:text-slate-700 rotate-90 lg:rotate-0">arrow_forward</span>
+
+                    <div class="flow-node bg-primary-600 text-white px-4 py-3 rounded-2xl flex items-center gap-2.5 shadow-lg shadow-primary-500/10 text-xs font-bold cursor-pointer">
+                        <span class="w-7 h-7 rounded-xl bg-white/20 text-white flex items-center justify-center material-symbols-outlined">analytics</span>
+                        <span>Reports & Analytics</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass-card rounded-2xl overflow-hidden shadow-sm flex flex-col border border-slate-200/40 dark:border-slate-800/40">
+                <div class="bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4 border-b border-slate-200/40 dark:border-slate-800/40 flex flex-col sm:flex-row justify-between sm:items-center gap-4 no-print">
+                    <div class="flex items-center gap-2 overflow-x-auto">
+                        <button id="tab-btn-companies" onclick="switchTableTab('companies')" class="px-4 py-2 text-xs font-bold rounded-xl transition-all bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-sm border border-slate-200/30 dark:border-slate-850">
+                            Companies Summary
+                        </button>
+                        <button id="tab-btn-employees" onclick="switchTableTab('employees')" class="px-4 py-2 text-xs font-bold rounded-xl transition-all text-slate-500 hover:bg-slate-100/50 dark:hover:bg-slate-800/50">
+                            Employee Summary
+                        </button>
+                        <button id="tab-btn-visitors" onclick="switchTableTab('visitors')" class="px-4 py-2 text-xs font-bold rounded-xl transition-all text-slate-500 hover:bg-slate-100/50 dark:hover:bg-slate-800/50">
+                            Visitor Logs
+                        </button>
+                        <button id="tab-btn-updates" onclick="switchTableTab('updates')" class="px-4 py-2 text-xs font-bold rounded-xl transition-all text-slate-500 hover:bg-slate-100/50 dark:hover:bg-slate-800/50">
+                            Recent Visit Updates
+                        </button>
+                    </div>
+
+                    <div class="relative flex items-center">
+                        <span class="material-symbols-outlined text-slate-400 absolute left-3 text-sm">search</span>
+                        <input id="table-search" class="w-60 pl-8 pr-4 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 outline-none focus:ring-1 focus:ring-primary-500" placeholder="Search in active table..." type="text" oninput="handleTableSearch(this.value)"/>
+                    </div>
+                </div>
+                <div class="overflow-x-auto w-full">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-slate-50/30 dark:bg-slate-950/20 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-200/30 dark:border-slate-800/30" id="table-thead">
+                        </thead>
+
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800/40 text-xs font-medium" id="table-tbody">
+                            <tr>
+                                <td colspan="6" class="px-6 py-12 text-center text-slate-400">Loading operations records...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="px-6 py-4 bg-slate-50/20 dark:bg-slate-950/10 border-t border-slate-200/40 dark:border-slate-800/40 flex items-center justify-between no-print">
+                    <span class="text-xs text-slate-400 font-semibold" id="table-pagination-info">Showing - to - of - entries</span>
+                    
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="navigatePage(-1)" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors text-slate-500" id="btn-prev-page">
+                            <span class="material-symbols-outlined text-base">chevron_left</span>
+                        </button>
+                        <span class="text-xs font-bold text-slate-700 dark:text-slate-300" id="table-page-number">1 / 1</span>
+                        <button onclick="navigatePage(1)" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors text-slate-500" id="btn-next-page">
+                            <span class="material-symbols-outlined text-base">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="mt-auto py-6 border-t border-slate-200/30 dark:border-slate-800/30 bg-slate-50/50 dark:bg-slate-900/50 flex flex-col sm:flex-row justify-between items-center px-8 gap-3 no-print text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+            <span>© 2026 Kinetic Enterprise Systems Inc. All rights reserved.</span>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-primary-600 transition-colors">Privacy Policy</a>
+                <span>•</span>
+                <a href="#" class="hover:text-primary-600 transition-colors">Security Compliance</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        let activeTab = 'companies';
+        let currentSearchQuery = '';
+        let globalSearchQuery = '';
+        let tablePage = 1;
+        let tableTotalPages = 1;
+        let tablePageLimit = 5;
+        let tableSortCol = 'id';
+        let tableSortDir = 'desc';
+        
+        let selectedCompany = 'All';
+        let selectedDateRange = 'All';
+        let selectedDept = 'All';
+        let selectedStatus = 'All';
+        let selectedReceptionist = 'All';
+        let selectedRole = 'All';
+        
+        let charts = {};
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+        
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+
+                if (window.innerWidth < 1024) toggleSidebar();
+            }
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const darkIcon = document.getElementById('dark-mode-icon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+                darkIcon.textContent = 'dark_mode';
+            } else {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+                darkIcon.textContent = 'light_mode';
+            }
+            refreshChartThemes();
+        }
+
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            document.getElementById('dark-mode-icon').textContent = 'light_mode';
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.getElementById('dark-mode-icon').textContent = 'dark_mode';
+        }
+
+        function loadKpiStats() {
+            fetch('/api/host/stats')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('kpi-companies').textContent = data.total_companies;
+                    document.getElementById('kpi-employees').textContent = data.total_employees;
+                    document.getElementById('kpi-receptionists').textContent = data.total_receptionists;
+                    document.getElementById('kpi-visitors').textContent = data.total_visitors;
+                    document.getElementById('kpi-todays-visitors').textContent = data.todays_visitors;
+                    document.getElementById('kpi-active-companies').textContent = data.active_companies;
+                    
+                    const maxCap = 40;
+                    const pct = Math.min(100, Math.round((data.todays_visitors / maxCap) * 100));
+                    document.getElementById('occupancy-val').textContent = pct + "%";
+                    document.getElementById('widget-active-checkins').textContent = data.todays_visitors + " Visitors";
+                    const strokeDashoffset = Math.max(0, 402 - (pct / 100) * 402);
+                    document.getElementById('occupancy-circle').style.strokeDashoffset = strokeDashoffset;
+                })
+                .catch(err => console.error("Error loading KPI statistics:", err));
+        }
+
+        function applyFilters() {
+            selectedCompany = document.getElementById('filter-company').value;
+            selectedDateRange = document.getElementById('filter-date').value;
+            selectedDept = document.getElementById('filter-dept').value;
+            selectedStatus = document.getElementById('filter-status').value;
+            selectedReceptionist = document.getElementById('filter-receptionist').value;
+            selectedRole = document.getElementById('filter-role').value;
+            loadKpiStats();
+            loadChartsData();
+            loadActiveTableData();
+        }
+
+        function resetFilters() {
+            document.getElementById('filter-company').value = 'All';
+            document.getElementById('filter-date').value = 'All';
+            document.getElementById('filter-dept').value = 'All';
+            document.getElementById('filter-status').value = 'All';
+            document.getElementById('filter-receptionist').value = 'All';
+            document.getElementById('filter-role').value = 'All';
+            applyFilters();
+        }
+
+        function handleGlobalSearch(val) {
+            globalSearchQuery = val;
+            currentSearchQuery = val;
+            tablePage = 1;
+            loadActiveTableData();
+        }
+
+        function handleTableSearch(val) {
+            currentSearchQuery = val;
+            tablePage = 1;
+            loadActiveTableData();
+        }
+
+        function switchTableTab(tab) {
+            const tabs = ['companies', 'employees', 'visitors', 'updates'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (t === tab) {
+                    btn.className = "px-4 py-2 text-xs font-bold rounded-xl transition-all bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-sm border border-slate-200/30 dark:border-slate-850";
+                } else {
+                    btn.className = "px-4 py-2 text-xs font-bold rounded-xl transition-all text-slate-500 hover:bg-slate-100/50 dark:hover:bg-slate-800/50";
+                }
+            });
+            
+            activeTab = tab;
+            tablePage = 1;
+            document.getElementById('table-search').value = '';
+            currentSearchQuery = '';
+            
+            if (tab === 'companies') {
+                tableSortCol = 'company';
+                tableSortDir = 'asc';
+            } else if (tab === 'employees') {
+                tableSortCol = 'name';
+                tableSortDir = 'asc';
+            } else {
+                tableSortCol = 'id';
+                tableSortDir = 'desc';
+            }
+            
+            loadActiveTableData();
+        }
+
+        function loadActiveTableData() {
+            const tableBody = document.getElementById('table-tbody');
+            const tableHead = document.getElementById('table-thead');
+            
+            tableBody.innerHTML = `<tr><td colspan="8" class="px-6 py-12 text-center text-slate-400">Loading operations records...</td></tr>`;
+            
+            let url = `/api/host/tables?type=${activeTab}&search=${currentSearchQuery}&page=${tablePage}&limit=${tablePageLimit}&sort_by=${tableSortCol}&sort_dir=${tableSortDir}`;
+            url += `&company=${selectedCompany}&department=${selectedDept}&status=${selectedStatus}`;
+            
+            fetch(url)
+                .then(res => res.json())
+                .then(res => {
+                    tableTotalPages = res.pages;
+                    document.getElementById('table-page-number').textContent = `${res.current_page} / ${res.pages || 1}`;
+
+                    renderTableHead(tableHead);
+                    renderTableBody(tableBody, res.data);
+                    
+                    const startEntry = res.total > 0 ? (res.current_page - 1) * tablePageLimit + 1 : 0;
+                    const endEntry = Math.min(res.total, res.current_page * tablePageLimit);
+                    document.getElementById('table-pagination-info').textContent = `Showing ${startEntry} to ${endEntry} of ${res.total} entries`;
+                })
+                .catch(err => {
+                    console.error("Error loading table data:", err);
+                    tableBody.innerHTML = `<tr><td colspan="8" class="px-6 py-12 text-center text-red-500">Failed to retrieve database entries.</td></tr>`;
+                });
+        }
+
+        function renderTableHead(theadContainer) {
+            let cols = [];
+            if (activeTab === 'companies') {
+                cols = [
+                    { id: 'company', label: 'Company Name' },
+                    { id: 'employees', label: 'Employees count' },
+                    { id: 'receptionists', label: 'Receptionists Desk' },
+                    { id: 'visitors', label: 'Total Visitors' },
+                    { id: 'growth', label: 'Growth rate' },
+                    { id: 'status', label: 'Status' }
+                ];
+            } else if (activeTab === 'employees') {
+                cols = [
+                    { id: 'name', label: 'Employee Name' },
+                    { id: 'code', label: 'Employee Code' },
+                    { id: 'department', label: 'Department' },
+                    { id: 'visitors_hosted', label: 'Hosted Requests' },
+                    { id: 'status', label: 'User Status' }
+                ];
+            } else if (activeTab === 'visitors') {
+                cols = [
+                    { id: 'visitor', label: 'Visitor Name' },
+                    { id: 'company', label: 'Visitor Company' },
+                    { id: 'email', label: 'Email Address' },
+                    { id: 'host', label: 'Host Employee' },
+                    { id: 'check_in', label: 'Time In' },
+                    { id: 'check_out', label: 'Time Out' },
+                    { id: 'status', label: 'Status' }
+                ];
+            } else if (activeTab === 'updates') {
+                cols = [
+                    { id: 'id', label: 'Log ID' },
+                    { id: 'activity', label: 'Activity' },
+                    { id: 'time', label: 'Time Registered' },
+                    { id: 'details', label: 'Operational Details' },
+                    { id: 'user', label: 'Executed By' }
+                ];
+            }
+            
+            let html = `<tr>`;
+            cols.forEach(c => {
+                const isSorted = (tableSortCol === c.id);
+                const icon = isSorted ? (tableSortDir === 'desc' ? 'arrow_downward' : 'arrow_upward') : 'import_export';
+                const sortColor = isSorted ? 'text-primary-600 font-extrabold' : 'text-slate-400';
+                
+                html += `
+                    <th class="px-6 py-4 font-bold select-none cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors" onclick="sortTable('${c.id}')">
+                        <div class="flex items-center gap-1.5">
+                            <span>${c.label}</span>
+                            <span class="material-symbols-outlined text-sm ${sortColor}">${icon}</span>
+                        </div>
+                    </th>
+                `;
+            });
+            html += `</tr>`;
+            theadContainer.innerHTML = html;
+        }
+        function renderTableBody(tbodyContainer, rows) {
+            if (!rows || rows.length === 0) {
+                tbodyContainer.innerHTML = `<tr><td colspan="8" class="px-6 py-12 text-center text-slate-400">No matching operations records found.</td></tr>`;
+                return;
+            }
+            
+            let html = '';
+            rows.forEach(r => {
+                if (activeTab === 'companies') {
+                    const statusClass = r.status === 'Active' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-500';
+                    const growthClass = r.growth.startsWith('-') ? 'text-red-500' : 'text-emerald-500';
+                    html += `
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors">
+                            <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">${r.company}</td>
+                            <td class="px-6 py-4 text-slate-500">${r.employees} Registered</td>
+                            <td class="px-6 py-4 text-slate-500">${r.receptionists} Desks</td>
+                            <td class="px-6 py-4 text-slate-500 font-bold">${r.visitors} Visitors</td>
+                            <td class="px-6 py-4 font-bold ${growthClass}">${r.growth}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold ${statusClass}">${r.status}</span>
+                            </td>
+                        </tr>
+                    `;
+                } else if (activeTab === 'employees') {
+                    const statusClass = r.status === 'active' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-red-500/10 text-red-500';
+                    html += `
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors">
+                            <td class="px-6 py-4 font-bold text-slate-800 dark:text-white flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-[11px]">${r.name.substring(0,2).toUpperCase()}</div>
+                                <span>${r.name}</span>
+                            </td>
+                            <td class="px-6 py-4 text-slate-500 font-mono text-[11px]">${r.code}</td>
+                            <td class="px-6 py-4 text-slate-500">${r.department}</td>
+                            <td class="px-6 py-4 font-bold text-slate-500">${r.visitors_hosted} hosted</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold capitalize ${statusClass}">${r.status}</span>
+                            </td>
+                        </tr>
+                    `;
+                } else if (activeTab === 'visitors') {
+                    const formatIn = r.check_in ? new Date(r.check_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-';
+                    const formatOut = r.check_out ? new Date(r.check_out).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-';
+                    
+                    let badge = 'bg-slate-100 text-slate-500';
+                    if (r.status === 'checked_in') badge = 'bg-emerald-500/10 text-emerald-600';
+                    if (r.status === 'checked_out') badge = 'bg-blue-500/10 text-blue-600';
+                    if (r.status === 'pending') badge = 'bg-amber-500/10 text-amber-500';
+                    
+                    html += `
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors">
+                            <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">${r.visitor_name}</td>
+                            <td class="px-6 py-4 text-slate-500">${r.company}</td>
+                            <td class="px-6 py-4 text-slate-400 font-medium">${r.email}</td>
+                            <td class="px-6 py-4 text-slate-500">${r.host_name}</td>
+                            <td class="px-6 py-4 text-slate-500 font-semibold">${formatIn}</td>
+                            <td class="px-6 py-4 text-slate-500 font-semibold">${formatOut}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold capitalize ${badge}">${r.status.replace('_', ' ')}</span>
+                            </td>
+                        </tr>
+                    `;
+                } else if (activeTab === 'updates') {
+                    const formatTime = r.time ? new Date(r.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-';
+                    html += `
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors">
+                            <td class="px-6 py-4 text-slate-400 font-mono text-[11px]">#${r.id}</td>
+                            <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">${r.activity}</td>
+                            <td class="px-6 py-4 text-slate-500 font-semibold">${formatTime}</td>
+                            <td class="px-6 py-4 text-slate-500 max-w-xs truncate">${r.details}</td>
+                            <td class="px-6 py-4 text-slate-400 font-bold">${r.user}</td>
+                        </tr>
+                    `;
+                }
+            });
+            tbodyContainer.innerHTML = html;
+        }
+
+        function sortTable(column) {
+            if (tableSortCol === column) {
+                tableSortDir = (tableSortDir === 'desc' ? 'asc' : 'desc');
+            } else {
+                tableSortCol = column;
+                tableSortDir = 'desc';
+            }
+            tablePage = 1;
+            loadActiveTableData();
+        }
+
+        function navigatePage(dir) {
+            const targetPage = tablePage + dir;
+            if (targetPage >= 1 && targetPage <= tableTotalPages) {
+                tablePage = targetPage;
+                loadActiveTableData();
+            }
+        }
+
+        function loadChartsData() {
+            let url = `/api/host/analytics?company=${selectedCompany}&department=${selectedDept}&status=${selectedStatus}`;
+            
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const textColor = isDark ? '#94a3b8' : '#64748b';
+                    const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)';
+                    
+                    renderBarChart('chart-company-dist', data.company_distribution, '#3b82f6', textColor, gridColor);
+                    
+                    renderHorizontalBarChart('chart-employees-comp', data.employees_per_company, '#6366f1', textColor, gridColor);
+                    
+                    renderPieChart('chart-visitor-status', data.visitor_status, textColor);
+                    
+                    renderLineChart('chart-daily-trend', data.daily_visitor_trend, '#10b981', textColor, gridColor);
+                    
+                    renderAreaChart('chart-monthly-trend', data.monthly_visitor_trend, '#f59e0b', textColor, gridColor);
+                    
+                    renderBarChart('chart-receptionist-dist', data.receptionist_distribution, '#8b5cf6', textColor, gridColor);
+                    
+                    renderDonutChart('chart-employee-cat', data.employee_category, textColor);
+                    
+                    renderRadarChart('chart-role-analytics', data.company_role_analytics, '#ec4899', textColor, gridColor);
+                })
+                .catch(err => console.error("Error loading charts data:", err));
+            }
+        function renderBarChart(canvasId, dataset, color, textColor, gridColor) {
+            if (charts[canvasId]) charts[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dataset.labels,
+                    datasets: [{
+                        data: dataset.data,
+                        backgroundColor: color + 'bf',
+                        borderColor: color,
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: textColor, font: { size: 9 } }, grid: { display: false } },
+                        y: { ticks: { color: textColor, font: { size: 9 } }, grid: { color: gridColor } }
+                    }
+                }
+            });
+        }
+
+        function renderHorizontalBarChart(canvasId, dataset, color, textColor, gridColor) {
+            if (charts[canvasId]) charts[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dataset.labels,
+                    datasets: [{
+                        data: dataset.data,
+                        backgroundColor: color + 'bf',
+                        borderColor: color,
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: textColor, font: { size: 9 } }, grid: { color: gridColor } },
+                        y: { ticks: { color: textColor, font: { size: 9 } }, grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        function renderPieChart(canvasId, dataset, textColor) {
+            if (charts[canvasId]) charts[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: dataset.labels,
+                    datasets: [{
+                        data: dataset.data,
+                        backgroundColor: ['#10b981bf', '#3b82f6bf', '#f59e0bbf', '#8b5cf6bf', '#ef4444bf'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom',
+                            labels: { color: textColor, font: { size: 8 } }
+                        } 
+                    }
+                }
+            });
+        }
+
+        function renderLineChart(canvasId, dataset, color, textColor, gridColor) {
+            if (charts[canvasId]) charts[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dataset.labels,
+                    datasets: [{
+                        data: dataset.data,
+                        borderColor: color,
+                        tension: 0.3,
+                        pointRadius: 3,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: textColor, font: { size: 9 } }, grid: { display: false } },
+                        y: { ticks: { color: textColor, font: { size: 9 } }, grid: { color: gridColor } }
+                    }
+                }
+            });
+        }
+
+        function renderAreaChart(canvasId, dataset, color, textColor, gridColor) {
+            if (charts[canvasId]) charts[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dataset.labels,
+                    datasets: [{
+                        data: dataset.data,
+                        borderColor: color,
+                        backgroundColor: color + '20',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 2,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: textColor, font: { size: 9 } }, grid: { display: false } },
+                        y: { ticks: { color: textColor, font: { size: 9 } }, grid: { color: gridColor } }
+                    }
+                }
+            });
+        }
+
+        function renderDonutChart(canvasId, dataset, textColor) {
+            if (charts[canvasId]) charts[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: dataset.labels,
+                    datasets: [{
+                        data: dataset.data,
+                        backgroundColor: ['#2563ebbf', '#10b981bf', '#f59e0bbf', '#ec4899bf'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom',
+                            labels: { color: textColor, font: { size: 8 } }
+                        } 
+                    }
+                }
+            });
+        }
+
+        function renderRadarChart(canvasId, dataset, color, textColor, gridColor) {
+            if (charts[canvasId]) charts[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: dataset.labels,
+                    datasets: [{
+                        data: dataset.data,
+                        borderColor: color,
+                        backgroundColor: color + '15',
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        r: {
+                            ticks: { display: false },
+                            grid: { color: gridColor },
+                            angleLines: { color: gridColor },
+                            pointLabels: { color: textColor, font: { size: 8 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function refreshChartThemes() {
+            loadChartsData();
+        }
+
+        function exportData(format) {
+            let cols = [];
+            if (activeTab === 'companies') cols = ['Company Name', 'Employees count', 'Receptionists Desk', 'Total Visitors', 'Growth rate', 'Status'];
+            else if (activeTab === 'employees') cols = ['Employee Name', 'Employee Code', 'Department', 'Hosted Requests', 'User Status'];
+            else if (activeTab === 'visitors') cols = ['Visitor Name', 'Visitor Company', 'Email Address', 'Host Employee', 'Time In', 'Time Out', 'Status'];
+            else cols = ['Log ID', 'Activity', 'Time Registered', 'Operational Details', 'Executed By'];
+            let url = `/api/host/tables?type=${activeTab}&search=${currentSearchQuery}&page=1&limit=250`;
+            url += `&company=${selectedCompany}&department=${selectedDept}&status=${selectedStatus}`;
+
+            fetch(url)
+                .then(res => res.json())
+                .then(res => {
+                    const rows = res.data;
+                    let csvContent = "";
+                    csvContent += cols.join(",") + "\n";
+                    rows.forEach(r => {
+                        let values = [];
+                        if (activeTab === 'companies') {
+                            values = [r.company, r.employees, r.receptionists, r.visitors, r.growth, r.status];
+                        } else if (activeTab === 'employees') {
+                            values = [r.name, r.code, r.department, r.visitors_hosted, r.status];
+                        } else if (activeTab === 'visitors') {
+                            values = [r.visitor_name, r.company, r.email, r.host_name, r.check_in || '', r.check_out || '', r.status];
+                        } else {
+                            values = [r.id, r.activity, r.time || '', r.details, r.user];
+                        }
+                        values = values.map(val => {
+                            let s = String(val).replace(/"/g, '""');
+                            if (s.includes(",") || s.includes("\n") || s.includes('"')) {
+                                s = `"${s}"`;
+                            }
+                            return s;
+                        });
+                        csvContent += values.join(",") + "\n";
+                    });
+                    const blob = new Blob([csvContent], { type: format === 'csv' ? 'text/csv;charset=utf-8;' : 'application/vnd.ms-excel;charset=utf-8;' });
+                    const link = document.createElement("a");
+                    const filename = `host_${activeTab}_report_${new Date().toISOString().substring(0, 10)}`;
+                    
+                    link.href = URL.createObjectURL(blob);
+                    link.setAttribute("download", `${filename}.${format === 'csv' ? 'csv' : 'xls'}`);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+                .catch(err => alert("Error exporting analytics records: " + err));
+        }
+
+        function runRealTimeCounters() {
+            setInterval(() => {
+                const counter = document.getElementById('realtime-counter');
+                let count = parseInt(counter.textContent);
+                const change = Math.floor(Math.random() * 3) - 1;
+                count = Math.max(10, count + change);
+                counter.textContent = count;
+            }, 7000);
+        }
+
+        function openRegisterModal() {
+            const modal = document.getElementById('register-company-modal');
+            const content = document.getElementById('register-company-modal-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 50);
+            
+            document.getElementById('registration-error').classList.add('hidden');
+            document.getElementById('registration-success').classList.add('hidden');
+            document.getElementById('register-company-form').reset();
+            
+            document.getElementById('create-user-checkbox').checked = false;
+            toggleUserFields(false);
+        }
+        
+        function closeRegisterModal() {
+            const modal = document.getElementById('register-company-modal');
+            const content = document.getElementById('register-company-modal-content');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 150);
+            
+            const url = new URL(window.location);
+            if (url.searchParams.has('action')) {
+                url.searchParams.delete('action');
+                window.history.replaceState({}, '', url);
+            }
+        }
+
+        function toggleUserFields(show) {
+            const container = document.getElementById('user-fields-container');
+            const usernameInput = document.getElementById('reg-admin-username');
+            const passwordInput = document.getElementById('reg-admin-password');
+            if (show) {
+                container.classList.remove('hidden');
+                usernameInput.setAttribute('required', 'required');
+                passwordInput.setAttribute('required', 'required');
+            } else {
+                container.classList.add('hidden');
+                usernameInput.removeAttribute('required');
+                passwordInput.removeAttribute('required');
+            }
+        }
+        
+        function submitRegistration(event) {
+            event.preventDefault();
+            const company_name = document.getElementById('reg-company-name').value;
+            const employees = document.getElementById('reg-employees').value;
+            const receptionists = document.getElementById('reg-receptionists').value;
+            const growth = document.getElementById('reg-growth').value;
+            const status = document.getElementById('reg-status').value;
+            
+            const createUser = document.getElementById('create-user-checkbox').checked;
+            let payload = {
+                company_name: company_name,
+                employees: employees,
+                receptionists: receptionists,
+                growth: growth,
+                status: status
+            };
+            
+            if (createUser) {
+                payload.admin_username = document.getElementById('reg-admin-username').value;
+                payload.admin_password = document.getElementById('reg-admin-password').value;
+                payload.admin_role = document.getElementById('reg-admin-role').value;
+            }
+            
+            const errorDiv = document.getElementById('registration-error');
+            const successDiv = document.getElementById('registration-success');
+            
+            errorDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+            
+            fetch('/api/host/register-company', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(err => { throw new Error(err.error || 'Failed to register company') });
+                }
+                return res.json();
+            })
+            .then(data => {
+                successDiv.textContent = data.message || 'Company registered successfully!';
+                successDiv.classList.remove('hidden');
+                
+                const filterComp = document.getElementById('filter-company');
+                let exists = false;
+                for (let option of filterComp.options) {
+                    if (option.value.toLowerCase() === company_name.toLowerCase()) {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists) {
+                    const opt = document.createElement('option');
+                    opt.value = company_name;
+                    opt.textContent = company_name;
+                    filterComp.appendChild(opt);
+                }
+                
+                loadKpiStats();
+                loadChartsData();
+                loadActiveTableData();
+                
+                setTimeout(() => {
+                    closeRegisterModal();
+                }, 1500);
+            })
+            .catch(err => {
+                errorDiv.textContent = err.message;
+                errorDiv.classList.remove('hidden');
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadKpiStats();
+            loadChartsData();
+            loadActiveTableData();
+            runRealTimeCounters();
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('action') === 'register-company') {
+                openRegisterModal();
+            }
+        });
+    </script>
+
+    <!-- Register Company Modal -->
+    <div id="register-company-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md hidden no-print transition-all duration-300">
+        <div class="glass-card rounded-2xl max-w-md w-full p-6 relative shadow-2xl border border-slate-200/50 dark:border-slate-800/50 transform scale-95 transition-transform duration-300" id="register-company-modal-content">
+            <button onclick="closeRegisterModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 rounded-xl transition-all">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+            
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-600 to-emerald-500 flex items-center justify-center text-white shadow-lg shadow-primary-500/20">
+                    <span class="material-symbols-outlined text-[24px]">domain_add</span>
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-primary-600 to-emerald-500 bg-clip-text text-transparent">Register Company</h3>
+                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest">Add new organization to VMS</p>
+                </div>
+            </div>
+            
+            <form id="register-company-form" onsubmit="submitRegistration(event)" class="space-y-4">
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Company Name</label>
+                    <input type="text" id="reg-company-name" required placeholder="e.g. Acme Corporation" class="text-xs bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-3 focus:ring-2 focus:ring-primary-500 outline-none transition-all w-full"/>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Employees</label>
+                        <input type="number" id="reg-employees" min="0" value="0" required class="text-xs bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-3 focus:ring-2 focus:ring-primary-500 outline-none transition-all w-full"/>
+                    </div>
+                    
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Receptionists</label>
+                        <input type="number" id="reg-receptionists" min="0" value="0" required class="text-xs bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-3 focus:ring-2 focus:ring-primary-500 outline-none transition-all w-full"/>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Growth Rate (%)</label>
+                        <input type="text" id="reg-growth" value="+0.0%" required placeholder="e.g. +12.4%" class="text-xs bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-3 focus:ring-2 focus:ring-primary-500 outline-none transition-all w-full"/>
+                    </div>
+                    
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Status</label>
+                        <select id="reg-status" class="text-xs bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-3 focus:ring-2 focus:ring-primary-500 cursor-pointer w-full">
+                            <option value="Active">Active</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Checkbox to create user account -->
+                <div class="flex items-center gap-2 pt-2 pb-1">
+                    <input type="checkbox" id="create-user-checkbox" class="w-4 h-4 rounded text-primary-600 focus:ring-primary-500 border-slate-300 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 cursor-pointer" onchange="toggleUserFields(this.checked)"/>
+                    <label for="create-user-checkbox" class="text-xs font-bold text-slate-700 dark:text-slate-300 cursor-pointer">Create Company User Account</label>
+                </div>
+                
+                <!-- Collapsible User Account Fields -->
+                <div id="user-fields-container" class="hidden space-y-4 pt-2 border-t border-slate-200/40 dark:border-slate-800/40 transition-all duration-300">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Account Username</label>
+                        <input type="text" id="reg-admin-username" placeholder="e.g. acme_admin" class="text-xs bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-3 focus:ring-2 focus:ring-primary-500 outline-none transition-all w-full"/>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Account Password</label>
+                            <input type="password" id="reg-admin-password" placeholder="••••••••" class="text-xs bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-3 focus:ring-2 focus:ring-primary-500 outline-none transition-all w-full"/>
+                        </div>
+                        
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">Company Role</label>
+                            <select id="reg-admin-role" class="text-xs bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-3 focus:ring-2 focus:ring-primary-500 cursor-pointer w-full">
+                                <option value="admin" selected>Admin</option>
+                                <option value="receptionist">Receptionist</option>
+                                <option value="employee">Employee</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="registration-error" class="hidden text-red-500 text-xs font-semibold py-1"></div>
+                <div id="registration-success" class="hidden text-emerald-500 text-xs font-semibold py-1"></div>
+                
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeRegisterModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-350 font-bold text-xs rounded-xl transition-all">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-gradient-to-r from-primary-600 to-emerald-500 text-white font-bold text-xs rounded-xl shadow-md shadow-primary-500/10 hover:opacity-95 transition-all">
+                        Register Company
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

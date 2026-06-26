@@ -27,6 +27,23 @@ def seed_database():
                         'created_at': u.created_at.isoformat() if u.created_at else None,
                         'updated_at': u.updated_at.isoformat() if u.updated_at else None
                     })
+            from datetime import datetime
+            if users_col.find_one({'username': 'host'}) is None:
+                print("Host user not found. Seeding host user...")
+                host_doc = {
+                    'username': "host",
+                    'role': "host",
+                    'email': "host@kinetic-corp.com",
+                    'full_name': "Executive Host",
+                    'status': "active",
+                    'created_at': datetime.utcnow().isoformat(),
+                    'updated_at': datetime.utcnow().isoformat()
+                }
+                host_nosql = NoSQLUser(host_doc)
+                host_nosql.set_password("host123")
+                inserted_host = users_col.insert(host_nosql._doc)
+                sync_user_to_sql(inserted_host)
+                print("Host user seeded successfully!")
             print("Database already seeded. Skipping...")
             return
             
@@ -83,11 +100,23 @@ def seed_database():
         employee_nosql.set_password("employee123")
         inserted_employee = users_col.insert(employee_nosql._doc)
         
+        host_doc = {
+            'username': "host",
+            'role': "host",
+            'email': "host@kinetic-corp.com",
+            'full_name': "Executive Host",
+            'status': "active",
+            'created_at': datetime.utcnow().isoformat(),
+            'updated_at': datetime.utcnow().isoformat()
+        }
+        host_nosql = NoSQLUser(host_doc)
+        host_nosql.set_password("host123")
+        inserted_host = users_col.insert(host_nosql._doc)
         
         sync_user_to_sql(inserted_admin)
         sync_user_to_sql(inserted_receptionist)
         sync_user_to_sql(inserted_employee)
-        
+        sync_user_to_sql(inserted_host)
         
         emp_record = Employee(
             user_id=inserted_employee['id'],

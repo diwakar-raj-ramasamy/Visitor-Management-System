@@ -25,6 +25,8 @@ def index():
                 return redirect(url_for('reception.reception_dashboard'))
             elif role == 'employee':
                 return redirect(url_for('employee.approvals_page'))
+            elif role == 'host':
+                return redirect(url_for('host.host_dashboard'))
             elif role == 'visitor':
                 return redirect(url_for('visitor.visitor_dashboard'))
     return redirect(url_for('auth.login_page'))

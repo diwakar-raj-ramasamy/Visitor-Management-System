@@ -88,6 +88,29 @@
                     <span class="font-body-md text-body-md">Profile</span>
                 </a>
 
+            {% elif u.role == 'host' %}
+                
+                <a class="flex items-center gap-md px-md py-sm {% if request.path == '/host/dashboard' and not request.args.get('action') %}bg-secondary-container text-on-secondary-container font-bold{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %} rounded-full active:scale-[0.98] transition-all" href="/host/dashboard">
+                    <span class="material-symbols-outlined" {% if request.path == '/host/dashboard' and not request.args.get('action') %}style="font-variation-settings: 'FILL' 1;"{% endif %}>dashboard</span>
+                    <span class="font-body-md text-body-md">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm {% if request.path == '/reports' %}bg-secondary-container text-on-secondary-container font-bold{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %} rounded-full active:scale-[0.98] transition-all" href="/reports">
+                    <span class="material-symbols-outlined" {% if request.path == '/reports' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>assessment</span>
+                    <span class="font-body-md text-body-md">Report</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-full active:scale-[0.98] transition-all" href="/host/dashboard#charts-section">
+                    <span class="material-symbols-outlined">monitoring</span>
+                    <span class="font-body-md text-body-md">Analytics</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm {% if request.path == '/host/dashboard' and request.args.get('action') == 'register-company' %}bg-secondary-container text-on-secondary-container font-bold{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %} rounded-full active:scale-[0.98] transition-all" href="/host/dashboard?action=register-company">
+                    <span class="material-symbols-outlined" {% if request.path == '/host/dashboard' and request.args.get('action') == 'register-company' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>domain_add</span>
+                    <span class="font-body-md text-body-md">Register Company</span>
+                </a>
+                <a class="flex items-center gap-md px-md py-sm {% if request.path == '/profile' %}bg-secondary-container text-on-secondary-container font-bold{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %} rounded-full active:scale-[0.98] transition-all" href="/profile">
+                    <span class="material-symbols-outlined" {% if request.path == '/profile' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>person</span>
+                    <span class="font-body-md text-body-md">Profile</span>
+                </a>
+
             {% elif u.role == 'visitor' %}
                 
                 <a class="flex items-center gap-md px-md py-sm {% if request.path == '/visitor/dashboard' %}bg-secondary-container text-on-secondary-container font-bold{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %} rounded-full active:scale-[0.98] transition-all" href="/visitor/dashboard">
