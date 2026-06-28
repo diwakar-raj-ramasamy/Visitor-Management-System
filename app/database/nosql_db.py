@@ -212,7 +212,7 @@ class NoSQLUser:
 
 
 
-db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'vms_nosql.json'))
+db_path = os.environ.get('NOSQL_DB_PATH', os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'vms_nosql.json')))
 nosql_db = NoSQLDocumentDatabase(db_path)
 
 

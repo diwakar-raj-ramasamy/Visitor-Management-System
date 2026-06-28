@@ -18,7 +18,7 @@ class Config:
         f"mysql+pymysql://{mysql_user}:{mysql_password}@{mysql_host}/{mysql_db}"
     )
     
-    FALLBACK_DATABASE_URI = f"sqlite:///{os.path.join(BASE_DIR, 'vms_local.db')}"
+    FALLBACK_DATABASE_URI = f"sqlite:///{os.environ.get('SQLITE_DB_PATH', os.path.join(BASE_DIR, 'vms_local.db'))}"
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
@@ -28,7 +28,7 @@ class Config:
     JWT_EXPIRY_HOURS = 24
     
     
-    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'app', 'static', 'uploads')
+    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', os.path.join(BASE_DIR, 'app', 'static', 'uploads'))
     PHOTOS_FOLDER = os.path.join(UPLOAD_FOLDER, 'photos')
     IDS_FOLDER = os.path.join(UPLOAD_FOLDER, 'ids')
     QRCODES_FOLDER = os.path.join(UPLOAD_FOLDER, 'qrcodes')

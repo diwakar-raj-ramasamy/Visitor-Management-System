@@ -164,5 +164,6 @@ def create_app(config_class='config.Config'):
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(reports_bp)
     app.register_blueprint(host_bp)
-    
+    from app.database.seeder import seed_database
+    seed_database(app)
     return app
