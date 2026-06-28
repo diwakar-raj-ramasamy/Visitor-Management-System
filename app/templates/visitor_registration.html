@@ -199,19 +199,19 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
                         <div>
                             <label class="form-label" for="full_name">Full Name</label>
-                            <input id="full_name" name="full_name" class="form-input" placeholder="e.g. Johnathan Doe" type="text" value="{{ current_user.full_name if current_user and current_user.role == 'visitor' else '' }}" required/>
+                            <input id="full_name" name="full_name" class="form-input" placeholder="e.g. Diwakar Raj R" type="text" value="{{ current_user.full_name if current_user and current_user.role == 'visitor' else '' }}" required/>
                         </div>
                         <div>
                             <label class="form-label" for="mobile_number">Mobile Number</label>
-                            <input id="mobile_number" name="mobile_number" class="form-input" placeholder="+1 (555) 000-0000" type="tel" required/>
+                            <input id="mobile_number" name="mobile_number" class="form-input" placeholder="+91 63797 24475" type="tel" required/>
                         </div>
                         <div>
                             <label class="form-label" for="email">Email Address</label>
-                            <input id="email" name="email" class="form-input" placeholder="john.doe@example.com" type="email" value="{{ current_user.email if current_user and current_user.role == 'visitor' else '' }}" required/>
+                            <input id="email" name="email" class="form-input" placeholder="[EMAIL_ADDRESS]" type="email" value="{{ current_user.email if current_user and current_user.role == 'visitor' else '' }}" required/>
                         </div>
                         <div>
                             <label class="form-label" for="company_name">Company Name</label>
-                            <input id="company_name" name="company_name" class="form-input" placeholder="Acme Corporation" type="text"/>
+                            <input id="company_name" name="company_name" class="form-input" placeholder="Company Name" type="text"/>
                         </div>
                         <div>
                             <label class="form-label" for="gender">Gender</label>
@@ -223,7 +223,7 @@
                         </div>
                         <div>
                             <label class="form-label" for="vehicle_number">Vehicle Number (Optional)</label>
-                            <input id="vehicle_number" name="vehicle_number" class="form-input" placeholder="e.g. AB12CDE" type="text"/>
+                            <input id="vehicle_number" name="vehicle_number" class="form-input" placeholder="TN 45 BC 1234" type="text"/>
                         </div>
                     </div>
                 </div>
