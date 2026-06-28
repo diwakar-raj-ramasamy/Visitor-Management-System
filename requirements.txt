@@ -5,3 +5,4 @@ PyMySQL==1.1.1
 qrcode==7.4.2
 Pillow==10.3.0
 cryptography==42.0.7
+gunicorn==22.0.0
