@@ -67,8 +67,9 @@ This project provides a digital solution that improves security, efficiency, and
 
 ### Database
 
-* MySQL
-* MongoDB (NoSQL Support)
+* MySQL (Primary)
+* SQLite (Automatic fallback if MySQL is not available)
+* Local JSON-based Document Database (NoSQL Support)
 
 ### Tools Used
 
@@ -110,7 +111,7 @@ This project provides a digital solution that improves security, efficiency, and
 
 ### Steps
 
-* Clone or Download the project ZIP file from the GitHub Repository (git clone https://github.com/user-name/repository-name).
+* Clone or Download the project ZIP file from the GitHub Repository (git clone https://github.com/diwakar-raj-ramasamy/Visitor-Management-System.git).
 * Create a Virtual Environment (python -m venv venv).
 * Activate the Virtual Environment (venv\Scripts\activate, source venv/bin/activate).
 
@@ -118,4 +119,14 @@ This project provides a digital solution that improves security, efficiency, and
 
 * pip install -r requirements.txt     (The Modules are pre-defined in the text files.)
 * python run.py                       (It helps to run the VMS Project.)
+
+### Note on Database Configuration
+The application is configured to connect to a MySQL database by default. If MySQL is not running or is unavailable, the application will automatically fallback to a local SQLite database (`vms_local.db`) so the project can be run immediately without database configuration.
+
+### Default Login Credentials
+Upon starting, the database is automatically seeded with these default user credentials for testing:
+* **Admin**: Username: `admin` | Password: `admin123`
+* **Receptionist**: Username: `receptionist` | Password: `receptionist123`
+* **Employee**: Username: `employee` | Password: `employee123`
+* **Host**: Username: `host` | Password: `host123`
 
