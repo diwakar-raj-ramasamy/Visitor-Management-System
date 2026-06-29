@@ -5,10 +5,10 @@
             "username": "admin",
             "password": "scrypt:32768:8:1$whrKMYveO5TF0JGN$2d4cfa9708dbdc67b8839ee2d2e6be29ac44ba78a9b68d714e0d6f17ed81289911ae387cb0168a1907521db401f197e8c9d94980c60f8d12266ca531999fbf1d",
             "role": "admin",
-            "email": "admin@kinetic-corp.com",
+            "email": "admin@company.com",
             "full_name": "Priya Dharshini",
             "created_at": "2026-06-10T15:19:03.389536",
-            "updated_at": "2026-06-14T15:16:18.687832",
+            "updated_at": "2026-06-29T11:46:57.990368",
             "_id": "f66bf6c5-1ab8-44ce-80a2-da79df924c54"
         },
         {
@@ -16,10 +16,10 @@
             "username": "receptionist",
             "password": "scrypt:32768:8:1$dwTYErv3axfMBEUe$7427bd657b12f109cdc4e1ac316be9ea84fcfe91cf818fd32f32ccd0f373c5f49d926357a738c604a1500b045957098c8794d169750c6d5723ba105d0fe31d27",
             "role": "receptionist",
-            "email": "reception@kinetic-corp.com",
+            "email": "reception@company.com",
             "full_name": "Dark",
             "created_at": "2026-06-10T15:19:03.389536",
-            "updated_at": "2026-06-15T13:42:59.303290",
+            "updated_at": "2026-06-29T11:57:50.165169",
             "_id": "4564c1e3-3ad3-4e0e-bb24-01f5e72d3bbb"
         },
         {
@@ -27,10 +27,10 @@
             "username": "employee",
             "password": "scrypt:32768:8:1$lv5m27WM43lyC6XX$496a8ec4a7ab2e6d772253fe8d174e37d8d5f22beab922d8a333e30eb226cdea834070f623c008abe47fb020f927c005f8b21a5622a605622e9ee5e92dbdd7fb",
             "role": "employee",
-            "email": "employee@kinetic-corp.com",
+            "email": "employee@company.com",
             "full_name": "Warrior",
             "created_at": "2026-06-10T15:19:03.389536",
-            "updated_at": "2026-06-10T15:19:03.389536",
+            "updated_at": "2026-06-29T11:59:29.530999",
             "_id": "f20f1d2c-11b2-4496-bb66-8c69bb5ebe72"
         },
         {
@@ -1175,6 +1175,87 @@
             "created_at": "2026-06-26T09:17:55.146727",
             "id": 115,
             "_id": "40ec4751-e19f-4d1d-abd9-7cb30622dacc"
+        },
+        {
+            "user_id": 1,
+            "action": "Login",
+            "details": "User admin successfully logged in as admin.",
+            "ip_address": "10.62.119.159",
+            "created_at": "2026-06-29T11:46:15.197203",
+            "id": 116,
+            "_id": "b9978471-1e4a-4323-855b-22632973d4f2"
+        },
+        {
+            "user_id": 1,
+            "action": "Profile Update",
+            "details": "User updated personal profile details.",
+            "ip_address": "10.62.119.159",
+            "created_at": "2026-06-29T11:46:58.008624",
+            "id": 117,
+            "_id": "0f3606cb-dd52-41c4-9275-6418120cfac6"
+        },
+        {
+            "user_id": 1,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.62.119.159",
+            "created_at": "2026-06-29T11:47:45.658582",
+            "id": 118,
+            "_id": "6df3c1a7-b53f-43e7-acde-9c7439f3e68d"
+        },
+        {
+            "user_id": 2,
+            "action": "Login",
+            "details": "User receptionist successfully logged in as receptionist.",
+            "ip_address": "10.62.119.159",
+            "created_at": "2026-06-29T11:57:21.127276",
+            "id": 119,
+            "_id": "200c8628-17d5-439c-85b2-ede27bc905f7"
+        },
+        {
+            "user_id": 2,
+            "action": "Profile Update",
+            "details": "User updated personal profile details.",
+            "ip_address": "10.62.119.159",
+            "created_at": "2026-06-29T11:57:50.183279",
+            "id": 120,
+            "_id": "3a7dbb23-d9be-4b35-b424-ae6d8a9b8969"
+        },
+        {
+            "user_id": 2,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.62.119.159",
+            "created_at": "2026-06-29T11:58:20.333021",
+            "id": 121,
+            "_id": "e792d2a1-0fc9-446c-8539-25c2ef86c922"
+        },
+        {
+            "user_id": 3,
+            "action": "Login",
+            "details": "User employee successfully logged in as employee.",
+            "ip_address": "10.62.119.159",
+            "created_at": "2026-06-29T11:58:41.938919",
+            "id": 122,
+            "_id": "99453cf0-fe59-4d95-9da4-0a527d3b28c9"
+        },
+        {
+            "user_id": 3,
+            "action": "Profile Update",
+            "details": "User updated personal profile details.",
+            "ip_address": "10.62.119.159",
+            "created_at": "2026-06-29T11:59:29.554887",
+            "id": 123,
+            "_id": "e2323611-0dd9-4b43-994c-54f1eaf95310"
+        },
+        {
+            "user_id": 3,
+            "action": "Logout",
+            "details": "User logged out.",
+            "ip_address": "10.62.119.159",
+            "created_at": "2026-06-29T11:59:39.471079",
+            "id": 124,
+            "_id": "6b6750c1-493e-4448-9f2b-1e7cdf33d396"
         }
     ],
     "registered_companies": [
